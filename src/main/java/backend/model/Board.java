@@ -1,18 +1,17 @@
 package backend.model;
 
-import backend.model.listener.BoardEventListener;
+import backend.model.listener.TileEventListener;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 @Getter @Setter
-@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class Board {
     final int rowCount;
     final int columnCount;
 
-    BoardEventListener boardEventListener;
+    TileEventListener tileEventListener;
 
     /**
      * A matrix of ints representing a tile values. Each value is actually a number of player who marked the tile.
@@ -21,34 +20,43 @@ public class Board {
      * simply putting null value at the corresponding position, but that will reduce performance.
      */
     @Getter(AccessLevel.PRIVATE)
-    final int[][] tiles;
+    final Tile[][] tiles;
 
     public Board(int rowCount, int columnCount) {
-        // lombok generated constructor
-        this(rowCount, columnCount, new int[rowCount][columnCount]);
+        this.rowCount = rowCount;
+        this.columnCount = columnCount;
+        this.tiles = new Tile[rowCount][columnCount];
     }
 
-    public int getTile(int row, int col) {
+    public Tile getTile(int row, int col) {
         return tiles[row][col];
     }
 
-    public void setTile(int row, int col, int value) {
-        assert boardEventListener != null : getClass().toString() + ".boardEventListener should not be null";
-
-        final int oldValue = tiles[row][col];
-        tiles[row][col] = value;
-        boardEventListener.tileValueChanged(row, col, oldValue, value);
-    }
-
-
-    // TODO: 3/17/2019 May be there is a need for this???????
     @Getter
     @RequiredArgsConstructor
     public class Tile {
-        int value;
+        public static final int EMPTY_VALUE = -1;
+        // for now these fields are final, because in tic-tac-toe there is no need to move the tiles
+        // but in common this fields also should be modifiable
+        final int row;
+        final int col;
+
+        int value = EMPTY_VALUE;
 
         public void setValue(int value) {
+            final int oldValue = this.value;
             this.value = value;
+            tileEventListener.valueChanged(row, col, oldValue, this.value);
+        }
+
+        public void makeEmpty() {
+            final int oldValue = this.value;
+            this.value = EMPTY_VALUE;
+            tileEventListener.valueErased(row, col, oldValue);
+        }
+
+        public boolean isEmpty() {
+            return value == EMPTY_VALUE;
         }
     }
 }
