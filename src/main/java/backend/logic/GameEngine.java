@@ -17,10 +17,13 @@ public class GameEngine {
     private final GameConfig gameConfig;
     private final Board board;
 
+    @Setter(AccessLevel.NONE)
     private int currentPlayerNumber;
 
     public GameEngine(GameConfig gameConfig, Board board) {
         // lombok generated constructor
         this(gameConfig, board, Utils.randomInt(gameConfig.getMaxPlayersCount()));
     }
+
+
 }

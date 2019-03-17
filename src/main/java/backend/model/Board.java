@@ -14,6 +14,12 @@ public class Board {
 
     BoardEventListener boardEventListener;
 
+    /**
+     * A matrix of ints representing a tile values. Each value is actually a number of player who marked the tile.
+     * Here -1 will denote an absence of any mark.
+     * It'd be better to have {@code tiles} as matrix of {@link Integer}s, so we could denote the absence of mark by
+     * simply putting null value at the corresponding position, but that will reduce performance.
+     */
     @Getter(AccessLevel.PRIVATE)
     final int[][] tiles;
 
