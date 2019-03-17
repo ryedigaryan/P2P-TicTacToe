@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
+import java.util.Arrays;
+
 @Getter @Setter
 public class Board {
     final int rowCount;
@@ -26,6 +28,15 @@ public class Board {
         this.rowCount = rowCount;
         this.columnCount = columnCount;
         this.tiles = new Tile[rowCount][columnCount];
+        for(int i = 0; i < rowCount; i++) {
+            for(int j = 0; j < columnCount; j++) {
+                tiles[i][j] = new Tile(i, j);
+            }
+        }
+    }
+
+    public boolean isInsideBoard(int row, int col) {
+        return row >= 0 && row < rowCount && col >=0 && col < columnCount;
     }
 
     public Tile getTile(int row, int col) {
@@ -58,5 +69,15 @@ public class Board {
         public boolean isEmpty() {
             return value == EMPTY_VALUE;
         }
+
+        @Override
+        public String toString() {
+            return String.valueOf(value);
+        }
+    }
+
+    @Override
+    public String toString() {
+        return Arrays.toString(tiles);
     }
 }

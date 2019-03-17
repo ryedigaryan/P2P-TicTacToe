@@ -7,6 +7,7 @@ import backend.listener.GameStateChangeEventListener;
 import backend.model.Board;
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.Setter;
 
 import java.util.Arrays;
@@ -16,12 +17,15 @@ import java.util.Arrays;
  */
 @Getter @Setter
 public class GameEngine {
+    @NonNull
     private final GameConfig gameConfig;
+    @NonNull
     private final Board board;
 
     @Setter(AccessLevel.NONE)
     private int currentPlayerNumber;
 
+    @NonNull
     private GameStateChangeEventListener gameStateChangeEventListener;
 
     public GameEngine(GameConfig gameConfig, Board board) {
@@ -30,12 +34,15 @@ public class GameEngine {
         this.currentPlayerNumber = Utils.randomInt(gameConfig.getMaxPlayersCount());
     }
 
-    public void acceptPlayerMark(int row, int col) {
+    public void acceptNextPlayerMark(int row, int col) {
         Board.Tile tile = board.getTile(row, col);
         if(tile.isEmpty()) {
             tile.setValue(currentPlayerNumber);
         }
-        checkIfPlayerWon(row, col);
+        if(isCurrentPlayerWon(row, col))
+            gameStateChangeEventListener.playerWon(currentPlayerNumber);
+        else
+            currentPlayerNumber = (currentPlayerNumber + 1) % gameConfig.getMaxPlayersCount();
     }
 
     /**
@@ -44,24 +51,20 @@ public class GameEngine {
      * @param lastMarkRow lastMarkRow number of marked tile
      * @param lastMarkCol column number of marked tile
      */
-    private void checkIfPlayerWon(int lastMarkRow, int lastMarkCol) {
+    private boolean isCurrentPlayerWon(int lastMarkRow, int lastMarkCol) {
         assert board.getTile(lastMarkRow, lastMarkCol).getValue() == currentPlayerNumber : "tile value at (" + lastMarkRow + "," + lastMarkCol + ") should be equal to " + currentPlayerNumber;
         assert gameStateChangeEventListener != null : "gameStateChangeEventListener should not be null";
-        if (playerHasWonInDirections(lastMarkRow, lastMarkCol, Direction.LEFT, Direction.RIGHT))
-            return;
-        if (playerHasWonInDirections(lastMarkRow, lastMarkCol, Direction.UP, Direction.DOWN))
-            return;
-        if (playerHasWonInDirections(lastMarkRow, lastMarkCol, Direction.LEFT_UP, Direction.RIGHT_DOWN))
-            return;
-        if (playerHasWonInDirections(lastMarkRow, lastMarkCol, Direction.RIGHT_UP, Direction.LEFT_DOWN))
-            return;
+        return isCurrentPlayerWonInDirection(lastMarkRow, lastMarkCol, Direction.LEFT, Direction.RIGHT) ||
+                isCurrentPlayerWonInDirection(lastMarkRow, lastMarkCol, Direction.UP, Direction.DOWN) ||
+                isCurrentPlayerWonInDirection(lastMarkRow, lastMarkCol, Direction.LEFT_UP, Direction.RIGHT_DOWN) ||
+                isCurrentPlayerWonInDirection(lastMarkRow, lastMarkCol, Direction.RIGHT_UP, Direction.LEFT_DOWN);
     }
 
-    private boolean playerHasWonInDirections(int row, int col, Direction left, Direction right) {
+    private boolean isCurrentPlayerWonInDirection(int row, int col, Direction left, Direction right) {
         int count = 0;
         count += playerTilesCount(row, col, left);
         count += playerTilesCount(row, col, right);
-        return checkGameState(count + 1);
+        return isGameWon(count + 1);
     }
 
     private int __playerTilesCount(int row, int col) {
@@ -79,8 +82,10 @@ public class GameEngine {
         int count = 0;
         startRow += countDirection.getDx();
         startCol += countDirection.getDy();
-        while(board.getTile(startRow, startCol).getValue() == currentPlayerNumber) {
+        while(board.isInsideBoard(startRow, startCol) && board.getTile(startRow, startCol).getValue() == currentPlayerNumber) {
             count++;
+            startRow += countDirection.getDx();
+            startCol += countDirection.getDy();
         }
         return count;
     }
@@ -91,11 +96,7 @@ public class GameEngine {
      * @param consecutiveMarkCount count of consecutive marks by current player in any direction.
      * @return a boolean, determining weather game has been won by current player or not.
      */
-    private boolean checkGameState(int consecutiveMarkCount) {
-        if(consecutiveMarkCount == gameConfig.getWinLength()) {
-            gameStateChangeEventListener.playerWon(currentPlayerNumber);
-            return true;
-        }
-        return false;
+    private boolean isGameWon(int consecutiveMarkCount) {
+        return consecutiveMarkCount == gameConfig.getWinLength();
     }
 }
