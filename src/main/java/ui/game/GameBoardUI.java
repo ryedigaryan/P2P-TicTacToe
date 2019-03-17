@@ -1,17 +1,16 @@
 package ui.game;
 
-import javax.swing.JFrame;
-import java.awt.GridLayout;
-import java.awt.HeadlessException;
+import javax.swing.*;
+import java.awt.*;
 
 public class GameBoardUI extends JFrame {
 
-    private int rows;
-    private int columns;
+    private int rowsCount;
+    private int columnsCount;
 
     public GameBoardUI(int borderWidth, int borderHeight) throws HeadlessException {
-        setLayout(new GridLayout(rows = borderWidth, columns = borderHeight));
-        final int markCount = rows * columns;
+        setLayout(new GridLayout(rowsCount = borderWidth, columnsCount = borderHeight));
+        final int markCount = rowsCount * columnsCount;
         for (int i = 0; i < markCount; i++) {
             add(new Tile());
         }
@@ -20,39 +19,63 @@ public class GameBoardUI extends JFrame {
         setVisible(true);
     }
 
-    /**
-     * Top-Left = 0,0
-     */
-    public void markO(int x, int y) {
-        getComponent(calculateMarkPosition(x, y)).markO();
-        repaint();
-        System.out.println("Marked O at " + calculateMarkPosition(x, y));
-    }
-
-    /**
-     * Top-Left = 0,0
-     */
-    public void markX(int x, int y) {
-        getComponent(calculateMarkPosition(x, y)).markX();
-        repaint();
-        System.out.println("Marked X at " + calculateMarkPosition(x, y));
-    }
-
-    public void removeMark(int x, int y) {
-        getComponent(calculateMarkPosition(x, y)).removeMark();
-        repaint();
-        System.out.println("Marked X at " + calculateMarkPosition(x, y));
-    }
-
     @Override
     public Tile getComponent(int n) {
         return (Tile) getContentPane().getComponent(n);
     }
 
+    @Override
+    public Dimension getPreferredSize() {
+        Dimension s = getSize();
+        int m = Math.min(s.width, s.height);
+        s.setSize(m, m);
+        return s;
+    }
+
     /**
      * Top-Left = 0,0
      */
-    private int calculateMarkPosition(int x, int y) {
-        return y * rows + x;
+    public void markO(int row, int col) {
+        getComponent(calculateMarkPosition(row, col)).markO();
+        repaint();
+        System.out.println("Marked O at " + calculateMarkPosition(row, col));
+    }
+
+    /**
+     * Top-Left = 0,0
+     */
+    public void markX(int row, int col) {
+        getComponent(calculateMarkPosition(row, col)).markX();
+        repaint();
+        System.out.println("Marked X at " + calculateMarkPosition(row, col));
+    }
+
+    public void removeMark(int row, int col) {
+        getComponent(calculateMarkPosition(row, col)).removeMark();
+        repaint();
+        System.out.println("Marked X at " + calculateMarkPosition(row, col));
+    }
+
+    /**
+     * Top-Left = 0,0
+     */
+    private int calculateMarkPosition(int row, int col) {
+        checkDimensions(row, col);
+        return col * rowsCount + row;
+    }
+
+    private void checkDimensions(int row, int col) {
+        checkRow(row);
+        checkColumn(col);
+    }
+
+    private void checkRow(int row) {
+        if(row < 0 || row >= rowsCount)
+            throw new IllegalArgumentException("Expected row number in range [1, " + rowsCount + "] but received " + row);
+    }
+
+    private void checkColumn(int col) {
+        if(col < 0 || col >= columnsCount)
+            throw new IllegalArgumentException("Expected column number in range [1, " + columnsCount + "] but received " + col);
     }
 }
