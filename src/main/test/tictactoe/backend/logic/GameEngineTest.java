@@ -1,9 +1,9 @@
-package backend.logic;
+package tictactoe.backend.logic;
 
-import backend.helper.GameConfig;
-import backend.listener.GameStateChangeEventListener;
-import backend.model.Board;
-import backend.model.listener.TileEventListener;
+import tictactoe.backend.helper.GameConfig;
+import tictactoe.backend.listener.GameStateChangeEventListener;
+import tictactoe.backend.model.Board;
+import tictactoe.backend.model.listener.TileEventListener;
 
 public class GameEngineTest {
     public static void main(String[] args) {

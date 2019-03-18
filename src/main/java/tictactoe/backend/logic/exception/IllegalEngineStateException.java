@@ -1,4 +1,4 @@
-package backend.logic.exception;
+package tictactoe.backend.logic.exception;
 
 public class IllegalEngineStateException extends IllegalStateException {
     public IllegalEngineStateException(int winnerNumber) {

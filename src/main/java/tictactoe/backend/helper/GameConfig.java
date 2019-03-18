@@ -1,4 +1,4 @@
-package backend.helper;
+package tictactoe.backend.helper;
 
 import lombok.Data;
 

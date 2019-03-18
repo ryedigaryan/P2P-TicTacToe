@@ -1,4 +1,4 @@
-package backend;
+package tictactoe.backend;
 
 import java.util.Random;
 

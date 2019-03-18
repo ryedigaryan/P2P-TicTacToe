@@ -1,11 +1,11 @@
-package backend.logic;
+package tictactoe.backend.logic;
 
-import backend.Utils;
-import backend.helper.Direction;
-import backend.helper.GameConfig;
-import backend.listener.GameStateChangeEventListener;
-import backend.logic.exception.IllegalEngineStateException;
-import backend.model.Board;
+import tictactoe.backend.Utils;
+import tictactoe.backend.helper.Direction;
+import tictactoe.backend.helper.GameConfig;
+import tictactoe.backend.listener.GameStateChangeEventListener;
+import tictactoe.backend.logic.exception.IllegalEngineStateException;
+import tictactoe.backend.model.Board;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NonNull;

@@ -1,4 +1,4 @@
-package grdon;
+package tictactoe.grdon;
 
 /**
  * A class containing temporary solutions for different problems.

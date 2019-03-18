@@ -1,4 +1,4 @@
-package ui.game;
+package tictactoe.ui.game;
 
 import java.awt.EventQueue;
 import java.awt.event.MouseEvent;

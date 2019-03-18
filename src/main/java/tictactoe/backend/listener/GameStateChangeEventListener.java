@@ -1,4 +1,4 @@
-package backend.listener;
+package tictactoe.backend.listener;
 
 public interface GameStateChangeEventListener {
 
