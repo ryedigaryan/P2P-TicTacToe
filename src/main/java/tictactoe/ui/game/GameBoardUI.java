@@ -1,12 +1,19 @@
 package tictactoe.ui.game;
 
+import lombok.Getter;
+import lombok.Setter;
+import tictactoe.ui.game.listener.TileClickListener;
+
 import javax.swing.*;
 import java.awt.*;
 
+@Getter @Setter
 public class GameBoardUI extends JFrame {
 
-    private int rowsCount;
-    private int columnsCount;
+    private final int rowsCount;
+    private final int columnsCount;
+
+    TileClickListener tileClickListener;
 
     public GameBoardUI(int borderWidth, int borderHeight) throws HeadlessException {
         setLayout(new GridLayout(rowsCount = borderWidth, columnsCount = borderHeight));
@@ -28,18 +35,20 @@ public class GameBoardUI extends JFrame {
      * Top-Left = 0,0
      */
     public void markO(int row, int col) {
+        assert tileClickListener != null : "tileClickListener should not be null";
         getComponent(calculateMarkPosition(row, col)).markO();
         repaint();
-        System.out.println("Marked O at " + calculateMarkPosition(row, col));
+        tileClickListener.tileClicked(row, col);
     }
 
     /**
      * Top-Left = 0,0
      */
     public void markX(int row, int col) {
+        assert tileClickListener != null : "tileClickListener should not be null";
         getComponent(calculateMarkPosition(row, col)).markX();
         repaint();
-        System.out.println("Marked X at " + calculateMarkPosition(row, col));
+        tileClickListener.tileClicked(row, col);
     }
 
     public void removeMark(int row, int col) {

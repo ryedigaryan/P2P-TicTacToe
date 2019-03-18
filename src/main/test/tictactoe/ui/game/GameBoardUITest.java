@@ -1,5 +1,7 @@
 package tictactoe.ui.game;
 
+import tictactoe.ui.game.listener.TileClickListener;
+
 import java.awt.EventQueue;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -10,6 +12,13 @@ public class GameBoardUITest {
         EventQueue.invokeLater(() -> {
             GameBoardUI b = new GameBoardUI(3, 3);
             System.out.println("Border created");
+
+            b.setTileClickListener(new TileClickListener() {
+                @Override
+                public void tileClicked(int row, int col) {
+                    System.out.println(String.format("Tile (%d,%d) was clicked", row, col));
+                }
+            });
 
             b.addMouseListener(new MouseListener() {
                 boolean turn = true;

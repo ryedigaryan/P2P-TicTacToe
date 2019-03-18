@@ -1,17 +1,21 @@
-package tictactoe.backend.controller;
+package tictactoe.backend.manager;
 
+import tictactoe.backend.listener.GameStateChangeEventListener;
 import tictactoe.backend.logic.GameEngine;
 import tictactoe.backend.model.listener.TileEventListener;
 import tictactoe.ui.game.GameBoardUI;
+import tictactoe.ui.game.listener.TileClickListener;
 
-public class BoardController implements TileEventListener {
+public class GameManager implements TileEventListener, GameStateChangeEventListener, TileClickListener {
 
-    GameEngine gameEngine;
-    GameBoardUI boardUI;
+    private final GameEngine gameEngine;
+    private final GameBoardUI boardUI;
 
-    public BoardController(GameEngine gameEngine, GameBoardUI boardUI) {
+    public GameManager(GameEngine gameEngine, GameBoardUI boardUI) {
         this.gameEngine = gameEngine;
         this.boardUI = boardUI;
+        gameEngine.setGameStateChangeEventListener(this);
+        gameEngine.getBoard().setTileEventListener(this);
     }
 
     @Override
@@ -31,5 +35,15 @@ public class BoardController implements TileEventListener {
     @Override
     public void valueErased(int row, int col, int oldValue) {
         boardUI.removeMark(row, col);
+    }
+
+    @Override
+    public void playerWon(int playerNumber) {
+        System.out.println("TicTacToe winner is " + playerNumber);
+    }
+
+    @Override
+    public void tileClicked(int row, int col) {
+        gameEngine.acceptNextPlayerMark(row, col);
     }
 }
