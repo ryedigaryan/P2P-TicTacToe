@@ -1,6 +1,6 @@
 package tictactoe.backend.logic;
 
-import tictactoe.backend.Utils;
+import tictactoe.backend.helper.Utils;
 import tictactoe.backend.helper.Direction;
 import tictactoe.backend.listener.GameStateChangeEventListener;
 import tictactoe.backend.logic.exception.IllegalEngineStateException;
@@ -32,7 +32,9 @@ public class GameEngine {
     public GameEngine(GameConfig gameConfig, Board board) {
         this.gameConfig = gameConfig;
         this.board = board;
-        this.currentPlayerNumber = Utils.randomInt(gameConfig.getMaxPlayersCount());
+        // this is 0 for now, but later, this should be changed to hold not only player number, but
+        // some kind of Player instance
+        this.currentPlayerNumber = 0;
     }
 
     public void acceptNextPlayerMark(int row, int col) {
