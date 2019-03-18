@@ -36,6 +36,7 @@ public class GameEngineTest {
         e.acceptNextPlayerMark(0, 1);
         e.acceptNextPlayerMark(1,1);
         e.acceptNextPlayerMark(0,2);
-        e.acceptNextPlayerMark(1,2);
+        assert e.getWinnerNumber() != null : "We should have a winner!!!";
+        assert e.getWinnerNumber() == 0 : "Winner should be 0";
     }
 }

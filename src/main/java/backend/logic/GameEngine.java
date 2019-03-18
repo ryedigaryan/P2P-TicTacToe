@@ -4,13 +4,12 @@ import backend.Utils;
 import backend.helper.Direction;
 import backend.helper.GameConfig;
 import backend.listener.GameStateChangeEventListener;
+import backend.logic.exception.IllegalEngineStateException;
 import backend.model.Board;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
-
-import java.util.Arrays;
 
 /**
  * A basic tic-tac-toe engine designed for only 2 players.
@@ -28,6 +27,9 @@ public class GameEngine {
     @NonNull
     private GameStateChangeEventListener gameStateChangeEventListener;
 
+    @Setter(AccessLevel.NONE)
+    private Integer winnerNumber;
+
     public GameEngine(GameConfig gameConfig, Board board) {
         this.gameConfig = gameConfig;
         this.board = board;
@@ -35,14 +37,19 @@ public class GameEngine {
     }
 
     public void acceptNextPlayerMark(int row, int col) {
+        if(winnerNumber != null)
+            throw new IllegalEngineStateException(winnerNumber);
         Board.Tile tile = board.getTile(row, col);
         if(tile.isEmpty()) {
             tile.setValue(currentPlayerNumber);
+            if(isCurrentPlayerWon(row, col))
+                gameStateChangeEventListener.playerWon(winnerNumber = currentPlayerNumber);
+            else
+                currentPlayerNumber = (currentPlayerNumber + 1) % gameConfig.getMaxPlayersCount();
         }
-        if(isCurrentPlayerWon(row, col))
-            gameStateChangeEventListener.playerWon(currentPlayerNumber);
-        else
-            currentPlayerNumber = (currentPlayerNumber + 1) % gameConfig.getMaxPlayersCount();
+        else {
+            System.out.println(String.format("Player %d marked tile (%d,%d), which already was marked as %d", currentPlayerNumber, row, col, tile.getValue()));
+        }
     }
 
     /**
@@ -64,15 +71,9 @@ public class GameEngine {
         int count = 0;
         count += playerTilesCount(row, col, left);
         count += playerTilesCount(row, col, right);
+        // NOTE: here assumed that tile at (row,col) already marked by current player
+        // so we should add 1 for that tile
         return isGameWon(count + 1);
-    }
-
-    private int __playerTilesCount(int row, int col) {
-        int count = Arrays.stream(Direction.values())
-                .mapToInt(d -> playerTilesCount(row, col, d))
-                .sum();
-        // NOTE: here assumed that at tile at (row,col) already player's number is placed
-        return count + 1;
     }
 
     /**
