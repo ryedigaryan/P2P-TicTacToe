@@ -7,8 +7,8 @@ import tictactoe.ui.game.GameBoardUI;
 
 public class GameManagerTest {
     public static void main(String[] args) {
-        GameConfig c = new GameConfig(3, 2);
-        Board b = new Board(3, 3);
+        GameConfig c = new GameConfig(4, 2);
+        Board b = new Board(5, 6);
         GameEngine e = new GameEngine(c, b);
 
         GameBoardUI bUI = new GameBoardUI(b.getRowCount(), b.getColumnCount());

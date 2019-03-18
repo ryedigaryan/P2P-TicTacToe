@@ -3,6 +3,7 @@ package tictactoe.backend.manager;
 import tictactoe.backend.listener.GameStateChangeEventListener;
 import tictactoe.backend.logic.GameEngine;
 import tictactoe.backend.model.listener.TileEventListener;
+import tictactoe.grdon.TemporarySolution;
 import tictactoe.ui.game.GameBoardUI;
 import tictactoe.ui.game.listener.TileClickListener;
 
@@ -43,7 +44,7 @@ public class LocalGameManager implements TileEventListener, GameStateChangeEvent
 
     @Override
     public void playerWon(int playerNumber) {
-        System.out.println("TicTacToe winner is " + playerNumber);
+        TemporarySolution.showWinnerNumber(boardUI, playerNumber);
     }
 
     @Override

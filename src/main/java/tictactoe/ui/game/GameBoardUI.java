@@ -64,7 +64,7 @@ public class GameBoardUI extends JFrame {
      */
     private int calculateMarkPosition(int row, int col) {
         checkDimensions(row, col);
-        return row * rowsCount + col;
+        return row * columnsCount + col;
     }
 
     private void checkDimensions(int row, int col) {

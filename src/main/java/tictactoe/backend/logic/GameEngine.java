@@ -98,6 +98,6 @@ public class GameEngine {
      * @return a boolean, determining weather game has been won by current player or not.
      */
     private boolean isGameWon(int consecutiveMarkCount) {
-        return consecutiveMarkCount == gameConfig.getWinLength();
+        return consecutiveMarkCount >= gameConfig.getWinLength();
     }
 }
