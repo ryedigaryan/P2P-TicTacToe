@@ -6,12 +6,15 @@ import tictactoe.backend.model.listener.TileEventListener;
 import tictactoe.ui.game.GameBoardUI;
 import tictactoe.ui.game.listener.TileClickListener;
 
-public class GameManager implements TileEventListener, GameStateChangeEventListener, TileClickListener {
+/**
+ * A basic game manager which is designed for a game in one computer.
+ */
+public class LocalGameManager implements TileEventListener, GameStateChangeEventListener, TileClickListener {
 
     private final GameEngine gameEngine;
     private final GameBoardUI boardUI;
 
-    public GameManager(GameEngine gameEngine, GameBoardUI boardUI) {
+    public LocalGameManager(GameEngine gameEngine, GameBoardUI boardUI) {
         this.gameEngine = gameEngine;
         this.boardUI = boardUI;
         gameEngine.setGameStateChangeEventListener(this);

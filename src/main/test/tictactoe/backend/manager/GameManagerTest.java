@@ -12,6 +12,6 @@ public class GameManagerTest {
         GameEngine e = new GameEngine(c, b);
 
         GameBoardUI bUI = new GameBoardUI(b.getRowCount(), b.getColumnCount());
-        GameManager m = new GameManager(e, bUI);
+        LocalGameManager m = new LocalGameManager(e, bUI);
     }
 }
