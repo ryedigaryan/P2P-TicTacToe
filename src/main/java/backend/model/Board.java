@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import java.util.Arrays;
+import java.util.stream.Collectors;
 
 @Getter @Setter
 public class Board {
@@ -72,12 +73,15 @@ public class Board {
 
         @Override
         public String toString() {
-            return String.valueOf(value);
+            return String.format("Tile at (%d,%d) with value %d", row, col, value);
         }
     }
 
     @Override
     public String toString() {
-        return Arrays.toString(tiles);
+        return Arrays.stream(tiles)
+                .map(tileRow -> Arrays.stream(tileRow).mapToInt(Tile::getValue).toArray())
+                .map(Arrays::toString)
+                .collect(Collectors.joining("\n", "[", "]"));
     }
 }
