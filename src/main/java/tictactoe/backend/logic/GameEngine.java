@@ -2,7 +2,6 @@ package tictactoe.backend.logic;
 
 import tictactoe.backend.Utils;
 import tictactoe.backend.helper.Direction;
-import tictactoe.backend.helper.GameConfig;
 import tictactoe.backend.listener.GameStateChangeEventListener;
 import tictactoe.backend.logic.exception.IllegalEngineStateException;
 import tictactoe.backend.model.Board;

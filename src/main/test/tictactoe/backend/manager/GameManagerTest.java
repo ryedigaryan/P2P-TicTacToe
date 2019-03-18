@@ -1,6 +1,6 @@
 package tictactoe.backend.manager;
 
-import tictactoe.backend.helper.GameConfig;
+import tictactoe.backend.logic.GameConfig;
 import tictactoe.backend.logic.GameEngine;
 import tictactoe.backend.model.Board;
 import tictactoe.ui.game.GameBoardUI;

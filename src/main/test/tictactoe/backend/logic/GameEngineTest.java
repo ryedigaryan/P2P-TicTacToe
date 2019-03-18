@@ -1,6 +1,5 @@
 package tictactoe.backend.logic;
 
-import tictactoe.backend.helper.GameConfig;
 import tictactoe.backend.listener.GameStateChangeEventListener;
 import tictactoe.backend.model.Board;
 import tictactoe.backend.model.listener.TileEventListener;
