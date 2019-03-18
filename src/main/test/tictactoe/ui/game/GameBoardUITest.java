@@ -23,6 +23,7 @@ public class GameBoardUITest {
                         b.markO(x, y);
                     else
                         b.markX(x, y);
+                    b.pack();
                 }
 
                 @Override

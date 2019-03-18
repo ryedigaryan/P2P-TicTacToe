@@ -4,14 +4,14 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
 
-public class Tile extends JComponent {
+public class TileUI extends JComponent {
     private static final boolean MARKER_O = true;
     private static final boolean MARKER_X = false;
     private static final Dimension PREFERRED_SIZE = new Dimension(100, 100);
 
     private Boolean tileValue;
 
-    public Tile() {
+    public TileUI() {
         setBorder(BorderFactory.createLineBorder(Color.BLACK));
     }
 
@@ -19,6 +19,7 @@ public class Tile extends JComponent {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
+        // null check should be done first
         if(tileValue == null) {
             removeMark();
             return;
@@ -34,7 +35,13 @@ public class Tile extends JComponent {
 
     @Override
     public Dimension getPreferredSize() {
-        return PREFERRED_SIZE;
+        if(getWidth() < PREFERRED_SIZE.getWidth() || getHeight() < PREFERRED_SIZE.getHeight()) {
+            return PREFERRED_SIZE;
+        }
+        if(getWidth() < getHeight()) {
+            return new Dimension(getWidth(), getWidth());
+        }
+        return new Dimension(getHeight(), getHeight());
     }
 
     public void markO() {

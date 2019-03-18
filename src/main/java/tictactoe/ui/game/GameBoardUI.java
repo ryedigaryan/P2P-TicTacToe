@@ -12,7 +12,7 @@ public class GameBoardUI extends JFrame {
         setLayout(new GridLayout(rowsCount = borderWidth, columnsCount = borderHeight));
         final int markCount = rowsCount * columnsCount;
         for (int i = 0; i < markCount; i++) {
-            add(new Tile());
+            add(new TileUI());
         }
         pack();
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -20,16 +20,8 @@ public class GameBoardUI extends JFrame {
     }
 
     @Override
-    public Tile getComponent(int n) {
-        return (Tile) getContentPane().getComponent(n);
-    }
-
-    @Override
-    public Dimension getPreferredSize() {
-        Dimension s = getSize();
-        int m = Math.min(s.width, s.height);
-        s.setSize(m, m);
-        return s;
+    public TileUI getComponent(int n) {
+        return (TileUI) getContentPane().getComponent(n);
     }
 
     /**
