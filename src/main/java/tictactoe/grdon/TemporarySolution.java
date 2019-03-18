@@ -11,7 +11,7 @@ public abstract class TemporarySolution {
     public static final int MAX_PLAYERS_COUNT = 2;
 
     public static void showWinnerNumber(Component parent, int winner) {
-        JOptionPane.showMessageDialog(parent, "Tic-Tac-Toe winner is " + winner);
+        JOptionPane.showMessageDialog(parent, "Tic-Tac-Toe winner number: " + winner);
         System.exit(0);
     }
 }
