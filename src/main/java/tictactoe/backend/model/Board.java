@@ -58,13 +58,13 @@ public class Board {
         public void setValue(int value) {
             final int oldValue = this.value;
             this.value = value;
-            tileEventListener.valueChanged(row, col, oldValue, this.value);
+            getTileEventListener().valueChanged(row, col, oldValue, this.value);
         }
 
         public void makeEmpty() {
             final int oldValue = this.value;
             this.value = EMPTY_VALUE;
-            tileEventListener.valueErased(row, col, oldValue);
+            getTileEventListener().valueErased(row, col, oldValue);
         }
 
         public boolean isEmpty() {

@@ -16,6 +16,7 @@ public class GameManager implements TileEventListener, GameStateChangeEventListe
         this.boardUI = boardUI;
         gameEngine.setGameStateChangeEventListener(this);
         gameEngine.getBoard().setTileEventListener(this);
+        boardUI.setTileClickListener(this);
     }
 
     @Override
