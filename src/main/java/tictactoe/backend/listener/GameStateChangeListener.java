@@ -1,6 +1,6 @@
 package tictactoe.backend.listener;
 
-public interface GameStateChangeEventListener {
+public interface GameStateChangeListener {
 
     void playerWon(int playerNumber);
 }

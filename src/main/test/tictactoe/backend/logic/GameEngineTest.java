@@ -1,6 +1,6 @@
 package tictactoe.backend.logic;
 
-import tictactoe.backend.listener.GameStateChangeEventListener;
+import tictactoe.backend.listener.GameStateChangeListener;
 import tictactoe.backend.model.Board;
 import tictactoe.backend.model.listener.TileEventListener;
 
@@ -23,7 +23,7 @@ public class GameEngineTest {
         });
 
         GameEngine e = new GameEngine(c, b);
-        e.setGameStateChangeEventListener(new GameStateChangeEventListener() {
+        e.setGameStateChangeListener(new GameStateChangeListener() {
             @Override
             public void playerWon(int playerNumber) {
                 System.out.println("We have a winner: " + playerNumber);

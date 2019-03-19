@@ -1,9 +1,8 @@
 package tictactoe.backend.logic;
 
-import tictactoe.backend.helper.Utils;
 import tictactoe.backend.helper.Direction;
-import tictactoe.backend.listener.GameStateChangeEventListener;
-import tictactoe.backend.logic.exception.IllegalEngineStateException;
+import tictactoe.backend.listener.GameStateChangeListener;
+import tictactoe.backend.logic.exception.IllegalGameStateException;
 import tictactoe.backend.model.Board;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -24,7 +23,7 @@ public class GameEngine {
     private int currentPlayerNumber;
 
     @NonNull
-    private GameStateChangeEventListener gameStateChangeEventListener;
+    private GameStateChangeListener gameStateChangeListener;
 
     @Setter(AccessLevel.NONE)
     private Integer winnerNumber;
@@ -39,12 +38,12 @@ public class GameEngine {
 
     public void acceptNextPlayerMark(int row, int col) {
         if(winnerNumber != null)
-            throw new IllegalEngineStateException(winnerNumber);
+            throw new IllegalGameStateException(winnerNumber);
         Board.Tile tile = board.getTile(row, col);
         if(tile.isEmpty()) {
             tile.setValue(currentPlayerNumber);
             if(isCurrentPlayerWon(row, col))
-                gameStateChangeEventListener.playerWon(winnerNumber = currentPlayerNumber);
+                gameStateChangeListener.playerWon(winnerNumber = currentPlayerNumber);
             else
                 currentPlayerNumber = (currentPlayerNumber + 1) % gameConfig.getMaxPlayersCount();
         }
@@ -61,7 +60,7 @@ public class GameEngine {
      */
     private boolean isCurrentPlayerWon(int lastMarkRow, int lastMarkCol) {
         assert board.getTile(lastMarkRow, lastMarkCol).getValue() == currentPlayerNumber : "tile value at (" + lastMarkRow + "," + lastMarkCol + ") should be equal to " + currentPlayerNumber;
-        assert gameStateChangeEventListener != null : "gameStateChangeEventListener should not be null";
+        assert gameStateChangeListener != null : "gameStateChangeListener should not be null";
         return isCurrentPlayerWonInDirection(lastMarkRow, lastMarkCol, Direction.LEFT, Direction.RIGHT) ||
                 isCurrentPlayerWonInDirection(lastMarkRow, lastMarkCol, Direction.UP, Direction.DOWN) ||
                 isCurrentPlayerWonInDirection(lastMarkRow, lastMarkCol, Direction.LEFT_UP, Direction.RIGHT_DOWN) ||

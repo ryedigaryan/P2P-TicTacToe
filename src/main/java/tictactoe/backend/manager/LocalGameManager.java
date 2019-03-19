@@ -1,6 +1,6 @@
 package tictactoe.backend.manager;
 
-import tictactoe.backend.listener.GameStateChangeEventListener;
+import tictactoe.backend.listener.GameStateChangeListener;
 import tictactoe.backend.logic.GameEngine;
 import tictactoe.backend.model.listener.TileEventListener;
 import tictactoe.grdon.TemporarySolution;
@@ -10,15 +10,16 @@ import tictactoe.ui.game.listener.TileClickListener;
 /**
  * A basic game manager which is designed for a game in one computer.
  */
-public class LocalGameManager implements TileEventListener, GameStateChangeEventListener, TileClickListener {
+public class LocalGameManager implements TileEventListener, GameStateChangeListener, TileClickListener {
 
     private final GameEngine gameEngine;
     private final GameBoardUI boardUI;
 
+    // TODO: 3/18/2019 Extend GameBoardUI from interface, which will be common for all UserInterfaces which wanna play this game...
     public LocalGameManager(GameEngine gameEngine, GameBoardUI boardUI) {
         this.gameEngine = gameEngine;
         this.boardUI = boardUI;
-        gameEngine.setGameStateChangeEventListener(this);
+        gameEngine.setGameStateChangeListener(this);
         gameEngine.getBoard().setTileEventListener(this);
         boardUI.setTileClickListener(this);
     }
