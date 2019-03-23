@@ -9,6 +9,7 @@ import tictactoe.app.flow.item.SettingsMenu;
 import tictactoe.app.flow.item.GameWonScreen;
 
 public class TicTacToeAppFlow extends AppFlow {
+
     public TicTacToeAppFlow() {
         setInitialAppFlowItem(getMainMenu());
         // handle Main Menu events

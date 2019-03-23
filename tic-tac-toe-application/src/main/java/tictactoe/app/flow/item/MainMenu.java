@@ -11,9 +11,4 @@ public class MainMenu extends AbstractAppFlowItem {
     public MainMenu(Integer id) {
         super(id);
     }
-
-    @Override
-    public void run() {
-        super.run();
-    }
 }

@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 @ToString
-public class AppFlow implements AppFlowItemEventHandler<AppFlowItemEvent> {
+public class AppFlow implements AppFlowItemEventHandler<AppFlowItemEvent>, Runnable {
     private AppFlowItem currentAppFlowItem;
     private Map<Integer, Map<AppFlowItemEvent, Supplier<AppFlowItem>>> flowMap = new HashMap<>();
 
@@ -41,7 +41,7 @@ public class AppFlow implements AppFlowItemEventHandler<AppFlowItemEvent> {
     }
 
     @Override
-    public void handleAppFlowEvent(AppFlowItem eventSource, AppFlowItemEvent event) {
+    public void handleAppFlowItemEvent(AppFlowItem eventSource, AppFlowItemEvent event) {
         assert currentAppFlowItem != null : "Current AppFlowItem could not be null when handling event";
         if(event.shouldStopPreviousAppFlowItem())
             currentAppFlowItem.stop();
@@ -70,5 +70,10 @@ public class AppFlow implements AppFlowItemEventHandler<AppFlowItemEvent> {
 
     protected <T extends AppFlowItem> T getCurrentAppFlowItem() {
         return (T)currentAppFlowItem;
+    }
+
+    @Override
+    public void run() {
+        currentAppFlowItem.start();
     }
 }
