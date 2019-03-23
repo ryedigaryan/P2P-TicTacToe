@@ -12,4 +12,11 @@
 
     <artifactId>tic-tac-toe-application</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>rub.playground</groupId>
+            <artifactId>generic-application</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
 </project>
