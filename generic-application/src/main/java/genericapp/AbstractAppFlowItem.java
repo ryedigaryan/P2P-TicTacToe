@@ -2,17 +2,19 @@ package genericapp;
 
 import genericapp.exception.IllegalAppFlowItemStateException;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
+@Getter
+@RequiredArgsConstructor
 public class AbstractAppFlowItem implements AppFlowItem {
-    @Getter
+    final Integer id;
+
     private boolean isStarted;
-    @Getter
     private boolean isPaused;
-    @Getter
     private boolean isStopped;
 
-    @Getter @Setter
+    @Setter
     AppFlowItemEventHandler<? extends AppFlowItemEvent> eventHandler;
 
     @Override

@@ -5,6 +5,8 @@ public interface AppFlowItem extends Runnable {
     AppFlowItemEventHandler<? extends AppFlowItemEvent> getEventHandler();
     void setEventHandler(AppFlowItemEventHandler<? extends AppFlowItemEvent> eventHandler);
 
+    Integer getId();
+
     boolean isStarted();
     boolean isPaused();
     boolean isStopped();
