@@ -2,22 +2,22 @@ package genericapp;
 
 public abstract class AbstractAppFlowItemStateChangeListener implements AppFlowItemStateChangeListener {
     @Override
-    public void appFlowItemPaused() {
+    public void appFlowItemPaused(AppFlowItem eventSource) {
 
     }
 
     @Override
-    public void appFlowItemStarted() {
+    public void appFlowItemStarted(AppFlowItem eventSource) {
 
     }
 
     @Override
-    public void appFlowItemResumed() {
+    public void appFlowItemResumed(AppFlowItem eventSource) {
 
     }
 
     @Override
-    public void appFlowItemStopped() {
+    public void appFlowItemStopped(AppFlowItem eventSource) {
 
     }
 }

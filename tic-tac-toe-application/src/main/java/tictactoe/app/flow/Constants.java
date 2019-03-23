@@ -1,6 +1,7 @@
 package tictactoe.app.flow;
 
 import genericapp.AbstractAppFlowItemStateChangeListener;
+import genericapp.AppFlowItem;
 import genericapp.AppFlowItemStateChangeListener;
 
 public interface Constants {
@@ -12,9 +13,9 @@ public interface Constants {
     Integer ID_GAME_LOST = 5;
 
     AppFlowItemStateChangeListener EMPTY_STATE_CHANGE_LISTENER = new AbstractAppFlowItemStateChangeListener() {
-        public void appFlowItemPaused()  {}
-        public void appFlowItemStarted() {}
-        public void appFlowItemResumed() {}
-        public void appFlowItemStopped() {}
+        public void appFlowItemPaused(AppFlowItem eventSource)  {}
+        public void appFlowItemStarted(AppFlowItem eventSource) {}
+        public void appFlowItemResumed(AppFlowItem eventSource) {}
+        public void appFlowItemStopped(AppFlowItem eventSource) {}
     };
 }
