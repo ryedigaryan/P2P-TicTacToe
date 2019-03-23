@@ -7,7 +7,7 @@ import lombok.Setter;
 
 @Getter
 @RequiredArgsConstructor
-public class AbstractAppFlowItem implements AppFlowItem {
+public abstract class AbstractAppFlowItem implements AppFlowItem {
     final Integer id;
 
     private boolean isStarted;
@@ -15,7 +15,9 @@ public class AbstractAppFlowItem implements AppFlowItem {
     private boolean isStopped;
 
     @Setter
-    AppFlowItemEventHandler<? extends AppFlowItemEvent> eventHandler;
+    AppFlowItemEventHandler<? extends AppFlowItemEvent> appFlowItemEventHandler;
+    @Setter
+    AppFlowItemStateChangeListener appFlowItemStateChangeListener;
 
     @Override
     public void pause() {

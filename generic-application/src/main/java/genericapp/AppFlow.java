@@ -19,7 +19,7 @@ public class AppFlow implements AppFlowItemEventHandler<AppFlowItemEvent> {
     }
 
     public void setInitialAppFlowItem(AppFlowItem initialAppFlowItem) {
-        initialAppFlowItem.setEventHandler(this);
+        initialAppFlowItem.setAppFlowItemEventHandler(this);
         this.currentAppFlowItem = initialAppFlowItem;
     }
 
@@ -53,12 +53,12 @@ public class AppFlow implements AppFlowItemEventHandler<AppFlowItemEvent> {
                 .get(event) // Map<AppFlowItemEvent, Supplier<AppFlowItem>>::get
                 .get();     // Supplier<AppFlowItem>::get
 
-        if(currentAppFlowItem.getEventHandler() == null) {
-            currentAppFlowItem.setEventHandler(this);
+        if(currentAppFlowItem.getAppFlowItemEventHandler() == null) {
+            currentAppFlowItem.setAppFlowItemEventHandler(this);
         }
 
         // if any application flow event handler will be someone else, the flow might broke.
-        assert currentAppFlowItem.getEventHandler() == this : "Event handler of all AppFlowItems should be AppFlow.";
+        assert currentAppFlowItem.getAppFlowItemEventHandler() == this : "Event handler of all AppFlowItems should be AppFlow.";
 
         if(currentAppFlowItem.isStarted()) {
             currentAppFlowItem.resume();
