@@ -1,4 +1,6 @@
 package tictactoe.app.flow.item;
 
-public class GamingScene {
+import genericapp.AbstractAppFlowItem;
+
+public class GamingScene extends AbstractAppFlowItem {
 }

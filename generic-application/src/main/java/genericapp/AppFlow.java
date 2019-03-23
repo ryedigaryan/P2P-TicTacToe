@@ -4,15 +4,16 @@ import lombok.ToString;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Supplier;
 
 @ToString
 public class AppFlow implements AppFlowItemEventHandler<AppFlowItemEvent> {
-    private AppFlowItem currentItem;
-    private Map<AppFlowItem, Map<AppFlowItemEvent, AppFlowItem>> flowMap = new HashMap<>();
+    private AppFlowItem currentAppFlowItem;
+    private Map<AppFlowItem, Map<AppFlowItemEvent, Supplier<AppFlowItem>>> flowMap = new HashMap<>();
 
     public AppFlow(AppFlowItem initialItem) {
         initialItem.setEventHandler(this);
-        this.currentItem = initialItem;
+        this.currentAppFlowItem = initialItem;
     }
 
     /**
@@ -27,25 +28,32 @@ public class AppFlow implements AppFlowItemEventHandler<AppFlowItemEvent> {
      * @param newFlowItem new flow item, which will be resumed or run when particular {@code event} arrives
      * @param <E> type of event
      */
-    public <E extends AppFlowItemEvent> void registerAppFlowEventChangeRule(AppFlowItem oldFlowItem, E event, AppFlowItem newFlowItem) {
-        Map<AppFlowItemEvent, AppFlowItem> flowItemConfig = flowMap.computeIfAbsent(oldFlowItem, f -> new HashMap<>());
+    public <E extends AppFlowItemEvent> void registerAppFlowItemChangeRule(AppFlowItem oldFlowItem, E event, Supplier<AppFlowItem> newFlowItem) {
+        Map<AppFlowItemEvent, Supplier<AppFlowItem>> flowItemConfig = flowMap.computeIfAbsent(oldFlowItem, f -> new HashMap<>());
         flowItemConfig.put(event, newFlowItem);
     }
 
     @Override
     public void handleAppFlowEvent(AppFlowItem eventSource, AppFlowItemEvent event) {
         if(event.shouldStopPreviousAppFlowItem())
-            currentItem.stop();
+            currentAppFlowItem.stop();
         else
-            currentItem.pause();
+            currentAppFlowItem.pause();
 
-        currentItem = flowMap.get(eventSource).get(event);
+        currentAppFlowItem = flowMap
+                .get(eventSource) // Map<AppFlowItem, Map<AppFlowItemEvent, Supplier<AppFlowItem>>>::get
+                .get(event)       // Map<AppFlowItemEvent, Supplier<AppFlowItem>>::get
+                .get();           // Supplier<AppFlowItem>::get
 
-        if(currentItem.isStarted()) {
-            currentItem.resume();
+        if(currentAppFlowItem.isStarted()) {
+            currentAppFlowItem.resume();
         }
         else {
-            currentItem.start();
+            currentAppFlowItem.start();
         }
+    }
+
+    protected <T extends AppFlowItem> T getCurrentAppFlowItem() {
+        return (T)currentAppFlowItem;
     }
 }
