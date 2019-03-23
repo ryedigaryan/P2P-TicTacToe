@@ -22,7 +22,7 @@ public interface AppFlowItem extends Runnable {
     void stop();
 
     /**
-     * Overriding method of {@link Runnable} for easy navigation in source code.
+     * Overriding method of {@link Runnable} for convenient navigation in source code.
      */
     @Override
     void run();

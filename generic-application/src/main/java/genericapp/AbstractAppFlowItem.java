@@ -21,18 +21,18 @@ public abstract class AbstractAppFlowItem implements AppFlowItem {
 
     @Override
     public void pause() {
-        if(!isStarted)
+        if(!isStarted())
             throw new IllegalAppFlowItemStateException(this, "not started", "pause");
-        if(isStopped)
+        if(isStopped())
             throw new IllegalAppFlowItemStateException(this, "stopped", "pause");
         isPaused = true;
     }
 
     @Override
     public void resume() {
-        if(!isStarted)
+        if(!isStarted())
             throw new IllegalAppFlowItemStateException(this, "not started", "resume");
-        if(isStopped)
+        if(isStopped())
             throw new IllegalAppFlowItemStateException(this, "stopped", "resume");
         isPaused = false;
     }
@@ -44,9 +44,9 @@ public abstract class AbstractAppFlowItem implements AppFlowItem {
 
     @Override
     public void run() {
-        if(isStarted)
+        if(isStarted())
             throw new IllegalAppFlowItemStateException(this, "started", "start");
-        if(isStopped)
+        if(isStopped())
             throw new IllegalAppFlowItemStateException(this, "stopped", "start");
         isStarted = true;
     }
