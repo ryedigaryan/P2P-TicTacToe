@@ -13,7 +13,7 @@ public class GameBoardUITest {
             GameBoardUI b = new GameBoardUI(3, 3);
             System.out.println("Border created");
 
-            b.setTileClickListener(new TileClickListener() {
+            b.setListener(new TileClickListener() {
                 @Override
                 public void tileClicked(int row, int col) {
                     System.out.println(String.format("Tile (%d,%d) was clicked", row, col));

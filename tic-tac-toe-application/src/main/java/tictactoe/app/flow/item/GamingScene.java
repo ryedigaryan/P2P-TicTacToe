@@ -20,7 +20,7 @@ public class GamingScene extends AbstractTicTacToeAppFlowItem<IGameBoardUI> impl
         localTicTacToeGameManager = gameManager;
         localTicTacToeGameManager.getGameEngine().setGameStateChangeListener(this);
         localTicTacToeGameManager.getGameEngine().getBoard().setTileEventListener(localTicTacToeGameManager);
-        localTicTacToeGameManager.getBoardUI().setTileClickListener(localTicTacToeGameManager);
+        localTicTacToeGameManager.getBoardUI().setListener(localTicTacToeGameManager);
     }
 
     @Override

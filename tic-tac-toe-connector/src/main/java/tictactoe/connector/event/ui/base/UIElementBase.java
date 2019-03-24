@@ -1,6 +1,8 @@
 package tictactoe.connector.event.ui.base;
 
-public interface UIElementBase {
+public interface UIElementBase<L> {
+    void setListener(L listener);
+
     void start();
     void pause();
     void resume();
