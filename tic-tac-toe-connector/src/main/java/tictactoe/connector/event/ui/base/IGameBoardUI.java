@@ -1,8 +1,9 @@
-package tictactoe.connector.event.ui.generator;
+package tictactoe.connector.event.ui.base;
 
 import tictactoe.connector.event.ui.listener.TileClickListener;
 
-public interface BoardEventGenerator {
+
+public interface IGameBoardUI extends UIElementBase {
     void setTileClickListener(TileClickListener listener);
 
     // TODO: 3/20/2019 Move these methods to listener

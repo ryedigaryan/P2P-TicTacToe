@@ -1,35 +1,29 @@
 package tictactoe.ui.state;
 
-import lombok.Getter;
-import lombok.Setter;
-import tictactoe.connector.event.ui.generator.MainMenuEventGenerator;
+import tictactoe.ui.state.common.AbstractJFrameUI;
+import tictactoe.connector.event.ui.base.IMainMenuUI;
 import tictactoe.connector.event.ui.listener.MainMenuListener;
 
 import javax.swing.*;
 import java.awt.*;
 
-@Getter @Setter
-public class MainMenuUI extends JFrame implements MainMenuEventGenerator {
-    MainMenuListener mainMenuListener;
+public class MainMenuUI extends AbstractJFrameUI<MainMenuListener> implements IMainMenuUI {
+    private JButton startGame;
+    private JButton openSettings;
 
-    JButton startGame;
-    JButton openSettings;
-
-    public MainMenuUI(MainMenuListener listener) {
-        this.mainMenuListener = listener;
+    public MainMenuUI() {
         startGame = new JButton("Start Game");
         openSettings = new JButton("Open Settings");
 
-        startGame.addActionListener(e -> mainMenuListener.startGame());
-        openSettings.addActionListener(e -> mainMenuListener.setupGame());
+        startGame.addActionListener(e -> getListener().startGame());
+        openSettings.addActionListener(e -> getListener().setupGame());
 
         setLayout(new GridLayout(1, 2));
         add(startGame);
         add(openSettings);
-    }
 
-    @Override
-    public void start() {
-        setVisible(true);
+        pack();
+
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 }

@@ -1,13 +1,13 @@
 package tictactoe.app.flow.item;
 
-import genericapp.AbstractAppFlowItem;
 import genericapp.AppFlowItemEvent;
+import tictactoe.connector.event.ui.base.IGameResultScreen;
 
-public abstract class GameEndScreen extends AbstractAppFlowItem {
+public abstract class GameEndScreen extends AbstractTicTacToeAppFlowItem<IGameResultScreen> {
 
     public static final AppFlowItemEvent CLOSE = () -> true;
 
-    protected GameEndScreen(Integer id) {
-        super(id);
+    protected GameEndScreen(Integer id, IGameResultScreen ui) {
+        super(id, ui);
     }
 }

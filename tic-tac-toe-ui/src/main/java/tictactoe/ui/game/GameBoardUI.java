@@ -2,7 +2,8 @@ package tictactoe.ui.game;
 
 import lombok.Getter;
 import lombok.Setter;
-import tictactoe.connector.event.ui.generator.BoardEventGenerator;
+import tictactoe.ui.state.common.AbstractJFrameUI;
+import tictactoe.connector.event.ui.base.IGameBoardUI;
 import tictactoe.connector.event.ui.listener.TileClickListener;
 
 import javax.swing.*;
@@ -13,7 +14,7 @@ import java.awt.event.MouseEvent;
 import java.awt.geom.Ellipse2D;
 
 @Getter @Setter
-public class GameBoardUI extends JFrame implements BoardEventGenerator {
+public class GameBoardUI extends AbstractJFrameUI implements IGameBoardUI {
 
     private final int rowsCount;
     private final int columnsCount;
@@ -22,7 +23,6 @@ public class GameBoardUI extends JFrame implements BoardEventGenerator {
 
     public GameBoardUI(int boardRows, int boardColumns) throws HeadlessException {
         setLayout(new GridLayout(rowsCount = boardRows, columnsCount = boardColumns));
-        final int markCount = rowsCount * columnsCount;
         for (int i = 0; i < rowsCount; i++) {
             for(int j = 0; j < columnsCount; j++) {
                 add(new TileUI(i, j));
@@ -30,7 +30,6 @@ public class GameBoardUI extends JFrame implements BoardEventGenerator {
         }
         pack();
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setVisible(true);
     }
 
     @Override

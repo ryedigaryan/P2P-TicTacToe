@@ -1,6 +1,6 @@
 package genericapp;
 
-public interface AppFlowItemEventHandler<E extends AppFlowItemEvent> {
+public interface AppFlowItemEventHandler {
 
-    void handleAppFlowItemEvent(AppFlowItem eventSource, E event);
+    void handleAppFlowItemEvent(AppFlowItem eventSource, AppFlowItemEvent event);
 }

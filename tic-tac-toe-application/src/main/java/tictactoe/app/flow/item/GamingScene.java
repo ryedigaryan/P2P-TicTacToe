@@ -1,15 +1,30 @@
 package tictactoe.app.flow.item;
 
-import genericapp.AbstractAppFlowItem;
 import genericapp.AppFlowItemEvent;
+import lombok.Getter;
+import tictactoe.backend.manager.LocalGameManager;
+import tictactoe.connector.event.backend.listener.GameStateChangeListener;
+import tictactoe.connector.event.ui.base.IGameBoardUI;
 
-public class GamingScene extends AbstractAppFlowItem {
+@Getter
+public class GamingScene extends AbstractTicTacToeAppFlowItem<IGameBoardUI> implements GameStateChangeListener {
 
     public static final AppFlowItemEvent PAUSE = () -> false;
     public static final AppFlowItemEvent GAME_WON = () -> true;
     public static final AppFlowItemEvent GAME_LOST = () -> true;
 
-    public GamingScene(Integer id) {
-        super(id);
+    private LocalGameManager localTicTacToeGameManager;
+
+    public GamingScene(Integer id, LocalGameManager gameManager) {
+        super(id, gameManager.getBoardUI());
+        localTicTacToeGameManager = gameManager;
+        localTicTacToeGameManager.getGameEngine().setGameStateChangeListener(this);
+        localTicTacToeGameManager.getGameEngine().getBoard().setTileEventListener(localTicTacToeGameManager);
+        localTicTacToeGameManager.getBoardUI().setTileClickListener(localTicTacToeGameManager);
+    }
+
+    @Override
+    public void playerWon(int playerNumber) {
+        getAppFlowItemEventHandler().handleAppFlowItemEvent(this, GAME_WON);
     }
 }

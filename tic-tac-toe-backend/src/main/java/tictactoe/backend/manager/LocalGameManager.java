@@ -1,27 +1,35 @@
 package tictactoe.backend.manager;
 
+import lombok.Getter;
+import lombok.Setter;
 import tictactoe.connector.event.backend.listener.GameStateChangeListener;
 import tictactoe.backend.logic.GameEngine;
 import tictactoe.connector.event.backend.listener.TileEventListener;
 import tictactoe.backend.grdon.TemporarySolution;
-import tictactoe.connector.event.ui.generator.BoardEventGenerator;
+import tictactoe.connector.event.ui.base.IGameBoardUI;
 import tictactoe.connector.event.ui.listener.TileClickListener;
+
+import java.util.stream.IntStream;
 
 /**
  * A basic game manager which is designed for a game in one computer.
  */
+@Getter @Setter
 public class LocalGameManager implements TileEventListener, GameStateChangeListener, TileClickListener {
 
     private final GameEngine gameEngine;
-    private final BoardEventGenerator boardUI;
+    private final IGameBoardUI boardUI;
 
     // TODO: 3/18/2019 Extend GameBoardUI from interface, which will be common for all UserInterfaces which wanna play this game...
-    public LocalGameManager(GameEngine gameEngine, BoardEventGenerator boardUI) {
+    public LocalGameManager(GameEngine gameEngine, IGameBoardUI boardUI) {
         this.gameEngine = gameEngine;
         this.boardUI = boardUI;
-        gameEngine.setGameStateChangeListener(this);
-        gameEngine.getBoard().setTileEventListener(this);
-        boardUI.setTileClickListener(this);
+    }
+
+    public String[] getPlayerNames() {
+        return IntStream.range(0, getGameEngine().getGameConfig().getMaxPlayersCount())
+                .mapToObj(Integer::toString)
+                .toArray(String[]::new);
     }
 
     @Override

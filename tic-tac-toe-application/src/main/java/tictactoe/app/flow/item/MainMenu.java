@@ -1,21 +1,17 @@
 package tictactoe.app.flow.item;
 
-import genericapp.AbstractAppFlowItem;
 import genericapp.AppFlowItemEvent;
-import tictactoe.connector.event.ui.generator.MainMenuEventGenerator;
+import tictactoe.connector.event.ui.base.IMainMenuUI;
 import tictactoe.connector.event.ui.listener.MainMenuListener;
 
-public class MainMenu extends AbstractAppFlowItem implements MainMenuListener {
+public class MainMenu extends AbstractTicTacToeAppFlowItem<IMainMenuUI> implements MainMenuListener {
 
     public static final AppFlowItemEvent GAME_SETTINGS = () -> false;
     public static final AppFlowItemEvent START_GAME = () -> true;
 
-    MainMenuEventGenerator mainMenuUI;
-
-    public MainMenu(Integer id, MainMenuEventGenerator mainMenuUI) {
-        super(id);
-        this.mainMenuUI = mainMenuUI;
-        this.mainMenuUI.setMainMenuListener(this);
+    public MainMenu(Integer id, IMainMenuUI mainMenuUI) {
+        super(id, mainMenuUI);
+        getUi().setListener(this);
     }
 
     @Override

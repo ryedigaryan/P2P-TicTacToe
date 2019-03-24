@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 @ToString
-public class AppFlow implements AppFlowItemEventHandler<AppFlowItemEvent>, Runnable {
+public class AppFlow implements AppFlowItemEventHandler, Runnable {
     private AppFlowItem currentAppFlowItem;
     private Map<Integer, Map<AppFlowItemEvent, Supplier<AppFlowItem>>> flowMap = new HashMap<>();
 
