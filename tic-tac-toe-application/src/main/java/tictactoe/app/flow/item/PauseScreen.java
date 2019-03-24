@@ -16,11 +16,11 @@ public class PauseScreen extends AbstractTicTacToeAppState<IPausedScreenUI> impl
 
     @Override
     public void continueGame() {
-        this.getAppStateEventHandler().handleAppFlowItemEvent(this, CLOSE);
+        this.getAppStateEventHandler().handleAppStateEvent(this, CLOSE);
     }
 
     @Override
     public void leaveGame() {
-        this.getAppStateEventHandler().handleAppFlowItemEvent(this, LEAVE_GAME);
+        this.getAppStateEventHandler().handleAppStateEvent(this, LEAVE_GAME);
     }
 }

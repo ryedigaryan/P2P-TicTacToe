@@ -10,6 +10,6 @@ public class GameWonScreen extends GameEndScreen {
 
     @Override
     public void close() {
-        this.getAppStateEventHandler().handleAppFlowItemEvent(this, CLOSE);
+        this.getAppStateEventHandler().handleAppStateEvent(this, CLOSE);
     }
 }

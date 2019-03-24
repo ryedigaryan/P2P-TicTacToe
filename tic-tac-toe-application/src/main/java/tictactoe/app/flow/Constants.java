@@ -14,9 +14,9 @@ public interface Constants {
     Integer ID_GAME_DRAWN = 6;
 
     AppStateLifecycleListener EMPTY_STATE_CHANGE_LISTENER = new AbstractAppStateLifecycleListener() {
-        public void appFlowItemPaused(AppState eventSource)  {}
-        public void appFlowItemStarted(AppState eventSource) {}
-        public void appFlowItemResumed(AppState eventSource) {}
-        public void appFlowItemStopped(AppState eventSource) {}
+        public void appStatePaused(AppState eventSource)  {}
+        public void appStateStarted(AppState eventSource) {}
+        public void appStateResumed(AppState eventSource) {}
+        public void appStateStopped(AppState eventSource) {}
     };
 }

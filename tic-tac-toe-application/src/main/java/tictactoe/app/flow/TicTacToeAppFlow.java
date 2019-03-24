@@ -33,25 +33,25 @@ import java.util.Arrays;
 public class TicTacToeAppFlow extends AppFlow {
 
     public TicTacToeAppFlow() {
-        setInitialAppFlowItem(getMainMenu());
+        setInitialAppState(getMainMenu());
         // handle Main Menu events
-        registerAppFlowItemChangeRule(Constants.ID_MAIN_MENU, MainMenu.GAME_SETTINGS, this::getSettingsMenu);
-        registerAppFlowItemChangeRule(Constants.ID_MAIN_MENU, MainMenu.START_GAME, this::getGamingScene);
+        registerAppStateChangeRule(Constants.ID_MAIN_MENU, MainMenu.GAME_SETTINGS, this::getSettingsMenu);
+        registerAppStateChangeRule(Constants.ID_MAIN_MENU, MainMenu.START_GAME, this::getGamingScene);
         // handle Settings Menu events
-        registerAppFlowItemChangeRule(Constants.ID_SETTINGS_MENU, SettingsMenu.BACK_TO_MAIN_MENU, this::getMainMenu);
+        registerAppStateChangeRule(Constants.ID_SETTINGS_MENU, SettingsMenu.BACK_TO_MAIN_MENU, this::getMainMenu);
         // handle Gaming Scene events
-        registerAppFlowItemChangeRule(Constants.ID_GAMING_SCENE, GamingScene.PAUSE, this::getPauseScreen);
-        registerAppFlowItemChangeRule(Constants.ID_GAMING_SCENE, GamingScene.GAME_WON, this::getGameWonScreen);
-        registerAppFlowItemChangeRule(Constants.ID_GAMING_SCENE, GamingScene.GAME_LOST, this::getGameLostScreen);
-        registerAppFlowItemChangeRule(Constants.ID_GAMING_SCENE, GamingScene.GAME_DRAWN, this::getGameDrawnScreen);
+        registerAppStateChangeRule(Constants.ID_GAMING_SCENE, GamingScene.PAUSE, this::getPauseScreen);
+        registerAppStateChangeRule(Constants.ID_GAMING_SCENE, GamingScene.GAME_WON, this::getGameWonScreen);
+        registerAppStateChangeRule(Constants.ID_GAMING_SCENE, GamingScene.GAME_LOST, this::getGameLostScreen);
+        registerAppStateChangeRule(Constants.ID_GAMING_SCENE, GamingScene.GAME_DRAWN, this::getGameDrawnScreen);
         // handle Pause Screen events
-        registerAppFlowItemChangeRule(Constants.ID_PAUSE_SCREEN, PauseScreen.CLOSE, this::getGamingScene);
+        registerAppStateChangeRule(Constants.ID_PAUSE_SCREEN, PauseScreen.CLOSE, this::getGamingScene);
         // TODO: 3/23/2019 Think wisely
-        registerAppFlowItemChangeRule(Constants.ID_PAUSE_SCREEN, PauseScreen.LEAVE_GAME, this::getMainMenu);
+        registerAppStateChangeRule(Constants.ID_PAUSE_SCREEN, PauseScreen.LEAVE_GAME, this::getMainMenu);
         // handle End of Game Screen events
-        registerAppFlowItemChangeRule(Constants.ID_GAME_WON, GameWonScreen.CLOSE, this::getMainMenu);
-        registerAppFlowItemChangeRule(Constants.ID_GAME_LOST, GameLostScreen.CLOSE, this::getMainMenu);
-        registerAppFlowItemChangeRule(Constants.ID_GAME_DRAWN, GameLostScreen.CLOSE, this::getMainMenu);
+        registerAppStateChangeRule(Constants.ID_GAME_WON, GameWonScreen.CLOSE, this::getMainMenu);
+        registerAppStateChangeRule(Constants.ID_GAME_LOST, GameLostScreen.CLOSE, this::getMainMenu);
+        registerAppStateChangeRule(Constants.ID_GAME_DRAWN, GameLostScreen.CLOSE, this::getMainMenu);
     }
 
     ///////////////////////////////////////////////////////////////////////////
@@ -69,8 +69,8 @@ public class TicTacToeAppFlow extends AppFlow {
 
     private class MainMenuStateLifecycleListener extends AbstractAppStateLifecycleListener {
         @Override
-        public void appFlowItemStopped(AppState eventSource) {
-            super.appFlowItemStopped(eventSource);
+        public void appStateStopped(AppState eventSource) {
+            super.appStateStopped(eventSource);
         }
     }
 
@@ -90,8 +90,8 @@ public class TicTacToeAppFlow extends AppFlow {
 
     private class SettingsMenuStateLifecycleListener extends AbstractAppStateLifecycleListener {
         @Override
-        public void appFlowItemStopped(AppState eventSource) {
-            super.appFlowItemStopped(eventSource);
+        public void appStateStopped(AppState eventSource) {
+            super.appStateStopped(eventSource);
             assert gamingScene == null : "GameScene should be null when retrieving game settings from SettingsMenu";
             gameSettings = settingsMenu.getGameSettings();
         }
@@ -123,8 +123,8 @@ public class TicTacToeAppFlow extends AppFlow {
     private class GamingSceneStateLifecycleListener extends AbstractAppStateLifecycleListener {
 
         @Override
-        public void appFlowItemStarted(AppState eventSource) {
-            super.appFlowItemStarted(eventSource);
+        public void appStateStarted(AppState eventSource) {
+            super.appStateStarted(eventSource);
             mainMenu = null;
             settingsMenu = null;
             gameSettings = null;
@@ -171,8 +171,8 @@ public class TicTacToeAppFlow extends AppFlow {
 
     private class GameWonScreenStateLifecycleListener extends AbstractAppStateLifecycleListener {
         @Override
-        public void appFlowItemStopped(AppState eventSource) {
-            super.appFlowItemStopped(eventSource);
+        public void appStateStopped(AppState eventSource) {
+            super.appStateStopped(eventSource);
             cleanUp();
         }
     }
@@ -199,8 +199,8 @@ public class TicTacToeAppFlow extends AppFlow {
 
     private class GameLostScreenStateLifecycleListener extends AbstractAppStateLifecycleListener {
         @Override
-        public void appFlowItemStopped(AppState eventSource) {
-            super.appFlowItemStopped(eventSource);
+        public void appStateStopped(AppState eventSource) {
+            super.appStateStopped(eventSource);
             cleanUp();
         }
     }
@@ -224,8 +224,8 @@ public class TicTacToeAppFlow extends AppFlow {
 
     private class GameDrawnScreenStateLifecycleListener extends AbstractAppStateLifecycleListener {
         @Override
-        public void appFlowItemStopped(AppState eventSource) {
-            super.appFlowItemStopped(eventSource);
+        public void appStateStopped(AppState eventSource) {
+            super.appStateStopped(eventSource);
             cleanUp();
         }
     }

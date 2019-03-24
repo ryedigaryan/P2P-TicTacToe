@@ -26,16 +26,16 @@ public class GamingScene extends AbstractTicTacToeAppState<IGameBoardUI> impleme
 
     @Override
     public void playerWon(int playerNumber) {
-        this.getAppStateEventHandler().handleAppFlowItemEvent(this, GAME_WON);
+        this.getAppStateEventHandler().handleAppStateEvent(this, GAME_WON);
     }
 
     @Override
     public void playerLost(int playerNumber) {
-        this.getAppStateEventHandler().handleAppFlowItemEvent(this, GAME_LOST);
+        this.getAppStateEventHandler().handleAppStateEvent(this, GAME_LOST);
     }
 
     @Override
     public void draw() {
-        this.getAppStateEventHandler().handleAppFlowItemEvent(this, GAME_DRAWN);
+        this.getAppStateEventHandler().handleAppStateEvent(this, GAME_DRAWN);
     }
 }

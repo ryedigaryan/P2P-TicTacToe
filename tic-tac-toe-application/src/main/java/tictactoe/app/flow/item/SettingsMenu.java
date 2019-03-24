@@ -42,6 +42,6 @@ public class SettingsMenu extends AbstractTicTacToeAppState<ISettingsMenuUI> imp
     public void close(boolean saveChanges) {
         if(!saveChanges)
             gameSettings = null;
-        this.getAppStateEventHandler().handleAppFlowItemEvent(this, BACK_TO_MAIN_MENU);
+        this.getAppStateEventHandler().handleAppStateEvent(this, BACK_TO_MAIN_MENU);
     }
 }

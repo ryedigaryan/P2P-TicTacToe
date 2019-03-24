@@ -16,11 +16,11 @@ public class MainMenu extends AbstractTicTacToeAppState<IMainMenuUI> implements 
 
     @Override
     public void startGame() {
-        this.getAppStateEventHandler().handleAppFlowItemEvent(this, START_GAME);
+        this.getAppStateEventHandler().handleAppStateEvent(this, START_GAME);
     }
 
     @Override
     public void setupGame() {
-        this.getAppStateEventHandler().handleAppFlowItemEvent(this, GAME_SETTINGS);
+        this.getAppStateEventHandler().handleAppStateEvent(this, GAME_SETTINGS);
     }
 }

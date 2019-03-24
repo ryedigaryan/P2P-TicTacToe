@@ -2,22 +2,22 @@ package genericapp;
 
 public abstract class AbstractAppStateLifecycleListener implements AppStateLifecycleListener {
     @Override
-    public void appFlowItemStarted(AppState eventSource) {
+    public void appStateStarted(AppState eventSource) {
         System.out.println("Started: " + eventSource);
     }
 
     @Override
-    public void appFlowItemPaused(AppState eventSource) {
+    public void appStatePaused(AppState eventSource) {
         System.out.println("Paused: " + eventSource);
     }
 
     @Override
-    public void appFlowItemResumed(AppState eventSource) {
+    public void appStateResumed(AppState eventSource) {
         System.out.println("Resumed: " + eventSource);
     }
 
     @Override
-    public void appFlowItemStopped(AppState eventSource) {
+    public void appStateStopped(AppState eventSource) {
         System.out.println("Stopped: " + eventSource);
     }
 }

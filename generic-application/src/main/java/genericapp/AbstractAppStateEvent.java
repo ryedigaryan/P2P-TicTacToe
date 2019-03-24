@@ -1,18 +1,18 @@
 package genericapp;
 
 public class AbstractAppStateEvent implements AppStateEvent {
-    private boolean shouldStopPreviousAppFlowItem;
+    private boolean shouldStopPreviousAppState;
 
-    public AbstractAppStateEvent(boolean shouldStopPreviousAppFlowItem) {
-        this.shouldStopPreviousAppFlowItem = shouldStopPreviousAppFlowItem;
+    public AbstractAppStateEvent(boolean shouldStopPreviousAppState) {
+        this.shouldStopPreviousAppState = shouldStopPreviousAppState;
     }
 
     @Override
-    public boolean shouldStopPreviousAppFlowItem() {
-        return shouldStopPreviousAppFlowItem;
+    public boolean shouldStopPreviousAppState() {
+        return shouldStopPreviousAppState;
     }
 
-    public void setShouldStopPreviousAppFlowItem(boolean value) {
-        shouldStopPreviousAppFlowItem = value;
+    public void setShouldStopPreviousAppState(boolean value) {
+        shouldStopPreviousAppState = value;
     }
 }

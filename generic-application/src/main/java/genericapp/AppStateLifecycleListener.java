@@ -8,11 +8,11 @@ package genericapp;
 // but I hope that this 4 is even more than needed :D
 public interface AppStateLifecycleListener {
 
-    void appFlowItemStarted(AppState eventSource);
+    void appStateStarted(AppState eventSource);
 
-    void appFlowItemPaused(AppState eventSource);
+    void appStatePaused(AppState eventSource);
 
-    void appFlowItemResumed(AppState eventSource);
+    void appStateResumed(AppState eventSource);
 
-    void appFlowItemStopped(AppState eventSource);
+    void appStateStopped(AppState eventSource);
 }
