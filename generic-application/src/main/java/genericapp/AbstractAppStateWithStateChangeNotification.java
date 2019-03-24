@@ -1,8 +1,8 @@
 package genericapp;
 
-public abstract class AbstractAppFlowItemWithStateChangeNotification extends AbstractAppFlowItem {
+public abstract class AbstractAppStateWithStateChangeNotification extends AbstractAppState {
 
-    public AbstractAppFlowItemWithStateChangeNotification(Integer id) {
+    public AbstractAppStateWithStateChangeNotification(Integer id) {
         super(id);
     }
 

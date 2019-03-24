@@ -4,7 +4,7 @@ import genericapp.AppFlowItemEvent;
 import tictactoe.connector.event.ui.base.IMainMenuUI;
 import tictactoe.connector.event.ui.listener.MainMenuListener;
 
-public class MainMenu extends AbstractTicTacToeAppFlowItem<IMainMenuUI> implements MainMenuListener {
+public class MainMenu extends AbstractTicTacToeAppState<IMainMenuUI> implements MainMenuListener {
 
     public static final AppFlowItemEvent GAME_SETTINGS = () -> false;
     public static final AppFlowItemEvent START_GAME = () -> true;

@@ -8,11 +8,11 @@ package genericapp;
 // but I hope that this 4 is even more than needed :D
 public interface AppFlowItemStateChangeListener {
 
-    void appFlowItemStarted(AppFlowItem eventSource);
+    void appFlowItemStarted(AppState eventSource);
 
-    void appFlowItemPaused(AppFlowItem eventSource);
+    void appFlowItemPaused(AppState eventSource);
 
-    void appFlowItemResumed(AppFlowItem eventSource);
+    void appFlowItemResumed(AppState eventSource);
 
-    void appFlowItemStopped(AppFlowItem eventSource);
+    void appFlowItemStopped(AppState eventSource);
 }

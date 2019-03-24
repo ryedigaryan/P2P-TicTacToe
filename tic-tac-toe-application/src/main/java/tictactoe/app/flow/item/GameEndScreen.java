@@ -4,7 +4,7 @@ import genericapp.AppFlowItemEvent;
 import tictactoe.connector.event.ui.base.IGameResultUI;
 import tictactoe.connector.event.ui.listener.GameResultScreenListener;
 
-public abstract class GameEndScreen extends AbstractTicTacToeAppFlowItem<IGameResultUI> implements GameResultScreenListener {
+public abstract class GameEndScreen extends AbstractTicTacToeAppState<IGameResultUI> implements GameResultScreenListener {
 
     public static final AppFlowItemEvent CLOSE = () -> true;
 

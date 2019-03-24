@@ -7,7 +7,7 @@ import tictactoe.connector.event.backend.listener.GameStateChangeListener;
 import tictactoe.connector.event.ui.base.IGameBoardUI;
 
 @Getter
-public class GamingScene extends AbstractTicTacToeAppFlowItem<IGameBoardUI> implements GameStateChangeListener {
+public class GamingScene extends AbstractTicTacToeAppState<IGameBoardUI> implements GameStateChangeListener {
 
     public static final AppFlowItemEvent PAUSE = () -> false;
     public static final AppFlowItemEvent GAME_WON = () -> true;

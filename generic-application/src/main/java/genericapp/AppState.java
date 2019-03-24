@@ -1,6 +1,6 @@
 package genericapp;
 
-public interface AppFlowItem extends Runnable {
+public interface AppState extends Runnable {
 
     AppFlowItemEventHandler getAppFlowItemEventHandler();
     void setAppFlowItemEventHandler(AppFlowItemEventHandler eventHandler);

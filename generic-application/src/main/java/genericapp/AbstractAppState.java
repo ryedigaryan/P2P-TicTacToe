@@ -7,7 +7,7 @@ import lombok.Setter;
 
 @Getter
 @RequiredArgsConstructor
-public abstract class AbstractAppFlowItem implements AppFlowItem {
+public abstract class AbstractAppState implements AppState {
     final Integer id;
 
     private boolean isStarted;

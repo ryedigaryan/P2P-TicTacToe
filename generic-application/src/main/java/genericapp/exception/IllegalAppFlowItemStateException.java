@@ -1,9 +1,9 @@
 package genericapp.exception;
 
-import genericapp.AppFlowItem;
+import genericapp.AppState;
 
 public class IllegalAppFlowItemStateException extends IllegalStateException {
-    public IllegalAppFlowItemStateException(AppFlowItem caller, String oldState, String newStateAction) {
+    public IllegalAppFlowItemStateException(AppState caller, String oldState, String newStateAction) {
         this("Unable to " + newStateAction + " " + caller + " because it is " + oldState);
     }
 

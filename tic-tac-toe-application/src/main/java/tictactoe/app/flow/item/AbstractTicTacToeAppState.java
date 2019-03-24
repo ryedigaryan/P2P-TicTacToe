@@ -1,15 +1,15 @@
 package tictactoe.app.flow.item;
 
-import genericapp.AbstractAppFlowItem;
+import genericapp.AbstractAppState;
 import lombok.Getter;
 import lombok.Setter;
 import tictactoe.connector.event.ui.base.UIElementBase;
 
 @Getter @Setter
-public abstract class AbstractTicTacToeAppFlowItem<U extends UIElementBase> extends AbstractAppFlowItem {
+public abstract class AbstractTicTacToeAppState<U extends UIElementBase> extends AbstractAppState {
     U ui;
 
-    public AbstractTicTacToeAppFlowItem(Integer id, U ui) {
+    public AbstractTicTacToeAppState(Integer id, U ui) {
         super(id);
         setUi(ui);
     }

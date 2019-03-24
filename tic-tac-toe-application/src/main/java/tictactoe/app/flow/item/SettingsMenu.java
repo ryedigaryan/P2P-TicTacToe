@@ -1,15 +1,13 @@
 package tictactoe.app.flow.item;
 
 import genericapp.AppFlowItemEvent;
-import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.Setter;
 import tictactoe.app.flow.item.common.Settings;
 import tictactoe.connector.event.ui.base.ISettingsMenuUI;
 import tictactoe.connector.event.ui.listener.SettingsMenuListener;
 
 @Getter
-public class SettingsMenu extends AbstractTicTacToeAppFlowItem<ISettingsMenuUI> implements SettingsMenuListener {
+public class SettingsMenu extends AbstractTicTacToeAppState<ISettingsMenuUI> implements SettingsMenuListener {
 
     public static final AppFlowItemEvent BACK_TO_MAIN_MENU = () -> true;
 

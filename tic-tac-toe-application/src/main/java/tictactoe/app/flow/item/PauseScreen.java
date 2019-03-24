@@ -4,7 +4,7 @@ import genericapp.AppFlowItemEvent;
 import tictactoe.connector.event.ui.base.IPausedScreenUI;
 import tictactoe.connector.event.ui.listener.PausedScreenListener;
 
-public class PauseScreen extends AbstractTicTacToeAppFlowItem<IPausedScreenUI> implements PausedScreenListener {
+public class PauseScreen extends AbstractTicTacToeAppState<IPausedScreenUI> implements PausedScreenListener {
 
     public static final AppFlowItemEvent CLOSE = () -> true;
     public static final AppFlowItemEvent LEAVE_GAME = () -> true;

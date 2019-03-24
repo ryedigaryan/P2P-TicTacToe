@@ -8,19 +8,19 @@ import java.util.function.Supplier;
 
 @ToString
 public class AppFlow implements AppFlowItemEventHandler, Runnable {
-    private AppFlowItem currentAppFlowItem;
-    private Map<Integer, Map<AppFlowItemEvent, Supplier<AppFlowItem>>> flowMap = new HashMap<>();
+    private AppState currentAppState;
+    private Map<Integer, Map<AppFlowItemEvent, Supplier<AppState>>> flowMap = new HashMap<>();
 
     public AppFlow() {
     }
 
-    public AppFlow(AppFlowItem initialAppFlowItem) {
-        setInitialAppFlowItem(initialAppFlowItem);
+    public AppFlow(AppState initialAppState) {
+        setInitialAppFlowItem(initialAppState);
     }
 
-    public void setInitialAppFlowItem(AppFlowItem initialAppFlowItem) {
-        initialAppFlowItem.setAppFlowItemEventHandler(this);
-        this.currentAppFlowItem = initialAppFlowItem;
+    public void setInitialAppFlowItem(AppState initialAppState) {
+        initialAppState.setAppFlowItemEventHandler(this);
+        this.currentAppState = initialAppState;
     }
 
     /**
@@ -35,45 +35,45 @@ public class AppFlow implements AppFlowItemEventHandler, Runnable {
      * @param newFlowItem new flow item, which will be resumed or run when particular {@code event} arrives
      * @param <E> type of event
      */
-    public <E extends AppFlowItemEvent> void registerAppFlowItemChangeRule(Integer oldFlowItemId, E event, Supplier<AppFlowItem> newFlowItem) {
-        Map<AppFlowItemEvent, Supplier<AppFlowItem>> flowItemConfig = flowMap.computeIfAbsent(oldFlowItemId, f -> new HashMap<>());
+    public <E extends AppFlowItemEvent> void registerAppFlowItemChangeRule(Integer oldFlowItemId, E event, Supplier<AppState> newFlowItem) {
+        Map<AppFlowItemEvent, Supplier<AppState>> flowItemConfig = flowMap.computeIfAbsent(oldFlowItemId, f -> new HashMap<>());
         flowItemConfig.put(event, newFlowItem);
     }
 
     @Override
-    public void handleAppFlowItemEvent(AppFlowItem eventSource, AppFlowItemEvent event) {
-        assert currentAppFlowItem != null : "Current AppFlowItem could not be null when handling event";
+    public void handleAppFlowItemEvent(AppState eventSource, AppFlowItemEvent event) {
+        assert currentAppState != null : "Current AppState could not be null when handling event";
         if(event.shouldStopPreviousAppFlowItem())
-            currentAppFlowItem.stop();
+            currentAppState.stop();
         else
-            currentAppFlowItem.pause();
+            currentAppState.pause();
 
-        currentAppFlowItem = flowMap
-                .get(eventSource.getId()) // Map<Integer, Map<AppFlowItemEvent, Supplier<AppFlowItem>>>::get
-                .get(event) // Map<AppFlowItemEvent, Supplier<AppFlowItem>>::get
-                .get();     // Supplier<AppFlowItem>::get
+        currentAppState = flowMap
+                .get(eventSource.getId()) // Map<Integer, Map<AppFlowItemEvent, Supplier<AppState>>>::get
+                .get(event) // Map<AppFlowItemEvent, Supplier<AppState>>::get
+                .get();     // Supplier<AppState>::get
 
-        if(currentAppFlowItem.getAppFlowItemEventHandler() == null) {
-            currentAppFlowItem.setAppFlowItemEventHandler(this);
+        if(currentAppState.getAppFlowItemEventHandler() == null) {
+            currentAppState.setAppFlowItemEventHandler(this);
         }
 
         // if any application flow event handler will be someone else, the flow might broke.
-        assert currentAppFlowItem.getAppFlowItemEventHandler() == this : "Event handler of all AppFlowItems should be AppFlow.";
+        assert currentAppState.getAppFlowItemEventHandler() == this : "Event handler of all AppFlowItems should be AppFlow.";
 
-        if(currentAppFlowItem.isStarted()) {
-            currentAppFlowItem.resume();
+        if(currentAppState.isStarted()) {
+            currentAppState.resume();
         }
         else {
-            currentAppFlowItem.start();
+            currentAppState.start();
         }
     }
 
-    protected <T extends AppFlowItem> T getCurrentAppFlowItem() {
-        return (T)currentAppFlowItem;
+    protected <T extends AppState> T getCurrentAppState() {
+        return (T) currentAppState;
     }
 
     @Override
     public void run() {
-        currentAppFlowItem.start();
+        currentAppState.start();
     }
 }

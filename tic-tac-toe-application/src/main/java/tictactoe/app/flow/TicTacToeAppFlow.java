@@ -2,7 +2,7 @@ package tictactoe.app.flow;
 
 import genericapp.AbstractAppFlowItemStateChangeListener;
 import genericapp.AppFlow;
-import genericapp.AppFlowItem;
+import genericapp.AppState;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -69,7 +69,7 @@ public class TicTacToeAppFlow extends AppFlow {
 
     private class MainMenuStateChangeListener extends AbstractAppFlowItemStateChangeListener {
         @Override
-        public void appFlowItemStopped(AppFlowItem eventSource) {
+        public void appFlowItemStopped(AppState eventSource) {
             super.appFlowItemStopped(eventSource);
         }
     }
@@ -90,7 +90,7 @@ public class TicTacToeAppFlow extends AppFlow {
 
     private class SettingsMenuStateChangeListener extends AbstractAppFlowItemStateChangeListener {
         @Override
-        public void appFlowItemStopped(AppFlowItem eventSource) {
+        public void appFlowItemStopped(AppState eventSource) {
             super.appFlowItemStopped(eventSource);
             assert gamingScene == null : "GameScene should be null when retrieving game settings from SettingsMenu";
             gameSettings = settingsMenu.getGameSettings();
@@ -123,7 +123,7 @@ public class TicTacToeAppFlow extends AppFlow {
     private class GamingSceneStateChangeListener extends AbstractAppFlowItemStateChangeListener {
 
         @Override
-        public void appFlowItemStarted(AppFlowItem eventSource) {
+        public void appFlowItemStarted(AppState eventSource) {
             super.appFlowItemStarted(eventSource);
             mainMenu = null;
             settingsMenu = null;
@@ -171,7 +171,7 @@ public class TicTacToeAppFlow extends AppFlow {
 
     private class GameWonScreenStateChangeListener extends AbstractAppFlowItemStateChangeListener {
         @Override
-        public void appFlowItemStopped(AppFlowItem eventSource) {
+        public void appFlowItemStopped(AppState eventSource) {
             super.appFlowItemStopped(eventSource);
             cleanUp();
         }
@@ -199,7 +199,7 @@ public class TicTacToeAppFlow extends AppFlow {
 
     private class GameLostScreenStateChangeListener extends AbstractAppFlowItemStateChangeListener {
         @Override
-        public void appFlowItemStopped(AppFlowItem eventSource) {
+        public void appFlowItemStopped(AppState eventSource) {
             super.appFlowItemStopped(eventSource);
             cleanUp();
         }
@@ -224,7 +224,7 @@ public class TicTacToeAppFlow extends AppFlow {
 
     private class GameDrawnScreenStateChangeListener extends AbstractAppFlowItemStateChangeListener {
         @Override
-        public void appFlowItemStopped(AppFlowItem eventSource) {
+        public void appFlowItemStopped(AppState eventSource) {
             super.appFlowItemStopped(eventSource);
             cleanUp();
         }
