@@ -1,7 +1,7 @@
 package tictactoe.backend.logic;
 
 import tictactoe.backend.helper.Direction;
-import tictactoe.backend.listener.GameStateChangeListener;
+import tictactoe.connector.event.backend.listener.GameStateChangeListener;
 import tictactoe.backend.logic.exception.IllegalGameStateException;
 import tictactoe.backend.model.Board;
 import lombok.AccessLevel;

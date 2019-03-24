@@ -1,11 +1,11 @@
 package tictactoe.backend.manager;
 
-import tictactoe.backend.listener.GameStateChangeListener;
+import tictactoe.connector.event.backend.listener.GameStateChangeListener;
 import tictactoe.backend.logic.GameEngine;
-import tictactoe.backend.model.listener.TileEventListener;
+import tictactoe.connector.event.backend.listener.TileEventListener;
 import tictactoe.backend.grdon.TemporarySolution;
-import tictactoe.connector.event.generator.BoardEventGenerator;
-import tictactoe.connector.event.listener.TileClickListener;
+import tictactoe.connector.event.ui.generator.BoardEventGenerator;
+import tictactoe.connector.event.ui.listener.TileClickListener;
 
 /**
  * A basic game manager which is designed for a game in one computer.

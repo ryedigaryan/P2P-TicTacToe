@@ -1,4 +1,4 @@
-package tictactoe.ui.state.listener;
+package tictactoe.connector.event.ui.listener;
 
 public interface MainMenuListener {
 

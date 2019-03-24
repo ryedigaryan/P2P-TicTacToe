@@ -9,18 +9,18 @@ public abstract class AbstractAppFlowItemWithStateChangeNotification extends Abs
     @Override
     public void pause() {
         super.pause();
-        getAppFlowItemStateChangeListener().appFlowItemPaused();
+        getAppFlowItemStateChangeListener().appFlowItemPaused(this);
     }
 
     @Override
     public void resume() {
         super.resume();
-        getAppFlowItemStateChangeListener().appFlowItemResumed();
+        getAppFlowItemStateChangeListener().appFlowItemResumed(this);
     }
 
     @Override
     public void stop() {
         super.stop();
-        getAppFlowItemStateChangeListener().appFlowItemStopped();
+        getAppFlowItemStateChangeListener().appFlowItemStopped(this);
     }
 }

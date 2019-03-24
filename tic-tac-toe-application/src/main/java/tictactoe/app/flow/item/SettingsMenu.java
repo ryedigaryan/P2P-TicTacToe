@@ -1,7 +1,6 @@
 package tictactoe.app.flow.item;
 
 import genericapp.AbstractAppFlowItem;
-import genericapp.AppFlowItem;
 import genericapp.AppFlowItemEvent;
 
 public class SettingsMenu extends AbstractAppFlowItem {

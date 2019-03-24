@@ -1,6 +1,6 @@
-package tictactoe.connector.event.generator;
+package tictactoe.connector.event.ui.generator;
 
-import tictactoe.connector.event.listener.TileClickListener;
+import tictactoe.connector.event.ui.listener.TileClickListener;
 
 public interface BoardEventGenerator {
     void setTileClickListener(TileClickListener listener);

@@ -15,7 +15,7 @@ public abstract class AbstractAppFlowItem implements AppFlowItem {
     private boolean isStopped;
 
     @Setter
-    AppFlowItemEventHandler<? extends AppFlowItemEvent> appFlowItemEventHandler;
+    AppFlowItemEventHandler<AppFlowItemEvent> appFlowItemEventHandler;
     @Setter
     AppFlowItemStateChangeListener appFlowItemStateChangeListener;
 

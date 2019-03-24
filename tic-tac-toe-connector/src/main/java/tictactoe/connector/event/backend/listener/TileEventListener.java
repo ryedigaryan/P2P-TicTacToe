@@ -1,4 +1,4 @@
-package tictactoe.backend.model.listener;
+package tictactoe.connector.event.backend.listener;
 
 public interface TileEventListener {
 

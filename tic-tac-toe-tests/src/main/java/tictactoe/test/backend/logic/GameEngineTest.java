@@ -1,10 +1,10 @@
 package tictactoe.test.backend.logic;
 
-import tictactoe.backend.listener.GameStateChangeListener;
+import tictactoe.connector.event.backend.listener.GameStateChangeListener;
 import tictactoe.backend.logic.GameConfig;
 import tictactoe.backend.logic.GameEngine;
 import tictactoe.backend.model.Board;
-import tictactoe.backend.model.listener.TileEventListener;
+import tictactoe.connector.event.backend.listener.TileEventListener;
 
 public class GameEngineTest {
     public static void main(String[] args) {

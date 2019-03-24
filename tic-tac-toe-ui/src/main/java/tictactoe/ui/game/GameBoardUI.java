@@ -2,8 +2,8 @@ package tictactoe.ui.game;
 
 import lombok.Getter;
 import lombok.Setter;
-import tictactoe.connector.event.generator.BoardEventGenerator;
-import tictactoe.connector.event.listener.TileClickListener;
+import tictactoe.connector.event.ui.generator.BoardEventGenerator;
+import tictactoe.connector.event.ui.listener.TileClickListener;
 
 import javax.swing.*;
 import javax.swing.border.Border;

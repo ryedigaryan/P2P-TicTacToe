@@ -1,6 +1,6 @@
 package tictactoe.backend.model;
 
-import tictactoe.backend.model.listener.TileEventListener;
+import tictactoe.connector.event.backend.listener.TileEventListener;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

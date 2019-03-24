@@ -1,6 +1,6 @@
 package tictactoe.test.ui;
 
-import tictactoe.connector.event.listener.TileClickListener;
+import tictactoe.connector.event.ui.listener.TileClickListener;
 import tictactoe.ui.game.GameBoardUI;
 
 import java.awt.*;
