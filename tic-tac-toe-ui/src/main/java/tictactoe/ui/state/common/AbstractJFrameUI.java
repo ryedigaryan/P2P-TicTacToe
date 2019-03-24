@@ -7,7 +7,7 @@ import tictactoe.connector.event.ui.base.UIElementBase;
 import javax.swing.*;
 
 @Getter @Setter
-public abstract class AbstractJFrameUI<L> extends JFrame implements UIElementBase {
+public abstract class AbstractJFrameUI<L> extends JFrame implements UIElementBase<L> {
     L listener;
 
     @Override

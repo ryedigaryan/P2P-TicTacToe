@@ -8,7 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 
 @Getter @Setter
-public class AbstractJDialogUI<L> extends JDialog implements UIElementBase {
+public class AbstractJDialogUI<L> extends JDialog implements UIElementBase<L> {
     L listener;
 
     public AbstractJDialogUI(Frame owner) {

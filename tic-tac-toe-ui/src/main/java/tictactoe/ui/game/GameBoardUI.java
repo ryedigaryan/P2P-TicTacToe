@@ -14,12 +14,10 @@ import java.awt.event.MouseEvent;
 import java.awt.geom.Ellipse2D;
 
 @Getter @Setter
-public class GameBoardUI extends AbstractJFrameUI implements IGameBoardUI {
+public class GameBoardUI extends AbstractJFrameUI<TileClickListener> implements IGameBoardUI {
 
     private final int rowsCount;
     private final int columnsCount;
-
-    TileClickListener tileClickListener;
 
     public GameBoardUI(int boardRows, int boardColumns) throws HeadlessException {
         setLayout(new GridLayout(rowsCount = boardRows, columnsCount = boardColumns));
@@ -112,8 +110,8 @@ public class GameBoardUI extends AbstractJFrameUI implements IGameBoardUI {
             addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
-                    assert getTileClickListener() != null : "tileClickListener should not be null";
-                    getTileClickListener().tileClicked(row, col);
+                    assert getListener() != null : "listener should not be null";
+                    getListener().tileClicked(row, col);
                 }
             });
         }
