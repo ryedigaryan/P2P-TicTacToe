@@ -25,19 +25,19 @@ public class AppFlow implements AppStateEventHandler, Runnable {
 
     /**
      * Register a new rule.
-     * The method accepts 3 arguments: old flow item, event and new flow item. Bew rule is defined
-     * like "if particular event arrives wile the old flow item is running, then switch to new flow item.
-     * Switch means pause old flow item and start the new one.
-     * If the {@link AppStateEvent#shouldStopPreviousAppState()} returns true, then old flow item is stopped, instead of pausing.
-     * If the new flow item is not started yet, then it is started.
-     * @param oldFlowItemId id of old flow item, which will be stopped or paused, when particular {@code event} arrives
-     * @param event event, which causes flow item change
-     * @param newFlowItem new flow item, which will be resumed or run when particular {@code event} arrives
+     * The method accepts 3 arguments: old appState, event and new appState. Bew rule is defined
+     * like "if particular event arrives wile the old appState is running, then switch to new appState.
+     * Switch means pause old appState and start the new one.
+     * If the {@link AppStateEvent#shouldStopPreviousAppState()} returns true, then old appState is stopped, instead of pausing.
+     * If the new appState is not started yet, then it is started.
+     * @param oldAppStateId id of old appState, which will be stopped or paused, when particular {@code event} arrives
+     * @param event event, which causes appState change
+     * @param newAppState new appState, which will be resumed or run when particular {@code event} arrives
      * @param <E> type of event
      */
-    public <E extends AppStateEvent> void registerAppStateChangeRule(Integer oldFlowItemId, E event, Supplier<AppState> newFlowItem) {
-        Map<AppStateEvent, Supplier<AppState>> flowItemConfig = flowMap.computeIfAbsent(oldFlowItemId, f -> new HashMap<>());
-        flowItemConfig.put(event, newFlowItem);
+    public <E extends AppStateEvent> void registerAppStateChangeRule(Integer oldAppStateId, E event, Supplier<AppState> newAppState) {
+        Map<AppStateEvent, Supplier<AppState>> appStateConfig = flowMap.computeIfAbsent(oldAppStateId, f -> new HashMap<>());
+        appStateConfig.put(event, newAppState);
     }
 
     @Override

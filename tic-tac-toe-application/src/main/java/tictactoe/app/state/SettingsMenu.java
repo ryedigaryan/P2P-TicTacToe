@@ -1,8 +1,8 @@
-package tictactoe.app.flow.item;
+package tictactoe.app.state;
 
 import genericapp.AppStateEvent;
 import lombok.Getter;
-import tictactoe.app.flow.item.common.Settings;
+import tictactoe.app.state.common.Settings;
 import tictactoe.connector.event.ui.base.ISettingsMenuUI;
 import tictactoe.connector.event.ui.listener.SettingsMenuListener;
 

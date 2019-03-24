@@ -1,4 +1,4 @@
-package tictactoe.app.flow.item.common;
+package tictactoe.app.state.common;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

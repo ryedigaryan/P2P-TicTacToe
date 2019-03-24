@@ -1,12 +1,11 @@
-package tictactoe.app.flow.item;
+package tictactoe.app.state;
 
 import tictactoe.connector.event.ui.base.IGameResultUI;
 
-public class GameDrawnScreen extends GameEndScreen {
+public class GameWonScreen extends GameEndScreen {
 
-    public GameDrawnScreen(Integer id, IGameResultUI ui) {
+    public GameWonScreen(Integer id, IGameResultUI ui) {
         super(id, ui);
-        ui.setListener(this);
     }
 
     @Override
