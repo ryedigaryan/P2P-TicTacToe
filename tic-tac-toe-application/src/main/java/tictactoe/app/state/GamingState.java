@@ -7,7 +7,7 @@ import tictactoe.connector.event.backend.listener.GameStateChangeListener;
 import tictactoe.connector.event.ui.base.IGameBoardUI;
 
 @Getter
-public class GamingScene extends AbstractTicTacToeAppState<IGameBoardUI> implements GameStateChangeListener {
+public class GamingState extends AbstractTicTacToeAppState<IGameBoardUI> implements GameStateChangeListener {
 
     public static final AppStateEvent PAUSE = () -> false;
     public static final AppStateEvent GAME_WON = () -> true;
@@ -16,7 +16,7 @@ public class GamingScene extends AbstractTicTacToeAppState<IGameBoardUI> impleme
 
     private LocalGameManager localTicTacToeGameManager;
 
-    public GamingScene(Integer id, LocalGameManager gameManager) {
+    public GamingState(Integer id, LocalGameManager gameManager) {
         super(id, gameManager.getBoardUI());
         localTicTacToeGameManager = gameManager;
         localTicTacToeGameManager.getGameEngine().setGameStateChangeListener(this);

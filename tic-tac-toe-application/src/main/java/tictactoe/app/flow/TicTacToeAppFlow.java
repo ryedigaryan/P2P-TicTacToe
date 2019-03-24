@@ -6,13 +6,13 @@ import genericapp.AppState;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
-import tictactoe.app.state.GameDrawnScreen;
-import tictactoe.app.state.GamingScene;
-import tictactoe.app.state.GameLostScreen;
-import tictactoe.app.state.MainMenu;
-import tictactoe.app.state.PauseScreen;
-import tictactoe.app.state.SettingsMenu;
-import tictactoe.app.state.GameWonScreen;
+import tictactoe.app.state.GameDrawnState;
+import tictactoe.app.state.GameLostState;
+import tictactoe.app.state.GameWonState;
+import tictactoe.app.state.GamingState;
+import tictactoe.app.state.MainMenuState;
+import tictactoe.app.state.PausedState;
+import tictactoe.app.state.SettingsMenuState;
 import tictactoe.app.state.common.Settings;
 import tictactoe.backend.logic.GameConfig;
 import tictactoe.backend.logic.GameEngine;
@@ -33,38 +33,38 @@ import java.util.Arrays;
 public class TicTacToeAppFlow extends AppFlow {
 
     public TicTacToeAppFlow() {
-        setInitialAppState(getMainMenu());
+        setInitialAppState(getMainMenuState());
         // handle Main Menu events
-        registerAppStateChangeRule(Constants.ID_MAIN_MENU, MainMenu.GAME_SETTINGS, this::getSettingsMenu);
-        registerAppStateChangeRule(Constants.ID_MAIN_MENU, MainMenu.START_GAME, this::getGamingScene);
+        registerAppStateChangeRule(Constants.ID_MAIN_MENU, MainMenuState.GAME_SETTINGS, this::getSettingsMenuState);
+        registerAppStateChangeRule(Constants.ID_MAIN_MENU, MainMenuState.START_GAME, this::getGamingState);
         // handle Settings Menu events
-        registerAppStateChangeRule(Constants.ID_SETTINGS_MENU, SettingsMenu.BACK_TO_MAIN_MENU, this::getMainMenu);
+        registerAppStateChangeRule(Constants.ID_SETTINGS_MENU, SettingsMenuState.BACK_TO_MAIN_MENU, this::getMainMenuState);
         // handle Gaming Scene events
-        registerAppStateChangeRule(Constants.ID_GAMING_SCENE, GamingScene.PAUSE, this::getPauseScreen);
-        registerAppStateChangeRule(Constants.ID_GAMING_SCENE, GamingScene.GAME_WON, this::getGameWonScreen);
-        registerAppStateChangeRule(Constants.ID_GAMING_SCENE, GamingScene.GAME_LOST, this::getGameLostScreen);
-        registerAppStateChangeRule(Constants.ID_GAMING_SCENE, GamingScene.GAME_DRAWN, this::getGameDrawnScreen);
+        registerAppStateChangeRule(Constants.ID_GAMING_SCENE, GamingState.PAUSE, this::getPausedState);
+        registerAppStateChangeRule(Constants.ID_GAMING_SCENE, GamingState.GAME_WON, this::getGameWonScreen);
+        registerAppStateChangeRule(Constants.ID_GAMING_SCENE, GamingState.GAME_LOST, this::getGameLostScreen);
+        registerAppStateChangeRule(Constants.ID_GAMING_SCENE, GamingState.GAME_DRAWN, this::getGameDrawnScreen);
         // handle Pause Screen events
-        registerAppStateChangeRule(Constants.ID_PAUSE_SCREEN, PauseScreen.CLOSE, this::getGamingScene);
+        registerAppStateChangeRule(Constants.ID_PAUSE_SCREEN, PausedState.CLOSE, this::getGamingState);
         // TODO: 3/23/2019 Think wisely
-        registerAppStateChangeRule(Constants.ID_PAUSE_SCREEN, PauseScreen.LEAVE_GAME, this::getMainMenu);
+        registerAppStateChangeRule(Constants.ID_PAUSE_SCREEN, PausedState.LEAVE_GAME, this::getMainMenuState);
         // handle End of Game Screen events
-        registerAppStateChangeRule(Constants.ID_GAME_WON, GameWonScreen.CLOSE, this::getMainMenu);
-        registerAppStateChangeRule(Constants.ID_GAME_LOST, GameLostScreen.CLOSE, this::getMainMenu);
-        registerAppStateChangeRule(Constants.ID_GAME_DRAWN, GameLostScreen.CLOSE, this::getMainMenu);
+        registerAppStateChangeRule(Constants.ID_GAME_WON, GameWonState.CLOSE, this::getMainMenuState);
+        registerAppStateChangeRule(Constants.ID_GAME_LOST, GameLostState.CLOSE, this::getMainMenuState);
+        registerAppStateChangeRule(Constants.ID_GAME_DRAWN, GameLostState.CLOSE, this::getMainMenuState);
     }
 
     ///////////////////////////////////////////////////////////////////////////
-    // MainMenu related fields, methods, inner classes
+    // MainMenuState related fields, methods, inner classes
     ///////////////////////////////////////////////////////////////////////////
 
-    private MainMenu mainMenu;
-    private MainMenu getMainMenu() {
-        if(mainMenu == null) {
-            mainMenu = new MainMenu(Constants.ID_MAIN_MENU, new MainMenuUI());
-            mainMenu.setAppStateLifecycleListener(new MainMenuStateLifecycleListener());
+    private MainMenuState mainMenuState;
+    private MainMenuState getMainMenuState() {
+        if(mainMenuState == null) {
+            mainMenuState = new MainMenuState(Constants.ID_MAIN_MENU, new MainMenuUI());
+            mainMenuState.setAppStateLifecycleListener(new MainMenuStateLifecycleListener());
         }
-        return mainMenu;
+        return mainMenuState;
     }
 
     private class MainMenuStateLifecycleListener extends AbstractAppStateLifecycleListener {
@@ -75,35 +75,35 @@ public class TicTacToeAppFlow extends AppFlow {
     }
 
     ///////////////////////////////////////////////////////////////////////////
-    // SettingsMenu related fields, methods, inner classes
+    // SettingsMenuState related fields, methods, inner classes
     ///////////////////////////////////////////////////////////////////////////
 
     private Settings gameSettings;
-    private SettingsMenu settingsMenu;
-    private SettingsMenu getSettingsMenu() {
-        if(settingsMenu == null) {
-            settingsMenu = new SettingsMenu(Constants.ID_SETTINGS_MENU, new SettingsMenuUI());
-            settingsMenu.setAppStateLifecycleListener(new SettingsMenuStateLifecycleListener());
+    private SettingsMenuState settingsMenuState;
+    private SettingsMenuState getSettingsMenuState() {
+        if(settingsMenuState == null) {
+            settingsMenuState = new SettingsMenuState(Constants.ID_SETTINGS_MENU, new SettingsMenuUI());
+            settingsMenuState.setAppStateLifecycleListener(new SettingsMenuStateLifecycleListener());
         }
-        return settingsMenu;
+        return settingsMenuState;
     }
 
     private class SettingsMenuStateLifecycleListener extends AbstractAppStateLifecycleListener {
         @Override
         public void appStateStopped(AppState eventSource) {
             super.appStateStopped(eventSource);
-            assert gamingScene == null : "GameScene should be null when retrieving game settings from SettingsMenu";
-            gameSettings = settingsMenu.getGameSettings();
+            assert gamingState == null : "GameScene should be null when retrieving game settings from SettingsMenuState";
+            gameSettings = settingsMenuState.getGameSettings();
         }
     }
 
     ///////////////////////////////////////////////////////////////////////////
-    // GamingScene related fields, methods, inner classes
+    // GamingState related fields, methods, inner classes
     ///////////////////////////////////////////////////////////////////////////
 
-    private GamingScene gamingScene;
-    private GamingScene getGamingScene() {
-        if(gamingScene == null) {
+    private GamingState gamingState;
+    private GamingState getGamingState() {
+        if(gamingState == null) {
             if(gameSettings == null) {
                 System.out.println("Game Settings is null, so running game with default settings");
                 gameSettings = defaultSettings();
@@ -114,10 +114,10 @@ public class TicTacToeAppFlow extends AppFlow {
             GameEngine engine = new GameEngine(config, board);
             LocalGameManager ticTacToeGameManager = new LocalGameManager(engine, new GameBoardUI(gameSettings.getRowCount(), gameSettings.getColumnCount()));
 
-            gamingScene = new GamingScene(Constants.ID_GAMING_SCENE, ticTacToeGameManager);
-            gamingScene.setAppStateLifecycleListener(new GamingSceneStateLifecycleListener());
+            gamingState = new GamingState(Constants.ID_GAMING_SCENE, ticTacToeGameManager);
+            gamingState.setAppStateLifecycleListener(new GamingSceneStateLifecycleListener());
         }
-        return gamingScene;
+        return gamingState;
     }
 
     private class GamingSceneStateLifecycleListener extends AbstractAppStateLifecycleListener {
@@ -125,44 +125,44 @@ public class TicTacToeAppFlow extends AppFlow {
         @Override
         public void appStateStarted(AppState eventSource) {
             super.appStateStarted(eventSource);
-            mainMenu = null;
-            settingsMenu = null;
+            mainMenuState = null;
+            settingsMenuState = null;
             gameSettings = null;
         }
     }
 
     ///////////////////////////////////////////////////////////////////////////
-    // PauseScreen related fields, methods, inner classes
+    // PausedState related fields, methods, inner classes
     ///////////////////////////////////////////////////////////////////////////
 
-    private PauseScreen pauseScreen;
-    private PauseScreen getPauseScreen() {
-        if(pauseScreen == null) {
+    private PausedState pausedState;
+    private PausedState getPausedState() {
+        if(pausedState == null) {
             GameStateDescriptor gsd =
                     () -> "Player Names: " +
-                            Arrays.toString(gamingScene.getLocalTicTacToeGameManager().getPlayerNames());
-            pauseScreen = new PauseScreen(Constants.ID_PAUSE_SCREEN, new PausedPopUp((Frame)gamingScene.getUi(), gsd));
-            pauseScreen.setAppStateLifecycleListener(new PauseScreenStateLifecycleListener());
+                            Arrays.toString(gamingState.getLocalTicTacToeGameManager().getPlayerNames());
+            pausedState = new PausedState(Constants.ID_PAUSE_SCREEN, new PausedPopUp((Frame) gamingState.getUi(), gsd));
+            pausedState.setAppStateLifecycleListener(new PauseScreenStateLifecycleListener());
         }
-        return pauseScreen;
+        return pausedState;
     }
 
     private class PauseScreenStateLifecycleListener extends AbstractAppStateLifecycleListener {
     }
 
     ///////////////////////////////////////////////////////////////////////////
-    // GameWonScreen related fields, methods, inner classes
+    // GameWonState related fields, methods, inner classes
     ///////////////////////////////////////////////////////////////////////////
 
-    private GameWonScreen gameWonScreen;
-    private GameWonScreen getGameWonScreen() {
+    private GameWonState gameWonScreen;
+    private GameWonState getGameWonScreen() {
         if(gameWonScreen == null) {
-            gameWonScreen = new GameWonScreen(
+            gameWonScreen = new GameWonState(
                     Constants.ID_GAME_WON,
                     new GameResultUI(
-                            (Frame)gamingScene.getUi(),
-                            gamingScene.getLocalTicTacToeGameManager().getGameEngine().getWinnerNumber().toString(),
-                            Integer.toString(1 - gamingScene.getLocalTicTacToeGameManager().getGameEngine().getWinnerNumber()))
+                            (Frame) gamingState.getUi(),
+                            gamingState.getLocalTicTacToeGameManager().getGameEngine().getWinnerNumber().toString(),
+                            Integer.toString(1 - gamingState.getLocalTicTacToeGameManager().getGameEngine().getWinnerNumber()))
             );
             gameWonScreen.setAppStateLifecycleListener(new GameWonScreenStateLifecycleListener());
         }
@@ -178,18 +178,18 @@ public class TicTacToeAppFlow extends AppFlow {
     }
 
     ///////////////////////////////////////////////////////////////////////////
-    // GameLostScreen related fields, methods, inner classes
+    // GameLostState related fields, methods, inner classes
     ///////////////////////////////////////////////////////////////////////////
 
-    private GameLostScreen gameLostScreen;
-    private GameLostScreen getGameLostScreen() {
+    private GameLostState gameLostScreen;
+    private GameLostState getGameLostScreen() {
         if(gameLostScreen == null) {
-            gameLostScreen = new GameLostScreen(
+            gameLostScreen = new GameLostState(
                     Constants.ID_GAME_LOST,
                     new GameResultUI(
-                            (Frame)gamingScene.getUi(),
-                            gamingScene.getLocalTicTacToeGameManager().getGameEngine().getWinnerNumber().toString(),
-                            Integer.toString(1 - gamingScene.getLocalTicTacToeGameManager().getGameEngine().getWinnerNumber()))
+                            (Frame) gamingState.getUi(),
+                            gamingState.getLocalTicTacToeGameManager().getGameEngine().getWinnerNumber().toString(),
+                            Integer.toString(1 - gamingState.getLocalTicTacToeGameManager().getGameEngine().getWinnerNumber()))
             );
             gameLostScreen.setAppStateLifecycleListener(new GameLostScreenStateLifecycleListener());
         }
@@ -206,15 +206,15 @@ public class TicTacToeAppFlow extends AppFlow {
     }
 
     ///////////////////////////////////////////////////////////////////////////
-    // GameLostScreen related fields, methods, inner classes
+    // GameLostState related fields, methods, inner classes
     ///////////////////////////////////////////////////////////////////////////
 
-    private GameDrawnScreen gameDrawnScreen;
-    private GameDrawnScreen getGameDrawnScreen() {
+    private GameDrawnState gameDrawnScreen;
+    private GameDrawnState getGameDrawnScreen() {
         if(gameDrawnScreen == null) {
-            gameDrawnScreen = new GameDrawnScreen(
+            gameDrawnScreen = new GameDrawnState(
                     Constants.ID_GAME_DRAWN,
-                    new GameResultUI((Frame)gamingScene.getUi(), null, null)
+                    new GameResultUI((Frame) gamingState.getUi(), null, null)
             );
             gameDrawnScreen.setAppStateLifecycleListener(new GameDrawnScreenStateLifecycleListener());
         }
@@ -236,9 +236,9 @@ public class TicTacToeAppFlow extends AppFlow {
     ///////////////////////////////////////////////////////////////////////////
 
     private void cleanUp() {
-        settingsMenu = null;
-        gamingScene = null;
-        pauseScreen = null;
+        settingsMenuState = null;
+        gamingState = null;
+        pausedState = null;
         gameWonScreen = null;
         gameLostScreen = null;
         gameDrawnScreen = null;

@@ -2,9 +2,9 @@ package tictactoe.app.state;
 
 import tictactoe.connector.event.ui.base.IGameResultUI;
 
-public class GameWonScreen extends GameEndScreen {
+public class GameWonState extends GameEndState {
 
-    public GameWonScreen(Integer id, IGameResultUI ui) {
+    public GameWonState(Integer id, IGameResultUI ui) {
         super(id, ui);
     }
 

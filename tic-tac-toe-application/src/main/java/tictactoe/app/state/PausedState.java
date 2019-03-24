@@ -4,12 +4,12 @@ import genericapp.AppStateEvent;
 import tictactoe.connector.event.ui.base.IPausedScreenUI;
 import tictactoe.connector.event.ui.listener.PausedScreenListener;
 
-public class PauseScreen extends AbstractTicTacToeAppState<IPausedScreenUI> implements PausedScreenListener {
+public class PausedState extends AbstractTicTacToeAppState<IPausedScreenUI> implements PausedScreenListener {
 
     public static final AppStateEvent CLOSE = () -> true;
     public static final AppStateEvent LEAVE_GAME = () -> true;
 
-    public PauseScreen(Integer id, IPausedScreenUI ui) {
+    public PausedState(Integer id, IPausedScreenUI ui) {
         super(id, ui);
         getUi().setListener(this);
     }
