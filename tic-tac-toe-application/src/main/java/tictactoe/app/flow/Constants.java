@@ -1,8 +1,8 @@
 package tictactoe.app.flow;
 
-import genericapp.AbstractAppFlowItemStateChangeListener;
+import genericapp.AbstractAppStateLifecycleListener;
 import genericapp.AppState;
-import genericapp.AppFlowItemStateChangeListener;
+import genericapp.AppStateLifecycleListener;
 
 public interface Constants {
     Integer ID_MAIN_MENU = 0;
@@ -13,7 +13,7 @@ public interface Constants {
     Integer ID_GAME_LOST = 5;
     Integer ID_GAME_DRAWN = 6;
 
-    AppFlowItemStateChangeListener EMPTY_STATE_CHANGE_LISTENER = new AbstractAppFlowItemStateChangeListener() {
+    AppStateLifecycleListener EMPTY_STATE_CHANGE_LISTENER = new AbstractAppStateLifecycleListener() {
         public void appFlowItemPaused(AppState eventSource)  {}
         public void appFlowItemStarted(AppState eventSource) {}
         public void appFlowItemResumed(AppState eventSource) {}

@@ -1,6 +1,6 @@
 package genericapp;
 
-public abstract class AbstractAppFlowItemStateChangeListener implements AppFlowItemStateChangeListener {
+public abstract class AbstractAppStateLifecycleListener implements AppStateLifecycleListener {
     @Override
     public void appFlowItemStarted(AppState eventSource) {
         System.out.println("Started: " + eventSource);

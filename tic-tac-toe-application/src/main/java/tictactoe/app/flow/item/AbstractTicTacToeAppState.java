@@ -18,27 +18,27 @@ public abstract class AbstractTicTacToeAppState<U extends UIElementBase> extends
     public void run() {
         super.run();
         getUi().start();
-        getAppFlowItemStateChangeListener().appFlowItemStarted(this);
+        this.getAppStateLifecycleListener().appFlowItemStarted(this);
     }
 
     @Override
     public void pause() {
         super.pause();
         getUi().pause();
-        getAppFlowItemStateChangeListener().appFlowItemPaused(this);
+        this.getAppStateLifecycleListener().appFlowItemPaused(this);
     }
 
     @Override
     public void resume() {
         super.resume();
         getUi().resume();
-        getAppFlowItemStateChangeListener().appFlowItemResumed(this);
+        this.getAppStateLifecycleListener().appFlowItemResumed(this);
     }
 
     @Override
     public void stop() {
         super.stop();
         getUi().stop();
-        getAppFlowItemStateChangeListener().appFlowItemStopped(this);
+        this.getAppStateLifecycleListener().appFlowItemStopped(this);
     }
 }

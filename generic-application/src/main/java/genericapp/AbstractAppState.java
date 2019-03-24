@@ -1,6 +1,6 @@
 package genericapp;
 
-import genericapp.exception.IllegalAppFlowItemStateException;
+import genericapp.exception.IllegalAppStateLifecycleException;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -15,25 +15,25 @@ public abstract class AbstractAppState implements AppState {
     private boolean isStopped;
 
     @Setter
-    AppFlowItemEventHandler appFlowItemEventHandler;
+    AppStateEventHandler appStateEventHandler;
     @Setter
-    AppFlowItemStateChangeListener appFlowItemStateChangeListener;
+    AppStateLifecycleListener appStateLifecycleListener;
 
     @Override
     public void pause() {
         if(!isStarted())
-            throw new IllegalAppFlowItemStateException(this, "not started", "pause");
+            throw new IllegalAppStateLifecycleException(this, "not started", "pause");
         if(isStopped())
-            throw new IllegalAppFlowItemStateException(this, "stopped", "pause");
+            throw new IllegalAppStateLifecycleException(this, "stopped", "pause");
         isPaused = true;
     }
 
     @Override
     public void resume() {
         if(!isStarted())
-            throw new IllegalAppFlowItemStateException(this, "not started", "resume");
+            throw new IllegalAppStateLifecycleException(this, "not started", "resume");
         if(isStopped())
-            throw new IllegalAppFlowItemStateException(this, "stopped", "resume");
+            throw new IllegalAppStateLifecycleException(this, "stopped", "resume");
         isPaused = false;
     }
 
@@ -45,9 +45,9 @@ public abstract class AbstractAppState implements AppState {
     @Override
     public void run() {
         if(isStarted())
-            throw new IllegalAppFlowItemStateException(this, "started", "start");
+            throw new IllegalAppStateLifecycleException(this, "started", "start");
         if(isStopped())
-            throw new IllegalAppFlowItemStateException(this, "stopped", "start");
+            throw new IllegalAppStateLifecycleException(this, "stopped", "start");
         isStarted = true;
     }
 }

@@ -11,6 +11,6 @@ public class GameDrawnScreen extends GameEndScreen {
 
     @Override
     public void close() {
-        getAppFlowItemEventHandler().handleAppFlowItemEvent(this, CLOSE);
+        this.getAppStateEventHandler().handleAppFlowItemEvent(this, CLOSE);
     }
 }

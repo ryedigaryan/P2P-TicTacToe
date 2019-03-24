@@ -1,6 +1,6 @@
 package tictactoe.app.flow.item;
 
-import genericapp.AppFlowItemEvent;
+import genericapp.AppStateEvent;
 import lombok.Getter;
 import tictactoe.app.flow.item.common.Settings;
 import tictactoe.connector.event.ui.base.ISettingsMenuUI;
@@ -9,7 +9,7 @@ import tictactoe.connector.event.ui.listener.SettingsMenuListener;
 @Getter
 public class SettingsMenu extends AbstractTicTacToeAppState<ISettingsMenuUI> implements SettingsMenuListener {
 
-    public static final AppFlowItemEvent BACK_TO_MAIN_MENU = () -> true;
+    public static final AppStateEvent BACK_TO_MAIN_MENU = () -> true;
 
     private Settings gameSettings = new Settings();
 
@@ -42,6 +42,6 @@ public class SettingsMenu extends AbstractTicTacToeAppState<ISettingsMenuUI> imp
     public void close(boolean saveChanges) {
         if(!saveChanges)
             gameSettings = null;
-        getAppFlowItemEventHandler().handleAppFlowItemEvent(this, BACK_TO_MAIN_MENU);
+        this.getAppStateEventHandler().handleAppFlowItemEvent(this, BACK_TO_MAIN_MENU);
     }
 }

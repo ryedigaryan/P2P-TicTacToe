@@ -1,9 +1,9 @@
 package genericapp;
 
-public class AbstractAppFlowItemEvent implements AppFlowItemEvent {
+public class AbstractAppStateEvent implements AppStateEvent {
     private boolean shouldStopPreviousAppFlowItem;
 
-    public AbstractAppFlowItemEvent(boolean shouldStopPreviousAppFlowItem) {
+    public AbstractAppStateEvent(boolean shouldStopPreviousAppFlowItem) {
         this.shouldStopPreviousAppFlowItem = shouldStopPreviousAppFlowItem;
     }
 

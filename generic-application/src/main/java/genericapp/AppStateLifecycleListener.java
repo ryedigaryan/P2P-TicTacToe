@@ -6,7 +6,7 @@ package genericapp;
 // leaves state xxx
 // where xxx is state name (Paused, Started ...)
 // but I hope that this 4 is even more than needed :D
-public interface AppFlowItemStateChangeListener {
+public interface AppStateLifecycleListener {
 
     void appFlowItemStarted(AppState eventSource);
 

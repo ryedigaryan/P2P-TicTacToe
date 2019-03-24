@@ -2,11 +2,11 @@ package genericapp;
 
 public interface AppState extends Runnable {
 
-    AppFlowItemEventHandler getAppFlowItemEventHandler();
-    void setAppFlowItemEventHandler(AppFlowItemEventHandler eventHandler);
+    AppStateEventHandler getAppStateEventHandler();
+    void setAppStateEventHandler(AppStateEventHandler eventHandler);
 
-    AppFlowItemStateChangeListener getAppFlowItemStateChangeListener();
-    void setAppFlowItemStateChangeListener(AppFlowItemStateChangeListener listener);
+    AppStateLifecycleListener getAppStateLifecycleListener();
+    void setAppStateLifecycleListener(AppStateLifecycleListener listener);
 
     Integer getId();
 

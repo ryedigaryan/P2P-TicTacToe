@@ -1,13 +1,13 @@
 package tictactoe.app.flow.item;
 
-import genericapp.AppFlowItemEvent;
+import genericapp.AppStateEvent;
 import tictactoe.connector.event.ui.base.IMainMenuUI;
 import tictactoe.connector.event.ui.listener.MainMenuListener;
 
 public class MainMenu extends AbstractTicTacToeAppState<IMainMenuUI> implements MainMenuListener {
 
-    public static final AppFlowItemEvent GAME_SETTINGS = () -> false;
-    public static final AppFlowItemEvent START_GAME = () -> true;
+    public static final AppStateEvent GAME_SETTINGS = () -> false;
+    public static final AppStateEvent START_GAME = () -> true;
 
     public MainMenu(Integer id, IMainMenuUI mainMenuUI) {
         super(id, mainMenuUI);
@@ -16,11 +16,11 @@ public class MainMenu extends AbstractTicTacToeAppState<IMainMenuUI> implements 
 
     @Override
     public void startGame() {
-        getAppFlowItemEventHandler().handleAppFlowItemEvent(this, START_GAME);
+        this.getAppStateEventHandler().handleAppFlowItemEvent(this, START_GAME);
     }
 
     @Override
     public void setupGame() {
-        getAppFlowItemEventHandler().handleAppFlowItemEvent(this, GAME_SETTINGS);
+        this.getAppStateEventHandler().handleAppFlowItemEvent(this, GAME_SETTINGS);
     }
 }

@@ -1,6 +1,6 @@
 package tictactoe.app.flow;
 
-import genericapp.AbstractAppFlowItemStateChangeListener;
+import genericapp.AbstractAppStateLifecycleListener;
 import genericapp.AppFlow;
 import genericapp.AppState;
 import lombok.AccessLevel;
@@ -62,12 +62,12 @@ public class TicTacToeAppFlow extends AppFlow {
     private MainMenu getMainMenu() {
         if(mainMenu == null) {
             mainMenu = new MainMenu(Constants.ID_MAIN_MENU, new MainMenuUI());
-            mainMenu.setAppFlowItemStateChangeListener(new MainMenuStateChangeListener());
+            mainMenu.setAppStateLifecycleListener(new MainMenuStateLifecycleListener());
         }
         return mainMenu;
     }
 
-    private class MainMenuStateChangeListener extends AbstractAppFlowItemStateChangeListener {
+    private class MainMenuStateLifecycleListener extends AbstractAppStateLifecycleListener {
         @Override
         public void appFlowItemStopped(AppState eventSource) {
             super.appFlowItemStopped(eventSource);
@@ -83,12 +83,12 @@ public class TicTacToeAppFlow extends AppFlow {
     private SettingsMenu getSettingsMenu() {
         if(settingsMenu == null) {
             settingsMenu = new SettingsMenu(Constants.ID_SETTINGS_MENU, new SettingsMenuUI());
-            settingsMenu.setAppFlowItemStateChangeListener(new SettingsMenuStateChangeListener());
+            settingsMenu.setAppStateLifecycleListener(new SettingsMenuStateLifecycleListener());
         }
         return settingsMenu;
     }
 
-    private class SettingsMenuStateChangeListener extends AbstractAppFlowItemStateChangeListener {
+    private class SettingsMenuStateLifecycleListener extends AbstractAppStateLifecycleListener {
         @Override
         public void appFlowItemStopped(AppState eventSource) {
             super.appFlowItemStopped(eventSource);
@@ -115,12 +115,12 @@ public class TicTacToeAppFlow extends AppFlow {
             LocalGameManager ticTacToeGameManager = new LocalGameManager(engine, new GameBoardUI(gameSettings.getRowCount(), gameSettings.getColumnCount()));
 
             gamingScene = new GamingScene(Constants.ID_GAMING_SCENE, ticTacToeGameManager);
-            gamingScene.setAppFlowItemStateChangeListener(new GamingSceneStateChangeListener());
+            gamingScene.setAppStateLifecycleListener(new GamingSceneStateLifecycleListener());
         }
         return gamingScene;
     }
 
-    private class GamingSceneStateChangeListener extends AbstractAppFlowItemStateChangeListener {
+    private class GamingSceneStateLifecycleListener extends AbstractAppStateLifecycleListener {
 
         @Override
         public void appFlowItemStarted(AppState eventSource) {
@@ -142,12 +142,12 @@ public class TicTacToeAppFlow extends AppFlow {
                     () -> "Player Names: " +
                             Arrays.toString(gamingScene.getLocalTicTacToeGameManager().getPlayerNames());
             pauseScreen = new PauseScreen(Constants.ID_PAUSE_SCREEN, new PausedPopUp((Frame)gamingScene.getUi(), gsd));
-            pauseScreen.setAppFlowItemStateChangeListener(new PauseScreenStateChangeListener());
+            pauseScreen.setAppStateLifecycleListener(new PauseScreenStateLifecycleListener());
         }
         return pauseScreen;
     }
 
-    private class PauseScreenStateChangeListener extends AbstractAppFlowItemStateChangeListener {
+    private class PauseScreenStateLifecycleListener extends AbstractAppStateLifecycleListener {
     }
 
     ///////////////////////////////////////////////////////////////////////////
@@ -164,12 +164,12 @@ public class TicTacToeAppFlow extends AppFlow {
                             gamingScene.getLocalTicTacToeGameManager().getGameEngine().getWinnerNumber().toString(),
                             Integer.toString(1 - gamingScene.getLocalTicTacToeGameManager().getGameEngine().getWinnerNumber()))
             );
-            gameWonScreen.setAppFlowItemStateChangeListener(new GameWonScreenStateChangeListener());
+            gameWonScreen.setAppStateLifecycleListener(new GameWonScreenStateLifecycleListener());
         }
         return gameWonScreen;
     }
 
-    private class GameWonScreenStateChangeListener extends AbstractAppFlowItemStateChangeListener {
+    private class GameWonScreenStateLifecycleListener extends AbstractAppStateLifecycleListener {
         @Override
         public void appFlowItemStopped(AppState eventSource) {
             super.appFlowItemStopped(eventSource);
@@ -191,13 +191,13 @@ public class TicTacToeAppFlow extends AppFlow {
                             gamingScene.getLocalTicTacToeGameManager().getGameEngine().getWinnerNumber().toString(),
                             Integer.toString(1 - gamingScene.getLocalTicTacToeGameManager().getGameEngine().getWinnerNumber()))
             );
-            gameLostScreen.setAppFlowItemStateChangeListener(new GameLostScreenStateChangeListener());
+            gameLostScreen.setAppStateLifecycleListener(new GameLostScreenStateLifecycleListener());
         }
         return gameLostScreen;
     }
 
 
-    private class GameLostScreenStateChangeListener extends AbstractAppFlowItemStateChangeListener {
+    private class GameLostScreenStateLifecycleListener extends AbstractAppStateLifecycleListener {
         @Override
         public void appFlowItemStopped(AppState eventSource) {
             super.appFlowItemStopped(eventSource);
@@ -216,13 +216,13 @@ public class TicTacToeAppFlow extends AppFlow {
                     Constants.ID_GAME_DRAWN,
                     new GameResultUI((Frame)gamingScene.getUi(), null, null)
             );
-            gameDrawnScreen.setAppFlowItemStateChangeListener(new GameDrawnScreenStateChangeListener());
+            gameDrawnScreen.setAppStateLifecycleListener(new GameDrawnScreenStateLifecycleListener());
         }
         return gameDrawnScreen;
     }
 
 
-    private class GameDrawnScreenStateChangeListener extends AbstractAppFlowItemStateChangeListener {
+    private class GameDrawnScreenStateLifecycleListener extends AbstractAppStateLifecycleListener {
         @Override
         public void appFlowItemStopped(AppState eventSource) {
             super.appFlowItemStopped(eventSource);

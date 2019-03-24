@@ -1,13 +1,13 @@
 package tictactoe.app.flow.item;
 
-import genericapp.AppFlowItemEvent;
+import genericapp.AppStateEvent;
 import tictactoe.connector.event.ui.base.IPausedScreenUI;
 import tictactoe.connector.event.ui.listener.PausedScreenListener;
 
 public class PauseScreen extends AbstractTicTacToeAppState<IPausedScreenUI> implements PausedScreenListener {
 
-    public static final AppFlowItemEvent CLOSE = () -> true;
-    public static final AppFlowItemEvent LEAVE_GAME = () -> true;
+    public static final AppStateEvent CLOSE = () -> true;
+    public static final AppStateEvent LEAVE_GAME = () -> true;
 
     public PauseScreen(Integer id, IPausedScreenUI ui) {
         super(id, ui);
@@ -16,11 +16,11 @@ public class PauseScreen extends AbstractTicTacToeAppState<IPausedScreenUI> impl
 
     @Override
     public void continueGame() {
-        getAppFlowItemEventHandler().handleAppFlowItemEvent(this, CLOSE);
+        this.getAppStateEventHandler().handleAppFlowItemEvent(this, CLOSE);
     }
 
     @Override
     public void leaveGame() {
-        getAppFlowItemEventHandler().handleAppFlowItemEvent(this, LEAVE_GAME);
+        this.getAppStateEventHandler().handleAppFlowItemEvent(this, LEAVE_GAME);
     }
 }

@@ -9,18 +9,18 @@ public abstract class AbstractAppStateWithStateChangeNotification extends Abstra
     @Override
     public void pause() {
         super.pause();
-        getAppFlowItemStateChangeListener().appFlowItemPaused(this);
+        this.getAppStateLifecycleListener().appFlowItemPaused(this);
     }
 
     @Override
     public void resume() {
         super.resume();
-        getAppFlowItemStateChangeListener().appFlowItemResumed(this);
+        this.getAppStateLifecycleListener().appFlowItemResumed(this);
     }
 
     @Override
     public void stop() {
         super.stop();
-        getAppFlowItemStateChangeListener().appFlowItemStopped(this);
+        this.getAppStateLifecycleListener().appFlowItemStopped(this);
     }
 }

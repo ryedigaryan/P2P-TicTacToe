@@ -1,7 +1,6 @@
 package tictactoe.app.flow.item;
 
 import tictactoe.connector.event.ui.base.IGameResultUI;
-import tictactoe.connector.event.ui.listener.GameResultScreenListener;
 
 public class GameWonScreen extends GameEndScreen {
 
@@ -11,6 +10,6 @@ public class GameWonScreen extends GameEndScreen {
 
     @Override
     public void close() {
-        getAppFlowItemEventHandler().handleAppFlowItemEvent(this, CLOSE);
+        this.getAppStateEventHandler().handleAppFlowItemEvent(this, CLOSE);
     }
 }
