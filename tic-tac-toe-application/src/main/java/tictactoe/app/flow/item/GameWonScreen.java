@@ -1,11 +1,11 @@
 package tictactoe.app.flow.item;
 
-import tictactoe.connector.event.ui.base.IGameResultScreen;
+import tictactoe.connector.event.ui.base.IGameResultUI;
 import tictactoe.connector.event.ui.listener.GameResultScreenListener;
 
 public class GameWonScreen extends GameEndScreen implements GameResultScreenListener {
 
-    public GameWonScreen(Integer id, IGameResultScreen ui) {
+    public GameWonScreen(Integer id, IGameResultUI ui) {
         super(id, ui);
         ui.setListener(this);
     }

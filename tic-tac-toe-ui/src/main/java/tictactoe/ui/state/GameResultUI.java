@@ -1,13 +1,13 @@
 package tictactoe.ui.state;
 
-import tictactoe.connector.event.ui.base.IGameResultScreen;
+import tictactoe.connector.event.ui.base.IGameResultUI;
 import tictactoe.connector.event.ui.listener.GameResultScreenListener;
 import tictactoe.ui.state.common.AbstractJDialogUI;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class GameResultUI extends AbstractJDialogUI<GameResultScreenListener> implements IGameResultScreen {
+public class GameResultUI extends AbstractJDialogUI<GameResultScreenListener> implements IGameResultUI {
     JButton closeButton;
 
     public GameResultUI(Frame owner, String winnerName, String loserName) {
