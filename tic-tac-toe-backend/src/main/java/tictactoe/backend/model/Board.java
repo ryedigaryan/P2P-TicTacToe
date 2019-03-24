@@ -25,6 +25,9 @@ public class Board {
     @Getter(AccessLevel.PRIVATE)
     final Tile[][] tiles;
 
+    @Setter(AccessLevel.PRIVATE)
+    private int emptyTilesCount;
+
     public Board(int rowCount, int columnCount) {
         this.rowCount = rowCount;
         this.columnCount = columnCount;
@@ -34,6 +37,7 @@ public class Board {
                 tiles[i][j] = new Tile(i, j);
             }
         }
+        setEmptyTilesCount(rowCount * columnCount);
     }
 
     public boolean isInsideBoard(int row, int col) {
@@ -56,14 +60,17 @@ public class Board {
         int value = EMPTY_VALUE;
 
         public void setValue(int value) {
+            assert value != EMPTY_VALUE : "Use makeEmpty instead of setValue(" + EMPTY_VALUE + ")";
             final int oldValue = this.value;
             this.value = value;
+            emptyTilesCount--;
             getTileEventListener().valueChanged(row, col, oldValue, this.value);
         }
 
         public void makeEmpty() {
             final int oldValue = this.value;
             this.value = EMPTY_VALUE;
+            emptyTilesCount++;
             getTileEventListener().valueErased(row, col, oldValue);
         }
 

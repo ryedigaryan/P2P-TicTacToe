@@ -1,6 +1,7 @@
 package tictactoe.backend.logic;
 
 import tictactoe.backend.helper.Direction;
+import tictactoe.backend.model.GameState;
 import tictactoe.connector.event.backend.listener.GameStateChangeListener;
 import tictactoe.backend.logic.exception.IllegalGameStateException;
 import tictactoe.backend.model.Board;
@@ -42,14 +43,24 @@ public class GameEngine {
         Board.Tile tile = board.getTile(row, col);
         if(tile.isEmpty()) {
             tile.setValue(currentPlayerNumber);
-            if(isCurrentPlayerWon(row, col))
-                gameStateChangeListener.playerWon(winnerNumber = currentPlayerNumber);
-            else
-                currentPlayerNumber = (currentPlayerNumber + 1) % gameConfig.getMaxPlayersCount();
+            switch(gameStateAfterMarking(row, col)) {
+                case IN_PROGRESS:
+                    currentPlayerNumber = (currentPlayerNumber + 1) % gameConfig.getMaxPlayersCount();
+                    return;
+                case WON:
+                    gameStateChangeListener.playerWon(winnerNumber = currentPlayerNumber);
+                    return;
+                case LOST:
+                    gameStateChangeListener.playerLost(winnerNumber = currentPlayerNumber);
+                    return;
+                case DRAWN:
+                    gameStateChangeListener.draw();
+                    return;
+                default:
+                    assert false : "Unexpected GameState";
+            }
         }
-        else {
-            System.out.println(String.format("Player %d marked tile (%d,%d), which already was marked as %d", currentPlayerNumber, row, col, tile.getValue()));
-        }
+        System.out.println(String.format("Player %d marked tile (%d,%d), which already was marked as %d", currentPlayerNumber, row, col, tile.getValue()));
     }
 
     /**
@@ -58,9 +69,18 @@ public class GameEngine {
      * @param lastMarkRow lastMarkRow number of marked tile
      * @param lastMarkCol column number of marked tile
      */
-    private boolean isCurrentPlayerWon(int lastMarkRow, int lastMarkCol) {
+    private GameState gameStateAfterMarking(int lastMarkRow, int lastMarkCol) {
         assert board.getTile(lastMarkRow, lastMarkCol).getValue() == currentPlayerNumber : "tile value at (" + lastMarkRow + "," + lastMarkCol + ") should be equal to " + currentPlayerNumber;
         assert gameStateChangeListener != null : "gameStateChangeListener should not be null";
+        if(isCurrentPlayerWon(lastMarkRow, lastMarkCol))
+            return GameState.WON;
+        if(board.getEmptyTilesCount() == 0) {
+            return GameState.DRAWN;
+        }
+        return GameState.IN_PROGRESS;
+    }
+
+    private boolean isCurrentPlayerWon(int lastMarkRow, int lastMarkCol) {
         return isCurrentPlayerWonInDirection(lastMarkRow, lastMarkCol, Direction.LEFT, Direction.RIGHT) ||
                 isCurrentPlayerWonInDirection(lastMarkRow, lastMarkCol, Direction.UP, Direction.DOWN) ||
                 isCurrentPlayerWonInDirection(lastMarkRow, lastMarkCol, Direction.LEFT_UP, Direction.RIGHT_DOWN) ||

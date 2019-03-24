@@ -13,7 +13,7 @@ public class SettingsMenu extends AbstractTicTacToeAppFlowItem<ISettingsMenuUI> 
 
     public static final AppFlowItemEvent BACK_TO_MAIN_MENU = () -> true;
 
-    private final Settings gameSettings = new Settings();
+    private Settings gameSettings = new Settings();
 
     public SettingsMenu(Integer id, ISettingsMenuUI settingsMenuUI) {
         super(id, settingsMenuUI);
@@ -41,7 +41,9 @@ public class SettingsMenu extends AbstractTicTacToeAppFlowItem<ISettingsMenuUI> 
     }
 
     @Override
-    public void backToMainMenu() {
+    public void close(boolean saveChanges) {
+        if(!saveChanges)
+            gameSettings = null;
         getAppFlowItemEventHandler().handleAppFlowItemEvent(this, BACK_TO_MAIN_MENU);
     }
 }

@@ -11,6 +11,7 @@ public interface Constants {
     Integer ID_PAUSE_SCREEN = 3;
     Integer ID_GAME_WON = 4;
     Integer ID_GAME_LOST = 5;
+    Integer ID_GAME_DRAWN = 6;
 
     AppFlowItemStateChangeListener EMPTY_STATE_CHANGE_LISTENER = new AbstractAppFlowItemStateChangeListener() {
         public void appFlowItemPaused(AppFlowItem eventSource)  {}

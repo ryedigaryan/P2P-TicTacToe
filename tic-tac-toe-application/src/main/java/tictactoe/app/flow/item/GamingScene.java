@@ -12,6 +12,7 @@ public class GamingScene extends AbstractTicTacToeAppFlowItem<IGameBoardUI> impl
     public static final AppFlowItemEvent PAUSE = () -> false;
     public static final AppFlowItemEvent GAME_WON = () -> true;
     public static final AppFlowItemEvent GAME_LOST = () -> true;
+    public static final AppFlowItemEvent GAME_DRAWN = () -> true;
 
     private LocalGameManager localTicTacToeGameManager;
 
@@ -26,5 +27,15 @@ public class GamingScene extends AbstractTicTacToeAppFlowItem<IGameBoardUI> impl
     @Override
     public void playerWon(int playerNumber) {
         getAppFlowItemEventHandler().handleAppFlowItemEvent(this, GAME_WON);
+    }
+
+    @Override
+    public void playerLost(int playerNumber) {
+        getAppFlowItemEventHandler().handleAppFlowItemEvent(this, GAME_LOST);
+    }
+
+    @Override
+    public void draw() {
+        getAppFlowItemEventHandler().handleAppFlowItemEvent(this, GAME_DRAWN);
     }
 }

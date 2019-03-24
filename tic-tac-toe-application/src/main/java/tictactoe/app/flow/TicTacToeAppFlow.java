@@ -6,6 +6,7 @@ import genericapp.AppFlowItem;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+import tictactoe.app.flow.item.GameDrawnScreen;
 import tictactoe.app.flow.item.GamingScene;
 import tictactoe.app.flow.item.GameLostScreen;
 import tictactoe.app.flow.item.MainMenu;
@@ -42,6 +43,7 @@ public class TicTacToeAppFlow extends AppFlow {
         registerAppFlowItemChangeRule(Constants.ID_GAMING_SCENE, GamingScene.PAUSE, this::getPauseScreen);
         registerAppFlowItemChangeRule(Constants.ID_GAMING_SCENE, GamingScene.GAME_WON, this::getGameWonScreen);
         registerAppFlowItemChangeRule(Constants.ID_GAMING_SCENE, GamingScene.GAME_LOST, this::getGameLostScreen);
+        registerAppFlowItemChangeRule(Constants.ID_GAMING_SCENE, GamingScene.GAME_DRAWN, this::getGameDrawnScreen);
         // handle Pause Screen events
         registerAppFlowItemChangeRule(Constants.ID_PAUSE_SCREEN, PauseScreen.CLOSE, this::getGamingScene);
         // TODO: 3/23/2019 Think wisely
@@ -49,6 +51,7 @@ public class TicTacToeAppFlow extends AppFlow {
         // handle End of Game Screen events
         registerAppFlowItemChangeRule(Constants.ID_GAME_WON, GameWonScreen.CLOSE, this::getMainMenu);
         registerAppFlowItemChangeRule(Constants.ID_GAME_LOST, GameLostScreen.CLOSE, this::getMainMenu);
+        registerAppFlowItemChangeRule(Constants.ID_GAME_DRAWN, GameLostScreen.CLOSE, this::getMainMenu);
     }
 
     ///////////////////////////////////////////////////////////////////////////
@@ -101,7 +104,10 @@ public class TicTacToeAppFlow extends AppFlow {
     private GamingScene gamingScene;
     private GamingScene getGamingScene() {
         if(gamingScene == null) {
-            assert gameSettings != null : "Game Settings may not be null when initializing gamingScene";
+            if(gameSettings == null) {
+                System.out.println("Game Settings is null, so running game with default settings");
+                gameSettings = defaultSettings();
+            }
 
             GameConfig config = new GameConfig(gameSettings.getWinLength(), gameSettings.getPlayersCount());
             Board board = new Board(gameSettings.getRowCount(), gameSettings.getColumnCount());
@@ -199,11 +205,46 @@ public class TicTacToeAppFlow extends AppFlow {
         }
     }
 
+    ///////////////////////////////////////////////////////////////////////////
+    // GameLostScreen related fields, methods, inner classes
+    ///////////////////////////////////////////////////////////////////////////
+
+    private GameDrawnScreen gameDrawnScreen;
+    private GameDrawnScreen getGameDrawnScreen() {
+        if(gameDrawnScreen == null) {
+            gameDrawnScreen = new GameDrawnScreen(
+                    Constants.ID_GAME_DRAWN,
+                    new GameResultUI((Frame)gamingScene.getUi(), null, null)
+            );
+            gameDrawnScreen.setAppFlowItemStateChangeListener(new GameDrawnScreenStateChangeListener());
+        }
+        return gameDrawnScreen;
+    }
+
+
+    private class GameDrawnScreenStateChangeListener extends AbstractAppFlowItemStateChangeListener {
+        @Override
+        public void appFlowItemStopped(AppFlowItem eventSource) {
+            super.appFlowItemStopped(eventSource);
+            cleanUp();
+        }
+    }
+
+
+    ///////////////////////////////////////////////////////////////////////////
+    // helpers
+    ///////////////////////////////////////////////////////////////////////////
+
     private void cleanUp() {
         settingsMenu = null;
         gamingScene = null;
         pauseScreen = null;
         gameWonScreen = null;
         gameLostScreen = null;
+        gameDrawnScreen = null;
+    }
+
+    private Settings defaultSettings() {
+        return new Settings(3, 3, 3, 2);
     }
 }

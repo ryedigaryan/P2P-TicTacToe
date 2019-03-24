@@ -29,9 +29,9 @@ public class GameBoardUITest {
                     if(e.getClickCount() > 1)
                         b.removeMark(x, y);
                     else if(turn = !turn)
-                        b.markO(x, y);
+                        b.mark(0, x, y);
                     else
-                        b.markX(x, y);
+                        b.mark(1, x, y);
                     b.pack();
                 }
 

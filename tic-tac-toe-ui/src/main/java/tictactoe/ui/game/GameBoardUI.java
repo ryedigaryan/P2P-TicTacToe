@@ -38,19 +38,17 @@ public class GameBoardUI extends AbstractJFrameUI<TileClickListener> implements 
     /**
      * Top-Left = 0,0
      */
+    // TODO: 3/24/2019 add ability to draw more than 2 player's game
     @Override
-    public void markO(int row, int col) {
-        getComponent(calculateMarkPosition(row, col)).markO();
-        repaint();
-    }
-
-    /**
-     * Top-Left = 0,0
-     */
-    @Override
-    public void markX(int row, int col) {
-        getComponent(calculateMarkPosition(row, col)).markX();
-        repaint();
+    public void mark(int playerNumber, int row, int col) {
+        assert playerNumber == 0 || playerNumber == 1 : "For now playerNumber may be 0 or 1";
+        switch (playerNumber) {
+            case 0:
+                markX(row, col);
+                break;
+            case 1:
+                markO(row, col);
+        }
     }
 
     /**
@@ -61,6 +59,16 @@ public class GameBoardUI extends AbstractJFrameUI<TileClickListener> implements 
         getComponent(calculateMarkPosition(row, col)).removeMark();
         repaint();
         System.out.println("Marked X at " + calculateMarkPosition(row, col));
+    }
+
+    private void markO(int row, int col) {
+        getComponent(calculateMarkPosition(row, col)).markO();
+        repaint();
+    }
+
+    public void markX(int row, int col) {
+        getComponent(calculateMarkPosition(row, col)).markX();
+        repaint();
     }
 
     /**

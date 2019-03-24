@@ -40,10 +40,10 @@ public class SettingsMenuUI extends AbstractJFrameUI<SettingsMenuListener> imple
             getListener().setWinLength(winLengthSlider.getValue());
             getListener().setPlayersCount(playersCountSlider.getValue());
             setEnabled(true);
-            getListener().backToMainMenu();
+            getListener().close(true);
         });
 
-        exitButton.addActionListener(e -> getListener().backToMainMenu());
+        exitButton.addActionListener(e -> getListener().close(false));
 
         setLayout(new GridLayout(6, 2));
 

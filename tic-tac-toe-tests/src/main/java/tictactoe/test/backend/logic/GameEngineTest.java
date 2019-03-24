@@ -30,6 +30,16 @@ public class GameEngineTest {
             public void playerWon(int playerNumber) {
                 System.out.println("We have a winner: " + playerNumber);
             }
+
+            @Override
+            public void playerLost(int playerNumber) {
+                System.out.println("We have a loser: " + playerNumber);
+            }
+
+            @Override
+            public void draw() {
+                System.out.println("Fuck ... this is draw .... ");
+            }
         });
 
         e.acceptNextPlayerMark(0,0);

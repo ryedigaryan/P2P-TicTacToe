@@ -1,7 +1,6 @@
 package tictactoe.app.flow.item;
 
 import genericapp.AbstractAppFlowItem;
-import genericapp.AppFlowItemEvent;
 import lombok.Getter;
 import lombok.Setter;
 import tictactoe.connector.event.ui.base.UIElementBase;

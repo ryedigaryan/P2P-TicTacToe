@@ -19,7 +19,10 @@ public class GameResultUI extends AbstractJDialogUI<GameResultScreenListener> im
         closeButton.addActionListener(e -> getListener().close());
 
 
-        add(new JLabel("Won : " + winnerName + " Lost: " + loserName));
+        if(winnerName == null && loserName == null)
+            add(new JLabel("DRAW"));
+        else
+            add(new JLabel("Won : " + winnerName + " Lost: " + loserName));
         add(closeButton);
 
         setModal(true);

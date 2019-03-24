@@ -6,5 +6,5 @@ public interface SettingsMenuListener {
     void setColumnCount(int columnCount);
     void setWinLength(int winLength);
     void setPlayersCount(int playersCount);
-    void backToMainMenu();
+    void close(boolean saveChanges);
 }
