@@ -2,12 +2,10 @@ package tictactoe.backend.manager;
 
 import lombok.Getter;
 import lombok.Setter;
-import tictactoe.connector.event.backend.listener.GameStateChangeListener;
 import tictactoe.backend.logic.GameEngine;
 import tictactoe.connector.event.backend.listener.TileEventListener;
-import tictactoe.backend.grdon.TemporarySolution;
-import tictactoe.connector.event.ui.base.IGameBoardUI;
-import tictactoe.connector.event.ui.listener.TileClickListener;
+import tictactoe.connector.event.ui.base.IGamingStateUI;
+import tictactoe.connector.event.ui.listener.GamingStateUIListener;
 
 import java.util.stream.IntStream;
 
@@ -15,12 +13,12 @@ import java.util.stream.IntStream;
  * A basic game manager which is designed for a game in one computer.
  */
 @Getter @Setter
-public class LocalGameManager implements TileEventListener, TileClickListener {
+public class LocalGameManager implements TileEventListener, GamingStateUIListener {
 
     private final GameEngine gameEngine;
-    private final IGameBoardUI boardUI;
+    private final IGamingStateUI boardUI;
 
-    public LocalGameManager(GameEngine gameEngine, IGameBoardUI boardUI) {
+    public LocalGameManager(GameEngine gameEngine, IGamingStateUI boardUI) {
         this.gameEngine = gameEngine;
         this.boardUI = boardUI;
     }
@@ -45,5 +43,10 @@ public class LocalGameManager implements TileEventListener, TileClickListener {
     @Override
     public void tileClicked(int row, int col) {
         gameEngine.acceptNextPlayerMark(row, col);
+    }
+
+    @Override
+    public void pauseGame() {
+        // TODO: 3/25/2019
     }
 }

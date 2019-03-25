@@ -1,5 +1,5 @@
 package tictactoe.connector.event.ui.listener;
 
-public interface GameResultScreenListener {
+public interface GameEndStateUIListener {
     void close();
 }

@@ -1,6 +1,6 @@
 package tictactoe.connector.event.ui.listener;
 
-public interface PausedScreenListener {
+public interface PausedStateUIListener {
     void continueGame();
     void leaveGame();
 }

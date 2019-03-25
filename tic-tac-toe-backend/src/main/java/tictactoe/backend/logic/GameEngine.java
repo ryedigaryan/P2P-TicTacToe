@@ -51,7 +51,9 @@ public class GameEngine {
                     gameStateChangeListener.playerWon(winnerNumber = currentPlayerNumber);
                     return;
                 case LOST:
-                    gameStateChangeListener.playerLost(winnerNumber = currentPlayerNumber);
+                    // for now this is not a use-case
+                    // in local game only Winning screen is shown
+                    gameStateChangeListener.playerLost(currentPlayerNumber);
                     return;
                 case DRAWN:
                     gameStateChangeListener.draw();

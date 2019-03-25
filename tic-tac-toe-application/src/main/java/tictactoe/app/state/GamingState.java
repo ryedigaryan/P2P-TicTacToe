@@ -4,10 +4,10 @@ import genericapp.AppStateEvent;
 import lombok.Getter;
 import tictactoe.backend.manager.LocalGameManager;
 import tictactoe.connector.event.backend.listener.GameStateChangeListener;
-import tictactoe.connector.event.ui.base.IGameBoardUI;
+import tictactoe.connector.event.ui.base.IGamingStateUI;
 
 @Getter
-public class GamingState extends AbstractTicTacToeAppState<IGameBoardUI> implements GameStateChangeListener {
+public class GamingState extends AbstractTicTacToeAppState<IGamingStateUI> implements GameStateChangeListener {
 
     public static final AppStateEvent PAUSE = () -> false;
     public static final AppStateEvent GAME_WON = () -> true;

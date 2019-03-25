@@ -1,7 +1,7 @@
 package tictactoe.connector.event.ui.listener;
 
 // Move all methods to some SettingsModel class
-public interface SettingsMenuListener {
+public interface SettingsMenuUIListener {
     void setRowCount(int rowCount);
     void setColumnCount(int columnCount);
     void setWinLength(int winLength);

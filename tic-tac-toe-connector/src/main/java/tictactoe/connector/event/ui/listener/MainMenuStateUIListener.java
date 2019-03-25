@@ -1,6 +1,6 @@
 package tictactoe.connector.event.ui.listener;
 
-public interface MainMenuListener {
+public interface MainMenuStateUIListener {
 
     void startGame();
 

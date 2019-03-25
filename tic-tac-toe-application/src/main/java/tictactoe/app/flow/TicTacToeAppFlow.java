@@ -20,7 +20,7 @@ import tictactoe.backend.manager.LocalGameManager;
 import tictactoe.backend.model.Board;
 import tictactoe.connector.event.ui.GameStateDescriptor;
 import tictactoe.ui.game.GameBoardUI;
-import tictactoe.ui.state.GameResultUI;
+import tictactoe.ui.state.GameEndUI;
 import tictactoe.ui.state.MainMenuUI;
 import tictactoe.ui.state.PausedPopUp;
 import tictactoe.ui.state.SettingsMenuUI;
@@ -159,7 +159,7 @@ public class TicTacToeAppFlow extends AppFlow {
         if(gameWonScreen == null) {
             gameWonScreen = new GameWonState(
                     Constants.ID_GAME_WON,
-                    new GameResultUI(
+                    new GameEndUI(
                             (Frame) gamingState.getUi(),
                             gamingState.getLocalTicTacToeGameManager().getGameEngine().getWinnerNumber().toString(),
                             Integer.toString(1 - gamingState.getLocalTicTacToeGameManager().getGameEngine().getWinnerNumber()))
@@ -186,7 +186,7 @@ public class TicTacToeAppFlow extends AppFlow {
         if(gameLostScreen == null) {
             gameLostScreen = new GameLostState(
                     Constants.ID_GAME_LOST,
-                    new GameResultUI(
+                    new GameEndUI(
                             (Frame) gamingState.getUi(),
                             gamingState.getLocalTicTacToeGameManager().getGameEngine().getWinnerNumber().toString(),
                             Integer.toString(1 - gamingState.getLocalTicTacToeGameManager().getGameEngine().getWinnerNumber()))
@@ -214,7 +214,7 @@ public class TicTacToeAppFlow extends AppFlow {
         if(gameDrawnScreen == null) {
             gameDrawnScreen = new GameDrawnState(
                     Constants.ID_GAME_DRAWN,
-                    new GameResultUI((Frame) gamingState.getUi(), null, null)
+                    new GameEndUI((Frame) gamingState.getUi(), null, null)
             );
             gameDrawnScreen.setAppStateLifecycleListener(new GameDrawnScreenStateLifecycleListener());
         }

@@ -1,10 +1,10 @@
 package tictactoe.app.state;
 
-import tictactoe.connector.event.ui.base.IGameResultUI;
+import tictactoe.connector.event.ui.base.IGameEndStateUI;
 
 public class GameWonState extends GameEndState {
 
-    public GameWonState(Integer id, IGameResultUI ui) {
+    public GameWonState(Integer id, IGameEndStateUI ui) {
         super(id, ui);
     }
 

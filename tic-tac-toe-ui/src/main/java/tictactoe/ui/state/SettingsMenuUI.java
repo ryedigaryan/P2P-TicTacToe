@@ -1,14 +1,14 @@
 package tictactoe.ui.state;
 
+import tictactoe.connector.event.ui.listener.SettingsMenuUIListener;
 import tictactoe.ui.state.common.AbstractJFrameUI;
-import tictactoe.connector.event.ui.base.ISettingsMenuUI;
-import tictactoe.connector.event.ui.listener.SettingsMenuListener;
+import tictactoe.connector.event.ui.base.ISettingsMenuStateUI;
 
 import javax.swing.*;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
 
-public class SettingsMenuUI extends AbstractJFrameUI<SettingsMenuListener> implements ISettingsMenuUI {
+public class SettingsMenuUI extends AbstractJFrameUI<SettingsMenuUIListener> implements ISettingsMenuStateUI {
 
     JSlider rowCountSlider;
     JSlider columnCountSlider;

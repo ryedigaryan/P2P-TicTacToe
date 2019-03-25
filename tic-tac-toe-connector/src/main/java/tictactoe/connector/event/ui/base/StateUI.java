@@ -1,6 +1,6 @@
 package tictactoe.connector.event.ui.base;
 
-public interface UIElementBase<L> {
+public interface StateUI<L> {
     void setListener(L listener);
 
     void start();

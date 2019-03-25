@@ -2,13 +2,13 @@ package tictactoe.ui.state.common;
 
 import lombok.Getter;
 import lombok.Setter;
-import tictactoe.connector.event.ui.base.UIElementBase;
+import tictactoe.connector.event.ui.base.StateUI;
 
 import javax.swing.*;
 import java.awt.*;
 
 @Getter @Setter
-public class AbstractJDialogUI<L> extends JDialog implements UIElementBase<L> {
+public class AbstractJDialogUI<L> extends JDialog implements StateUI<L> {
     L listener;
 
     public AbstractJDialogUI(Frame owner) {

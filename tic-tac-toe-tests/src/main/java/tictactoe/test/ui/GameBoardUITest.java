@@ -1,6 +1,6 @@
 package tictactoe.test.ui;
 
-import tictactoe.connector.event.ui.listener.TileClickListener;
+import tictactoe.connector.event.ui.listener.GamingStateUIListener;
 import tictactoe.ui.game.GameBoardUI;
 
 import java.awt.*;
@@ -13,10 +13,15 @@ public class GameBoardUITest {
             GameBoardUI b = new GameBoardUI(3, 3);
             System.out.println("Border created");
 
-            b.setListener(new TileClickListener() {
+            b.setListener(new GamingStateUIListener() {
                 @Override
                 public void tileClicked(int row, int col) {
                     System.out.println(String.format("Tile (%d,%d) was clicked", row, col));
+                }
+
+                @Override
+                public void pauseGame() {
+                    System.out.println("PAUSED :D");
                 }
             });
 

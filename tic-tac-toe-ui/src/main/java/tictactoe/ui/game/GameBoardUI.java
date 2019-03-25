@@ -3,18 +3,20 @@ package tictactoe.ui.game;
 import lombok.Getter;
 import lombok.Setter;
 import tictactoe.ui.state.common.AbstractJFrameUI;
-import tictactoe.connector.event.ui.base.IGameBoardUI;
-import tictactoe.connector.event.ui.listener.TileClickListener;
+import tictactoe.connector.event.ui.base.IGamingStateUI;
+import tictactoe.connector.event.ui.listener.GamingStateUIListener;
 
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Ellipse2D;
 
 @Getter @Setter
-public class GameBoardUI extends AbstractJFrameUI<TileClickListener> implements IGameBoardUI {
+public class GameBoardUI extends AbstractJFrameUI<GamingStateUIListener> implements IGamingStateUI {
 
     private final int rowsCount;
     private final int columnsCount;
@@ -28,6 +30,24 @@ public class GameBoardUI extends AbstractJFrameUI<TileClickListener> implements 
         }
         pack();
         setDefaultCloseOperation(EXIT_ON_CLOSE);
+        addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                if(e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+                    getListener().pauseGame();
+                }
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+
+            }
+        });
     }
 
     @Override

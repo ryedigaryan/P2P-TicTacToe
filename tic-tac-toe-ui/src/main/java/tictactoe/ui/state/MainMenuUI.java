@@ -1,13 +1,13 @@
 package tictactoe.ui.state;
 
+import tictactoe.connector.event.ui.listener.MainMenuStateUIListener;
 import tictactoe.ui.state.common.AbstractJFrameUI;
-import tictactoe.connector.event.ui.base.IMainMenuUI;
-import tictactoe.connector.event.ui.listener.MainMenuListener;
+import tictactoe.connector.event.ui.base.IMainMenuStateUI;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class MainMenuUI extends AbstractJFrameUI<MainMenuListener> implements IMainMenuUI {
+public class MainMenuUI extends AbstractJFrameUI<MainMenuStateUIListener> implements IMainMenuStateUI {
     private JButton startGame;
     private JButton openSettings;
 
