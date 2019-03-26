@@ -32,7 +32,7 @@ import tictactoe.ui.state.SettingsMenuUI;
 public class TicTacToeAppFlow extends AppFlow {
 
     public TicTacToeAppFlow() {
-        setInitialAppState(getMainMenuState());
+        setCurrentAppState(getMainMenuState());
         // handle Main Menu events
         registerAppStateChangeRule(Constants.ID_MAIN_MENU, MainMenuState.GAME_SETTINGS, this::getSettingsMenuState);
         registerAppStateChangeRule(Constants.ID_MAIN_MENU, MainMenuState.START_GAME, this::getGamingState);

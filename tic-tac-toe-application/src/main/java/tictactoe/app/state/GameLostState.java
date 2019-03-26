@@ -11,6 +11,6 @@ public class GameLostState extends GameEndState {
 
     @Override
     public void close() {
-        this.getAppStateEventHandler().handleAppStateEvent(this, CLOSE);
+        getAppStateEventHandler().handleAppStateEvent(this, CLOSE);
     }
 }

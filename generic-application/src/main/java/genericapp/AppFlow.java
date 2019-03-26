@@ -15,12 +15,20 @@ public class AppFlow implements AppStateEventHandler, Runnable {
     }
 
     public AppFlow(AppState initialAppState) {
-        setInitialAppState(initialAppState);
+        setCurrentAppState(initialAppState);
     }
 
-    public void setInitialAppState(AppState initialAppState) {
-        initialAppState.setAppStateEventHandler(this);
-        this.currentAppState = initialAppState;
+    ///////////////////////////////////////////////////////////////////////////
+    // Getter/Setter which require custom logic
+    ///////////////////////////////////////////////////////////////////////////
+
+    protected void setCurrentAppState(AppState appState) {
+        appState.setAppStateEventHandler(this);
+        currentAppState = appState;
+    }
+
+    protected <T extends AppState> T getCurrentAppState() {
+        return (T) currentAppState;
     }
 
     /**
@@ -39,6 +47,10 @@ public class AppFlow implements AppStateEventHandler, Runnable {
         Map<AppStateEvent, Supplier<AppState>> appStateConfig = flowMap.computeIfAbsent(oldAppStateId, f -> new HashMap<>());
         appStateConfig.put(event, newAppState);
     }
+
+    ///////////////////////////////////////////////////////////////////////////
+    // Methods overridden from interfaces
+    ///////////////////////////////////////////////////////////////////////////
 
     @Override
     public void handleAppStateEvent(AppState eventSource, AppStateEvent event) {
@@ -66,10 +78,6 @@ public class AppFlow implements AppStateEventHandler, Runnable {
         else {
             currentAppState.start();
         }
-    }
-
-    protected <T extends AppState> T getCurrentAppState() {
-        return (T) currentAppState;
     }
 
     @Override

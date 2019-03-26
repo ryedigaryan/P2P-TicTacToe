@@ -4,7 +4,7 @@ public class AbstractAppStateEvent implements AppStateEvent {
     private boolean shouldStopPreviousAppState;
 
     public AbstractAppStateEvent(boolean shouldStopPreviousAppState) {
-        this.shouldStopPreviousAppState = shouldStopPreviousAppState;
+        setShouldStopPreviousAppState(shouldStopPreviousAppState);
     }
 
     @Override

@@ -16,11 +16,11 @@ public class PausedState extends AbstractTicTacToeAppState<IPausedStateStateUI> 
 
     @Override
     public void continueGame() {
-        this.getAppStateEventHandler().handleAppStateEvent(this, CLOSE);
+        getAppStateEventHandler().handleAppStateEvent(this, CLOSE);
     }
 
     @Override
     public void leaveGame() {
-        this.getAppStateEventHandler().handleAppStateEvent(this, LEAVE_GAME);
+        getAppStateEventHandler().handleAppStateEvent(this, LEAVE_GAME);
     }
 }

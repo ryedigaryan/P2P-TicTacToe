@@ -34,7 +34,7 @@ public class Board {
         this.tiles = new Tile[rowCount][columnCount];
         for(int i = 0; i < rowCount; i++) {
             for(int j = 0; j < columnCount; j++) {
-                tiles[i][j] = new Tile(i, j);
+                this.tiles[i][j] = new Tile(i, j);
             }
         }
         setEmptyTilesCount(rowCount * columnCount);

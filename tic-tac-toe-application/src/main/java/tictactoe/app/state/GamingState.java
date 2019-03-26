@@ -25,16 +25,16 @@ public class GamingState<UIType extends IGamingStateUI> extends AbstractTicTacTo
 
     @Override
     public void playerWon(int playerNumber) {
-        this.getAppStateEventHandler().handleAppStateEvent(this, GAME_WON);
+        getAppStateEventHandler().handleAppStateEvent(this, GAME_WON);
     }
 
     @Override
     public void playerLost(int playerNumber) {
-        this.getAppStateEventHandler().handleAppStateEvent(this, GAME_LOST);
+        getAppStateEventHandler().handleAppStateEvent(this, GAME_LOST);
     }
 
     @Override
     public void draw() {
-        this.getAppStateEventHandler().handleAppStateEvent(this, GAME_DRAWN);
+        getAppStateEventHandler().handleAppStateEvent(this, GAME_DRAWN);
     }
 }
