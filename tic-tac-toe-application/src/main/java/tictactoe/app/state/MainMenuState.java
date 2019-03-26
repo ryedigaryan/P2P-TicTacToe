@@ -1,8 +1,8 @@
 package tictactoe.app.state;
 
 import genericapp.AppStateEvent;
-import tictactoe.connector.event.ui.base.IMainMenuStateUI;
-import tictactoe.connector.event.ui.listener.MainMenuStateUIListener;
+import tictactoe.connector.ui.base.IMainMenuStateUI;
+import tictactoe.connector.ui.listener.MainMenuStateUIListener;
 
 public class MainMenuState extends AbstractTicTacToeAppState<IMainMenuStateUI> implements MainMenuStateUIListener {
 

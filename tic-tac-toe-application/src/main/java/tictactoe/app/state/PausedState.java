@@ -1,8 +1,8 @@
 package tictactoe.app.state;
 
 import genericapp.AppStateEvent;
-import tictactoe.connector.event.ui.base.IPausedStateStateUI;
-import tictactoe.connector.event.ui.listener.PausedStateUIListener;
+import tictactoe.connector.ui.base.IPausedStateStateUI;
+import tictactoe.connector.ui.listener.PausedStateUIListener;
 
 public class PausedState extends AbstractTicTacToeAppState<IPausedStateStateUI> implements PausedStateUIListener {
 

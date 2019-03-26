@@ -3,7 +3,7 @@ package tictactoe.app.state;
 import genericapp.AbstractAppState;
 import lombok.Getter;
 import lombok.Setter;
-import tictactoe.connector.event.ui.base.StateUI;
+import tictactoe.connector.ui.base.StateUI;
 
 @Getter @Setter
 public abstract class AbstractTicTacToeAppState<U extends StateUI> extends AbstractAppState {

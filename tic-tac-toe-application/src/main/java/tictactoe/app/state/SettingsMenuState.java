@@ -1,21 +1,28 @@
 package tictactoe.app.state;
 
 import genericapp.AppStateEvent;
+import lombok.AccessLevel;
 import lombok.Getter;
-import tictactoe.app.state.common.Settings;
-import tictactoe.connector.event.ui.base.ISettingsMenuStateUI;
-import tictactoe.connector.event.ui.listener.SettingsMenuUIListener;
+import lombok.Setter;
+import tictactoe.connector.common.data.Settings;
+import tictactoe.connector.ui.base.ISettingsMenuStateUI;
+import tictactoe.connector.ui.listener.SettingsMenuUIListener;
 
 @Getter
+@Setter(AccessLevel.PROTECTED)
 public class SettingsMenuState extends AbstractTicTacToeAppState<ISettingsMenuStateUI> implements SettingsMenuUIListener {
 
     public static final AppStateEvent BACK_TO_MAIN_MENU = () -> true;
 
-    private Settings gameSettings = new Settings();
+    private Settings gameSettings;
+    private final Settings initialSettings;
 
-    public SettingsMenuState(Integer id, ISettingsMenuStateUI settingsMenuUI) {
+    public SettingsMenuState(Integer id, ISettingsMenuStateUI settingsMenuUI, Settings initialSettings) {
         super(id, settingsMenuUI);
+        this.initialSettings = initialSettings;
+        setGameSettings(initialSettings);
         getUi().setListener(this);
+        getUi().setSettings(initialSettings);
     }
 
     @Override
@@ -41,7 +48,7 @@ public class SettingsMenuState extends AbstractTicTacToeAppState<ISettingsMenuSt
     @Override
     public void close(boolean saveChanges) {
         if(!saveChanges)
-            gameSettings = null;
+            gameSettings = initialSettings;
         this.getAppStateEventHandler().handleAppStateEvent(this, BACK_TO_MAIN_MENU);
     }
 }

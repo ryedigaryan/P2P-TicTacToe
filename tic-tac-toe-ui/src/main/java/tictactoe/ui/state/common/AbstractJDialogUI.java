@@ -2,7 +2,7 @@ package tictactoe.ui.state.common;
 
 import lombok.Getter;
 import lombok.Setter;
-import tictactoe.connector.event.ui.base.StateUI;
+import tictactoe.connector.ui.base.StateUI;
 
 import javax.swing.*;
 import java.awt.*;

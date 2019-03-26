@@ -1,7 +1,7 @@
 package tictactoe.backend.manager;
 
 import tictactoe.backend.logic.GameEngine;
-import tictactoe.connector.event.ui.base.IGamingStateUI;
+import tictactoe.connector.ui.base.IGamingStateUI;
 
 /**
  * A game manager which is designed for game through internet.

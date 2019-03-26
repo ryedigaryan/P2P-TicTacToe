@@ -1,8 +1,8 @@
 package tictactoe.ui.state;
 
-import tictactoe.connector.event.ui.GameStateDescriptor;
-import tictactoe.connector.event.ui.base.IPausedStateStateUI;
-import tictactoe.connector.event.ui.listener.PausedStateUIListener;
+import tictactoe.connector.ui.GameStateDescriptor;
+import tictactoe.connector.ui.base.IPausedStateStateUI;
+import tictactoe.connector.ui.listener.PausedStateUIListener;
 import tictactoe.ui.state.common.AbstractJDialogUI;
 
 import javax.swing.*;

@@ -1,6 +1,6 @@
-package tictactoe.connector.event.ui.base;
+package tictactoe.connector.ui.base;
 
-import tictactoe.connector.event.ui.listener.GamingStateUIListener;
+import tictactoe.connector.ui.listener.GamingStateUIListener;
 
 
 public interface IGamingStateUI extends StateUI<GamingStateUIListener> {

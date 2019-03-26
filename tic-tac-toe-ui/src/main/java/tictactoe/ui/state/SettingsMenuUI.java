@@ -1,13 +1,19 @@
 package tictactoe.ui.state;
 
-import tictactoe.connector.event.ui.listener.SettingsMenuUIListener;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
+import tictactoe.connector.common.data.Settings;
+import tictactoe.connector.ui.listener.SettingsMenuUIListener;
 import tictactoe.ui.state.common.AbstractJFrameUI;
-import tictactoe.connector.event.ui.base.ISettingsMenuStateUI;
+import tictactoe.connector.ui.base.ISettingsMenuStateUI;
 
 import javax.swing.*;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
 
+@Getter(AccessLevel.PROTECTED)
+@Setter(AccessLevel.PROTECTED)
 public class SettingsMenuUI extends AbstractJFrameUI<SettingsMenuUIListener> implements ISettingsMenuStateUI {
 
     JSlider rowCountSlider;
@@ -19,10 +25,10 @@ public class SettingsMenuUI extends AbstractJFrameUI<SettingsMenuUIListener> imp
     JButton exitButton;
 
     public SettingsMenuUI() {
-        rowCountSlider = newSlider(2, 10, 5);
-        columnCountSlider = newSlider(2, 10, 5);
-        winLengthSlider = newSlider(2, 5, 5);
-        playersCountSlider = newSlider(2, 10, 2);
+        rowCountSlider = newSlider(2, 10);
+        columnCountSlider = newSlider(2, 10);
+        winLengthSlider = newSlider(2, 5);
+        playersCountSlider = newSlider(2, 10);
         ChangeListener setWinLengthToMin = e -> winLengthSlider.setMaximum(Math.min(rowCountSlider.getValue(), columnCountSlider.getValue()));
         rowCountSlider.addChangeListener(setWinLengthToMin);
         columnCountSlider.addChangeListener(setWinLengthToMin);
@@ -55,6 +61,14 @@ public class SettingsMenuUI extends AbstractJFrameUI<SettingsMenuUIListener> imp
         pack();
     }
 
+    @Override
+    public void setSettings(Settings settings) {
+        rowCountSlider.setValue(settings.getRowCount());
+        columnCountSlider.setValue(settings.getColumnCount());
+        winLengthSlider.setValue(settings.getWinLength());
+        playersCountSlider.setValue(settings.getPlayersCount());
+    }
+
     private void add(String labelText, JSlider s) {
         JPanel p = panel(new JLabel(labelText), s);
         add(p);
@@ -69,8 +83,8 @@ public class SettingsMenuUI extends AbstractJFrameUI<SettingsMenuUIListener> imp
         return panel;
     }
 
-    private static JSlider newSlider(int min, int max, int value) {
-        JSlider s = new JSlider(min, max, value);
+    private static JSlider newSlider(int min, int max) {
+        JSlider s = new JSlider(min, max);
         s.setPaintTicks(true);
         s.setPaintLabels(true);
         s.setMajorTickSpacing(1);

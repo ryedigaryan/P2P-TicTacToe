@@ -3,6 +3,7 @@ package tictactoe.app.flow;
 import genericapp.AbstractAppStateLifecycleListener;
 import genericapp.AppState;
 import genericapp.AppStateLifecycleListener;
+import tictactoe.connector.common.data.Settings;
 
 public interface Constants {
     Integer ID_MAIN_MENU = 0;
@@ -19,4 +20,8 @@ public interface Constants {
         public void appStateResumed(AppState eventSource) {}
         public void appStateStopped(AppState eventSource) {}
     };
+
+    static Settings defaultGameSettings() {
+        return new Settings(3, 3, 3, 2);
+    }
 }

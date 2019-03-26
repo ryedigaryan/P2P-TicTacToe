@@ -3,8 +3,8 @@ package tictactoe.ui.state;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
-import tictactoe.connector.event.ui.base.IGameEndStateUI;
-import tictactoe.connector.event.ui.listener.GameEndStateUIListener;
+import tictactoe.connector.ui.base.IGameEndStateUI;
+import tictactoe.connector.ui.listener.GameEndStateUIListener;
 import tictactoe.ui.state.common.AbstractJDialogUI;
 
 import javax.swing.*;

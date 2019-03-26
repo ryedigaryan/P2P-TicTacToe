@@ -1,4 +1,4 @@
-package tictactoe.connector.event.ui.base;
+package tictactoe.connector.ui.base;
 
 public interface StateUI<L> {
     void setListener(L listener);

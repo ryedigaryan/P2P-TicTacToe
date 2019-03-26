@@ -3,8 +3,8 @@ package tictactoe.ui.game;
 import lombok.Getter;
 import lombok.Setter;
 import tictactoe.ui.state.common.AbstractJFrameUI;
-import tictactoe.connector.event.ui.base.IGamingStateUI;
-import tictactoe.connector.event.ui.listener.GamingStateUIListener;
+import tictactoe.connector.ui.base.IGamingStateUI;
+import tictactoe.connector.ui.listener.GamingStateUIListener;
 
 import javax.swing.*;
 import javax.swing.border.Border;

@@ -1,4 +1,4 @@
-package tictactoe.app.state.common;
+package tictactoe.connector.common.data;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

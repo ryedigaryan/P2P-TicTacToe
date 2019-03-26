@@ -1,4 +1,4 @@
-package tictactoe.connector.event.ui.listener;
+package tictactoe.connector.ui.listener;
 
 // Move all methods to some SettingsModel class
 public interface SettingsMenuUIListener {

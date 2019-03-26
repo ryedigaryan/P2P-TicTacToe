@@ -4,8 +4,8 @@ import genericapp.AppStateEvent;
 import lombok.Getter;
 import tictactoe.backend.manager.GameManager;
 import tictactoe.backend.manager.LocalGameManager;
-import tictactoe.connector.event.backend.listener.GameStateChangeListener;
-import tictactoe.connector.event.ui.base.IGamingStateUI;
+import tictactoe.connector.backend.listener.GameStateChangeListener;
+import tictactoe.connector.ui.base.IGamingStateUI;
 
 @Getter
 public class GamingState<UIType extends IGamingStateUI> extends AbstractTicTacToeAppState<UIType> implements GameStateChangeListener {

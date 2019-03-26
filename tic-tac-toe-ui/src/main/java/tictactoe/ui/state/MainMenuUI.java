@@ -1,8 +1,8 @@
 package tictactoe.ui.state;
 
-import tictactoe.connector.event.ui.listener.MainMenuStateUIListener;
+import tictactoe.connector.ui.listener.MainMenuStateUIListener;
 import tictactoe.ui.state.common.AbstractJFrameUI;
-import tictactoe.connector.event.ui.base.IMainMenuStateUI;
+import tictactoe.connector.ui.base.IMainMenuStateUI;
 
 import javax.swing.*;
 import java.awt.*;

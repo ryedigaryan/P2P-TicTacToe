@@ -1,8 +1,8 @@
 package tictactoe.app.state;
 
 import genericapp.AppStateEvent;
-import tictactoe.connector.event.ui.base.IGameEndStateUI;
-import tictactoe.connector.event.ui.listener.GameEndStateUIListener;
+import tictactoe.connector.ui.base.IGameEndStateUI;
+import tictactoe.connector.ui.listener.GameEndStateUIListener;
 
 public abstract class GameEndState extends AbstractTicTacToeAppState<IGameEndStateUI> implements GameEndStateUIListener {
 

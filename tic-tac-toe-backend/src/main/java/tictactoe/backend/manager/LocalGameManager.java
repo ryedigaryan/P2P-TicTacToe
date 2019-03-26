@@ -4,9 +4,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import tictactoe.backend.logic.GameEngine;
-import tictactoe.connector.event.backend.listener.TileEventListener;
-import tictactoe.connector.event.ui.base.IGamingStateUI;
-import tictactoe.connector.event.ui.listener.GamingStateUIListener;
+import tictactoe.connector.ui.base.IGamingStateUI;
 
 /**
  * A basic game manager which is designed for a game in one computer.

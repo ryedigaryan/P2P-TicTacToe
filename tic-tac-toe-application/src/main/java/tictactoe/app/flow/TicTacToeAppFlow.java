@@ -13,12 +13,12 @@ import tictactoe.app.state.GamingState;
 import tictactoe.app.state.MainMenuState;
 import tictactoe.app.state.PausedState;
 import tictactoe.app.state.SettingsMenuState;
-import tictactoe.app.state.common.Settings;
+import tictactoe.connector.common.data.Settings;
 import tictactoe.backend.logic.GameConfig;
 import tictactoe.backend.logic.GameEngine;
 import tictactoe.backend.manager.LocalGameManager;
 import tictactoe.backend.model.Board;
-import tictactoe.connector.event.ui.GameStateDescriptor;
+import tictactoe.connector.ui.GameStateDescriptor;
 import tictactoe.ui.game.GameBoardUI;
 import tictactoe.ui.state.GameDrawnUI;
 import tictactoe.ui.state.GameLostUI;
@@ -77,11 +77,11 @@ public class TicTacToeAppFlow extends AppFlow {
     // SettingsMenuState related fields, methods, inner classes
     ///////////////////////////////////////////////////////////////////////////
 
-    private Settings gameSettings;
+    private Settings gameSettings = Constants.defaultGameSettings();
     private SettingsMenuState settingsMenuState;
     private SettingsMenuState getSettingsMenuState() {
         if(settingsMenuState == null) {
-            settingsMenuState = new SettingsMenuState(Constants.ID_SETTINGS_MENU, new SettingsMenuUI());
+            settingsMenuState = new SettingsMenuState(Constants.ID_SETTINGS_MENU, new SettingsMenuUI(), gameSettings);
             settingsMenuState.setAppStateLifecycleListener(new SettingsMenuStateLifecycleListener());
         }
         return settingsMenuState;
@@ -103,11 +103,6 @@ public class TicTacToeAppFlow extends AppFlow {
     private GamingState<GameBoardUI> gamingState;
     private GamingState<GameBoardUI> getGamingState() {
         if(gamingState == null) {
-            if(gameSettings == null) {
-                System.out.println("Game Settings is null, so running game with default settings");
-                gameSettings = defaultSettings();
-            }
-
             GameConfig config = new GameConfig(gameSettings.getWinLength(), gameSettings.getPlayersCount());
             Board board = new Board(gameSettings.getRowCount(), gameSettings.getColumnCount());
             GameEngine engine = new GameEngine(config, board);
@@ -126,7 +121,6 @@ public class TicTacToeAppFlow extends AppFlow {
             super.appStateStarted(eventSource);
             mainMenuState = null;
             settingsMenuState = null;
-            gameSettings = null;
         }
     }
 
