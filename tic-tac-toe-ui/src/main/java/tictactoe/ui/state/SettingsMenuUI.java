@@ -22,7 +22,7 @@ public class SettingsMenuUI extends AbstractJFrameUI<SettingsMenuUIListener> imp
         rowCountSlider = new JSlider(2, 10, 5);
         columnCountSlider = new JSlider(2, 10, 5);
         winLengthSlider = new JSlider(2, 5, 5);
-        playersCountSlider = new JSlider(2, 2);
+        playersCountSlider = new JSlider(2, 5);
         ChangeListener setWinLengthToMin = e -> {
             winLengthSlider.setMaximum(Math.min(rowCountSlider.getValue(), columnCountSlider.getValue()));
         };

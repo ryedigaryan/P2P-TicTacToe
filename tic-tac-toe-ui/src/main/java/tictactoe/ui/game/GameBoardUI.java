@@ -13,7 +13,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.geom.Ellipse2D;
 
 @Getter @Setter
 public class GameBoardUI extends AbstractJFrameUI<GamingStateUIListener> implements IGamingStateUI {
@@ -61,14 +60,8 @@ public class GameBoardUI extends AbstractJFrameUI<GamingStateUIListener> impleme
     // TODO: 3/24/2019 add ability to draw more than 2 player's game
     @Override
     public void mark(int playerNumber, int row, int col) {
-        assert playerNumber == 0 || playerNumber == 1 : "For now playerNumber may be 0 or 1";
-        switch (playerNumber) {
-            case 0:
-                markX(row, col);
-                break;
-            case 1:
-                markO(row, col);
-        }
+        getComponent(calculateMarkPosition(row, col)).setTileValue(playerNumber);
+        repaint();
     }
 
     /**
@@ -79,16 +72,6 @@ public class GameBoardUI extends AbstractJFrameUI<GamingStateUIListener> impleme
         getComponent(calculateMarkPosition(row, col)).removeMark();
         repaint();
         System.out.println("Marked X at " + calculateMarkPosition(row, col));
-    }
-
-    private void markO(int row, int col) {
-        getComponent(calculateMarkPosition(row, col)).markO();
-        repaint();
-    }
-
-    public void markX(int row, int col) {
-        getComponent(calculateMarkPosition(row, col)).markX();
-        repaint();
     }
 
     /**
@@ -121,23 +104,21 @@ public class GameBoardUI extends AbstractJFrameUI<GamingStateUIListener> impleme
     private static final Dimension PREFERRED_TILE_SIZE = new Dimension(100, 100);
     private static final Border TILE_BORDER = BorderFactory.createLineBorder(Color.BLACK);
 
-    @Getter
+    @Getter @Setter
     public class TileUI extends JComponent {
-        private static final boolean MARKER_O = true;
-        private static final boolean MARKER_X = false;
-
         private final int row;
         private final int col;
 
-        private Boolean tileValue;
+        private Integer tileValue;
 
         public TileUI(int row, int col) {
             this.row = row;
             this.col = col;
             setBorder(TILE_BORDER);
             addMouseListener(new MouseAdapter() {
+                // TODO: 3/26/2019 may be this should be changed to mouseClicked, for now for faster mouses it is convenient to use mousePressed
                 @Override
-                public void mouseClicked(MouseEvent e) {
+                public void mousePressed(MouseEvent e) {
                     assert getListener() != null : "listener should not be null";
                     getListener().tileClicked(row, col);
                 }
@@ -153,14 +134,8 @@ public class GameBoardUI extends AbstractJFrameUI<GamingStateUIListener> impleme
                 removeMark();
                 return;
             }
-            if(tileValue == MARKER_O) {
-                drawO((Graphics2D) g);
-                return;
-            }
-            drawX((Graphics2D) g);
+            drawNumber((Graphics2D) g, tileValue);
         }
-
-
 
         @Override
         public Dimension getPreferredSize() {
@@ -173,25 +148,17 @@ public class GameBoardUI extends AbstractJFrameUI<GamingStateUIListener> impleme
             return new Dimension(getHeight(), getHeight());
         }
 
-        public void markO() {
-            tileValue = MARKER_O;
-        }
-
-        public void markX() {
-            tileValue = MARKER_X;
-        }
-
         public void removeMark() {
             tileValue = null;
         }
 
-        private void drawO(Graphics2D g) {
-            g.draw(new Ellipse2D.Double(0, 0, getWidth(), getHeight()));
-        }
-
-        private void drawX(Graphics2D g) {
-            g.drawLine(0, 0, getWidth(), getHeight());
-            g.drawLine(getWidth(), 0, 0, getHeight());
+        private void drawNumber(Graphics2D g, Integer number) {
+//            IntStream.range(0, 5).mapToDouble(n -> n * 1000).map(n -> n * (n - 10) * (n / 10)).mapToInt(n -> (int)((long)n)).mapToObj(Color::new).toArray(Color[]::new);
+            double doubleValue = number * 1000D;
+            doubleValue = doubleValue * (doubleValue - 10) * (doubleValue / 10);
+            number = (int)((long)doubleValue);
+            g.setColor(new Color(number));
+            g.fillRect(5, 5, getWidth() - 10, getHeight() - 10);
         }
     }
 

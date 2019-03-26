@@ -20,13 +20,12 @@ import tictactoe.backend.manager.LocalGameManager;
 import tictactoe.backend.model.Board;
 import tictactoe.connector.event.ui.GameStateDescriptor;
 import tictactoe.ui.game.GameBoardUI;
-import tictactoe.ui.state.GameEndUI;
+import tictactoe.ui.state.GameDrawnUI;
+import tictactoe.ui.state.GameLostUI;
+import tictactoe.ui.state.GameWonUI;
 import tictactoe.ui.state.MainMenuUI;
 import tictactoe.ui.state.PausedPopUp;
 import tictactoe.ui.state.SettingsMenuUI;
-
-import java.awt.*;
-import java.util.Arrays;
 
 @Getter(AccessLevel.PRIVATE)
 @Setter(AccessLevel.PRIVATE)
@@ -101,8 +100,8 @@ public class TicTacToeAppFlow extends AppFlow {
     // GamingState related fields, methods, inner classes
     ///////////////////////////////////////////////////////////////////////////
 
-    private GamingState gamingState;
-    private GamingState getGamingState() {
+    private GamingState<GameBoardUI> gamingState;
+    private GamingState<GameBoardUI> getGamingState() {
         if(gamingState == null) {
             if(gameSettings == null) {
                 System.out.println("Game Settings is null, so running game with default settings");
@@ -112,9 +111,9 @@ public class TicTacToeAppFlow extends AppFlow {
             GameConfig config = new GameConfig(gameSettings.getWinLength(), gameSettings.getPlayersCount());
             Board board = new Board(gameSettings.getRowCount(), gameSettings.getColumnCount());
             GameEngine engine = new GameEngine(config, board);
-            LocalGameManager ticTacToeGameManager = new LocalGameManager(engine, new GameBoardUI(gameSettings.getRowCount(), gameSettings.getColumnCount()));
+            LocalGameManager<GameBoardUI> ticTacToeGameManager = new LocalGameManager<>(engine, new GameBoardUI(gameSettings.getRowCount(), gameSettings.getColumnCount()));
 
-            gamingState = new GamingState(Constants.ID_GAMING_SCENE, ticTacToeGameManager);
+            gamingState = new GamingState<>(Constants.ID_GAMING_SCENE, ticTacToeGameManager);
             gamingState.setAppStateLifecycleListener(new GamingSceneStateLifecycleListener());
         }
         return gamingState;
@@ -138,10 +137,8 @@ public class TicTacToeAppFlow extends AppFlow {
     private PausedState pausedState;
     private PausedState getPausedState() {
         if(pausedState == null) {
-            GameStateDescriptor gsd =
-                    () -> "Player Names: " +
-                            Arrays.toString(gamingState.getLocalTicTacToeGameManager().getPlayerNames());
-            pausedState = new PausedState(Constants.ID_PAUSE_SCREEN, new PausedPopUp((Frame) gamingState.getUi(), gsd));
+            GameStateDescriptor gsd = () -> "It is " + gamingState.getGameManager().getPlayerName() + " turn";
+            pausedState = new PausedState(Constants.ID_PAUSE_SCREEN, new PausedPopUp(gamingState.getUi(), gsd));
             pausedState.setAppStateLifecycleListener(new PauseScreenStateLifecycleListener());
         }
         return pausedState;
@@ -159,10 +156,7 @@ public class TicTacToeAppFlow extends AppFlow {
         if(gameWonScreen == null) {
             gameWonScreen = new GameWonState(
                     Constants.ID_GAME_WON,
-                    new GameEndUI(
-                            (Frame) gamingState.getUi(),
-                            gamingState.getLocalTicTacToeGameManager().getGameEngine().getWinnerNumber().toString(),
-                            Integer.toString(1 - gamingState.getLocalTicTacToeGameManager().getGameEngine().getWinnerNumber()))
+                    new GameWonUI(gamingState.getUi(), gamingState.getGameManager().getWinnerName())
             );
             gameWonScreen.setAppStateLifecycleListener(new GameWonScreenStateLifecycleListener());
         }
@@ -186,10 +180,7 @@ public class TicTacToeAppFlow extends AppFlow {
         if(gameLostScreen == null) {
             gameLostScreen = new GameLostState(
                     Constants.ID_GAME_LOST,
-                    new GameEndUI(
-                            (Frame) gamingState.getUi(),
-                            gamingState.getLocalTicTacToeGameManager().getGameEngine().getWinnerNumber().toString(),
-                            Integer.toString(1 - gamingState.getLocalTicTacToeGameManager().getGameEngine().getWinnerNumber()))
+                    new GameLostUI(gamingState.getUi(), gamingState.getGameManager().getWinnerName())
             );
             gameLostScreen.setAppStateLifecycleListener(new GameLostScreenStateLifecycleListener());
         }
@@ -214,7 +205,7 @@ public class TicTacToeAppFlow extends AppFlow {
         if(gameDrawnScreen == null) {
             gameDrawnScreen = new GameDrawnState(
                     Constants.ID_GAME_DRAWN,
-                    new GameEndUI((Frame) gamingState.getUi(), null, null)
+                    new GameDrawnUI(gamingState.getUi())
             );
             gameDrawnScreen.setAppStateLifecycleListener(new GameDrawnScreenStateLifecycleListener());
         }
