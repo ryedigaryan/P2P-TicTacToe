@@ -19,13 +19,11 @@ public class SettingsMenuUI extends AbstractJFrameUI<SettingsMenuUIListener> imp
     JButton exitButton;
 
     public SettingsMenuUI() {
-        rowCountSlider = new JSlider(2, 10, 5);
-        columnCountSlider = new JSlider(2, 10, 5);
-        winLengthSlider = new JSlider(2, 5, 5);
-        playersCountSlider = new JSlider(2, 5);
-        ChangeListener setWinLengthToMin = e -> {
-            winLengthSlider.setMaximum(Math.min(rowCountSlider.getValue(), columnCountSlider.getValue()));
-        };
+        rowCountSlider = newSlider(2, 10, 5);
+        columnCountSlider = newSlider(2, 10, 5);
+        winLengthSlider = newSlider(2, 5, 5);
+        playersCountSlider = newSlider(2, 10, 2);
+        ChangeListener setWinLengthToMin = e -> winLengthSlider.setMaximum(Math.min(rowCountSlider.getValue(), columnCountSlider.getValue()));
         rowCountSlider.addChangeListener(setWinLengthToMin);
         columnCountSlider.addChangeListener(setWinLengthToMin);
 
@@ -45,22 +43,37 @@ public class SettingsMenuUI extends AbstractJFrameUI<SettingsMenuUIListener> imp
 
         exitButton.addActionListener(e -> getListener().close(false));
 
-        setLayout(new GridLayout(6, 2));
+        setLayout(new GridLayout(6, 1));
 
-        add(new JLabel("Row Count:")); addSlider(rowCountSlider);
-        add(new JLabel("Column Count:")); addSlider(columnCountSlider);
-        add(new JLabel("Win Length:")); addSlider(winLengthSlider);
-        add(new JLabel("Players Count:")); addSlider(playersCountSlider);
-        add(new JLabel("")); add(saveButton);
-        add(new JLabel("")); add(exitButton);
+        add("Row Count:", rowCountSlider);
+        add("Column Count:", columnCountSlider);
+        add("Win Length:", winLengthSlider);
+        add("Players Count:", playersCountSlider);
+        add(saveButton);
+        add(exitButton);
 
         pack();
     }
 
-    void addSlider(JSlider s) {
+    private void add(String labelText, JSlider s) {
+        JPanel p = panel(new JLabel(labelText), s);
+        add(p);
+    }
+
+    private static JPanel panel(JLabel l, JSlider s) {
+        JPanel panel = new JPanel();
+        panel.setLayout(new GridLayout(1, 2));
+        panel.add(l);
+        panel.add(s);
+        panel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        return panel;
+    }
+
+    private static JSlider newSlider(int min, int max, int value) {
+        JSlider s = new JSlider(min, max, value);
         s.setPaintTicks(true);
         s.setPaintLabels(true);
         s.setMajorTickSpacing(1);
-        add(s);
+        return s;
     }
 }
