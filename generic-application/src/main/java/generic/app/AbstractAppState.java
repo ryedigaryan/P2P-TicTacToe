@@ -1,6 +1,6 @@
-package genericapp;
+package generic.app;
 
-import genericapp.exception.IllegalAppStateLifecycleException;
+import generic.app.exception.IllegalAppStateLifecycleException;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;

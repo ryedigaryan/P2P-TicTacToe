@@ -1,8 +1,8 @@
 package tictactoe.app.flow;
 
-import genericapp.AbstractAppStateLifecycleListener;
-import genericapp.AppState;
-import genericapp.AppStateLifecycleListener;
+import generic.app.AbstractAppStateLifecycleListener;
+import generic.app.AppState;
+import generic.app.AppStateLifecycleListener;
 import tictactoe.connector.common.data.Settings;
 
 public interface Constants {

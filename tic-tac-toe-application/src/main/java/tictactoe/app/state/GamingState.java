@@ -1,6 +1,6 @@
 package tictactoe.app.state;
 
-import genericapp.AppStateEvent;
+import generic.app.AppStateEvent;
 import lombok.Getter;
 import tictactoe.backend.manager.GameManager;
 import tictactoe.backend.manager.LocalGameManager;

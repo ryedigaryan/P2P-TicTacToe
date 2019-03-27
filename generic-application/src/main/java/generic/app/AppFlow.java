@@ -1,4 +1,4 @@
-package genericapp;
+package generic.app;
 
 import lombok.ToString;
 

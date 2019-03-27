@@ -1,8 +1,8 @@
 package tictactoe.app.flow;
 
-import genericapp.AbstractAppStateLifecycleListener;
-import genericapp.AppFlow;
-import genericapp.AppState;
+import generic.app.AbstractAppStateLifecycleListener;
+import generic.app.AppFlow;
+import generic.app.AppState;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;

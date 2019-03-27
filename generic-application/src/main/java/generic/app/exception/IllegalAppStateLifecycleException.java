@@ -1,6 +1,6 @@
-package genericapp.exception;
+package generic.app.exception;
 
-import genericapp.AppState;
+import generic.app.AppState;
 
 public class IllegalAppStateLifecycleException extends IllegalStateException {
     public IllegalAppStateLifecycleException(AppState caller, String oldState, String newStateAction) {

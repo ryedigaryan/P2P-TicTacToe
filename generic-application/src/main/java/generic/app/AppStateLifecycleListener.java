@@ -1,4 +1,4 @@
-package genericapp;
+package generic.app;
 
 // It'd be better to have methods like
 // will enter state xxx

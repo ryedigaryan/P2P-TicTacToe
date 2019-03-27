@@ -1,4 +1,4 @@
-package genericapp;
+package generic.app;
 
 public class AbstractAppStateEvent implements AppStateEvent {
     private boolean shouldStopPreviousAppState;

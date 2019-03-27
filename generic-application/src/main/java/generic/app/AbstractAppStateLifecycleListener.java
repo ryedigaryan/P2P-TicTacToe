@@ -1,4 +1,4 @@
-package genericapp;
+package generic.app;
 
 public abstract class AbstractAppStateLifecycleListener implements AppStateLifecycleListener {
     @Override

@@ -1,6 +1,6 @@
 package tictactoe.app.state;
 
-import genericapp.AbstractAppState;
+import generic.app.AbstractAppState;
 import lombok.Getter;
 import lombok.Setter;
 import tictactoe.connector.ui.base.StateUI;

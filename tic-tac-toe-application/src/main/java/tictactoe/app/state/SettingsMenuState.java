@@ -1,6 +1,6 @@
 package tictactoe.app.state;
 
-import genericapp.AppStateEvent;
+import generic.app.AppStateEvent;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;

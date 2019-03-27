@@ -1,4 +1,4 @@
-package genericapp;
+package generic.app;
 
 public abstract class AbstractAppStateWithStateChangeNotification extends AbstractAppState {
 
