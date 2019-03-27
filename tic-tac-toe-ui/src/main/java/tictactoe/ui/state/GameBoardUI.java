@@ -1,5 +1,6 @@
 package tictactoe.ui.state;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import tictactoe.ui.state.common.AbstractJFrameUI;
@@ -105,22 +106,54 @@ public class GameBoardUI extends AbstractJFrameUI<GamingStateUIListener> impleme
     private static final Border TILE_BORDER = BorderFactory.createLineBorder(Color.BLACK);
 
     @Getter @Setter
-    public class TileUI extends JComponent {
+    class TileUI extends JComponent {
+        @Getter(AccessLevel.NONE)
+        @Setter(AccessLevel.NONE)
+        private MouseAdapter passClickToBackend;
+
         private final int row;
         private final int col;
 
         private Integer tileValue;
 
-        public TileUI(int row, int col) {
+        void setTileValue(Integer tileValue) {
+            this.tileValue = tileValue;
+            // disable tile when it's value have been changed
+            // as I do not want to make any additional calls to backend
+            removeMouseListener(passClickToBackend);
+            passClickToBackend = null;
+        }
+
+        TileUI(int row, int col) {
             this.row = row;
             this.col = col;
             setBorder(TILE_BORDER);
-            addMouseListener(new MouseAdapter() {
-                // TODO: 3/26/2019 may be this should be changed to mouseClicked, for now for faster mouses it is convenient to use mousePressed
+            addMouseListener(passClickToBackend = new MouseAdapter() {
+                boolean isMouseInsideTile;
+                boolean isMousePressed;
+
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    isMouseInsideTile = true;
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    isMouseInsideTile = false;
+                }
+
                 @Override
                 public void mousePressed(MouseEvent e) {
-                    assert getListener() != null : "listener should not be null";
-                    getListener().tileClicked(row, col);
+                    isMousePressed = true;
+                }
+
+                @Override
+                public void mouseReleased(MouseEvent e) {
+                    if(isMouseInsideTile && isMousePressed) {
+                        assert getListener() != null : "listener should not be null";
+                        getListener().tileClicked(row, col);
+                    }
+                    isMousePressed = false;
                 }
             });
         }
@@ -129,34 +162,32 @@ public class GameBoardUI extends AbstractJFrameUI<GamingStateUIListener> impleme
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
 
-            // null check should be done first
-            if(tileValue == null) {
-                removeMark();
+            if (tileValue == null) {
                 return;
             }
+
             drawNumber((Graphics2D) g, tileValue);
         }
 
         @Override
         public Dimension getPreferredSize() {
-            if(getWidth() < PREFERRED_TILE_SIZE.getWidth() || getHeight() < PREFERRED_TILE_SIZE.getHeight()) {
+            if (getWidth() < PREFERRED_TILE_SIZE.getWidth() || getHeight() < PREFERRED_TILE_SIZE.getHeight()) {
                 return PREFERRED_TILE_SIZE;
             }
-            if(getWidth() < getHeight()) {
+            if (getWidth() < getHeight()) {
                 return new Dimension(getWidth(), getWidth());
             }
             return new Dimension(getHeight(), getHeight());
         }
 
-        public void removeMark() {
+        void removeMark() {
             tileValue = null;
         }
 
         private void drawNumber(Graphics2D g, Integer number) {
-//            IntStream.range(0, 5).mapToDouble(n -> n * 1000).map(n -> n * (n - 10) * (n / 10)).mapToInt(n -> (int)((long)n)).mapToObj(Color::new).toArray(Color[]::new);
             double doubleValue = number * 1000D;
             doubleValue = doubleValue * (doubleValue - 10) * (doubleValue / 10);
-            number = (int)((long)doubleValue);
+            number = (int) ((long) doubleValue);
             g.setColor(new Color(number));
             g.fillRect(5, 5, getWidth() - 10, getHeight() - 10);
         }
