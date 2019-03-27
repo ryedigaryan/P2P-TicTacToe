@@ -13,14 +13,12 @@ import tictactoe.connector.ui.base.IGamingStateUI;
 public class LocalGameManager<UIType extends IGamingStateUI> implements GameManager<UIType> {
 
     private final GameEngine gameEngine;
-    @Getter(AccessLevel.NONE)
     private final UIType ui;
 
     public LocalGameManager(GameEngine gameEngine, UIType ui) {
         this.gameEngine = gameEngine;
         this.ui = ui;
         getGameEngine().getBoard().setTileEventListener(this);
-        getUI().setListener(this);
     }
 
     ///////////////////////////////////////////////////////////////////////////
@@ -42,6 +40,11 @@ public class LocalGameManager<UIType extends IGamingStateUI> implements GameMana
         return ui;
     }
 
+    @Override
+    public void processPlayerInput(int row, int col) {
+        gameEngine.acceptNextPlayerMark(row, col);
+    }
+
     ///////////////////////////////////////////////////////////////////////////
     // TileEventListener interface methods
     ///////////////////////////////////////////////////////////////////////////
@@ -55,19 +58,5 @@ public class LocalGameManager<UIType extends IGamingStateUI> implements GameMana
     @Override
     public void valueErased(int row, int col, int oldValue) {
         ui.removeMark(row, col);
-    }
-
-    ///////////////////////////////////////////////////////////////////////////
-    // GamingStateUIListener interface methods
-    ///////////////////////////////////////////////////////////////////////////
-
-    @Override
-    public void tileClicked(int row, int col) {
-        gameEngine.acceptNextPlayerMark(row, col);
-    }
-
-    @Override
-    public void pauseGame() {
-        // TODO: 3/25/2019
     }
 }

@@ -28,22 +28,17 @@ public class NetworkGameManager<UIType extends IGamingStateUI> implements GameMa
     }
 
     @Override
+    public void processPlayerInput(int row, int col) {
+
+    }
+
+    @Override
     public void valueChanged(int row, int col, int oldValue, int newValue) {
 
     }
 
     @Override
     public void valueErased(int row, int col, int oldValue) {
-
-    }
-
-    @Override
-    public void tileClicked(int row, int col) {
-
-    }
-
-    @Override
-    public void pauseGame() {
 
     }
 }

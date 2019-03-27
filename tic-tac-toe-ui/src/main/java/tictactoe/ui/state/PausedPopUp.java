@@ -23,6 +23,8 @@ public class PausedPopUp extends AbstractJDialogUI<PausedStateUIListener> implem
         resumeGameButton.addActionListener(e -> getListener().continueGame());
         leaveGameButton.addActionListener(e -> getListener().leaveGame());
 
+        setLayout(new GridLayout(3, 1));
+
         add(gameStateInfoLabel);
         add(resumeGameButton);
         add(leaveGameButton);

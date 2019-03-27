@@ -6,9 +6,10 @@ import tictactoe.backend.manager.GameManager;
 import tictactoe.backend.manager.LocalGameManager;
 import tictactoe.connector.backend.listener.GameStateChangeListener;
 import tictactoe.connector.ui.base.IGamingStateUI;
+import tictactoe.connector.ui.listener.GamingStateUIListener;
 
 @Getter
-public class GamingState<UIType extends IGamingStateUI> extends AbstractTicTacToeAppState<UIType> implements GameStateChangeListener {
+public class GamingState<UIType extends IGamingStateUI> extends AbstractTicTacToeAppState<UIType> implements GameStateChangeListener, GamingStateUIListener {
 
     public static final AppStateEvent PAUSE = () -> false;
     public static final AppStateEvent GAME_WON = () -> true;
@@ -20,7 +21,8 @@ public class GamingState<UIType extends IGamingStateUI> extends AbstractTicTacTo
     public GamingState(Integer id, LocalGameManager<UIType> gameManager) {
         super(id, gameManager.getUI());
         this.gameManager = gameManager;
-        this.gameManager.getGameEngine().setGameStateChangeListener(this);
+        getGameManager().getGameEngine().setGameStateChangeListener(this);
+        getUi().setListener(this);
     }
 
     @Override
@@ -36,5 +38,15 @@ public class GamingState<UIType extends IGamingStateUI> extends AbstractTicTacTo
     @Override
     public void draw() {
         getAppStateEventHandler().handleAppStateEvent(this, GAME_DRAWN);
+    }
+
+    @Override
+    public void tileClicked(int row, int col) {
+        gameManager.processPlayerInput(row, col);
+    }
+
+    @Override
+    public void pauseGame() {
+        getAppStateEventHandler().handleAppStateEvent(this, PAUSE);
     }
 }

@@ -63,6 +63,7 @@ public class TicTacToeAppFlow extends AppFlow {
             mainMenuState = new MainMenuState(Constants.ID_MAIN_MENU, new MainMenuUI());
             mainMenuState.setAppStateLifecycleListener(new MainMenuStateLifecycleListener());
         }
+        cleanUpAppStates();
         return mainMenuState;
     }
 
@@ -143,6 +144,11 @@ public class TicTacToeAppFlow extends AppFlow {
     }
 
     private class PauseScreenStateLifecycleListener extends AbstractAppStateLifecycleListener {
+        @Override
+        public void appStateStopped(AppState eventSource) {
+            super.appStateStopped(eventSource);
+            pausedState = null;
+        }
     }
 
     ///////////////////////////////////////////////////////////////////////////
@@ -165,7 +171,6 @@ public class TicTacToeAppFlow extends AppFlow {
         @Override
         public void appStateStopped(AppState eventSource) {
             super.appStateStopped(eventSource);
-            cleanUp();
         }
     }
 
@@ -190,7 +195,6 @@ public class TicTacToeAppFlow extends AppFlow {
         @Override
         public void appStateStopped(AppState eventSource) {
             super.appStateStopped(eventSource);
-            cleanUp();
         }
     }
 
@@ -215,7 +219,6 @@ public class TicTacToeAppFlow extends AppFlow {
         @Override
         public void appStateStopped(AppState eventSource) {
             super.appStateStopped(eventSource);
-            cleanUp();
         }
     }
 
@@ -224,16 +227,12 @@ public class TicTacToeAppFlow extends AppFlow {
     // helpers
     ///////////////////////////////////////////////////////////////////////////
 
-    private void cleanUp() {
+    private void cleanUpAppStates() {
         settingsMenuState = null;
         gamingState = null;
         pausedState = null;
         gameWonScreen = null;
         gameLostScreen = null;
         gameDrawnScreen = null;
-    }
-
-    private Settings defaultSettings() {
-        return new Settings(3, 3, 3, 2);
     }
 }
