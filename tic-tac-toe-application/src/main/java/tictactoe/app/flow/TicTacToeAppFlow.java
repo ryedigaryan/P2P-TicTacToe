@@ -45,7 +45,6 @@ public class TicTacToeAppFlow extends AppFlow {
         registerAppStateChangeRule(Constants.ID_GAMING_SCENE, GamingState.GAME_DRAWN, this::getGameDrawnScreen);
         // handle Pause Screen events
         registerAppStateChangeRule(Constants.ID_PAUSE_SCREEN, PausedState.CLOSE, this::getGamingState);
-        // TODO: 3/23/2019 Think wisely
         registerAppStateChangeRule(Constants.ID_PAUSE_SCREEN, PausedState.LEAVE_GAME, this::getMainMenuState);
         // handle End of Game Screen events
         registerAppStateChangeRule(Constants.ID_GAME_WON, GameWonState.CLOSE, this::getMainMenuState);

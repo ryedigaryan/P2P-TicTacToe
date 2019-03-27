@@ -58,7 +58,6 @@ public class GameBoardUI extends AbstractJFrameUI<GamingStateUIListener> impleme
     /**
      * Top-Left = 0,0
      */
-    // TODO: 3/24/2019 add ability to draw more than 2 player's game
     @Override
     public void mark(int playerNumber, int row, int col) {
         getComponent(calculateMarkPosition(row, col)).setTileValue(playerNumber);
