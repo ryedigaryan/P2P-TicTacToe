@@ -55,6 +55,7 @@ public class AppFlow implements AppStateEventHandler, Runnable {
     @Override
     public void handleAppStateEvent(AppState eventSource, AppStateEvent event) {
         assert currentAppState != null : "Current AppState could not be null when handling event";
+
         if(event.shouldStopPreviousAppState())
             currentAppState.stop();
         else
@@ -65,19 +66,16 @@ public class AppFlow implements AppStateEventHandler, Runnable {
                 .get(event) // Map<AppStateEvent, Supplier<AppState>>::get
                 .get();     // Supplier<AppState>::get
 
-        if(currentAppState.getAppStateEventHandler() == null) {
+        if(currentAppState.getAppStateEventHandler() == null)
             currentAppState.setAppStateEventHandler(this);
-        }
 
         // if any application flow event handler will be someone else, the flow might broke.
         assert currentAppState.getAppStateEventHandler() == this : "Event handler of all AppStates should be AppFlow.";
 
-        if(currentAppState.isStarted()) {
+        if(currentAppState.isStarted())
             currentAppState.resume();
-        }
-        else {
+        else
             currentAppState.start();
-        }
     }
 
     @Override

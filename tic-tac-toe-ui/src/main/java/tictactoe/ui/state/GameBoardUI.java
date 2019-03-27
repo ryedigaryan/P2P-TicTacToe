@@ -1,4 +1,4 @@
-package tictactoe.ui.game;
+package tictactoe.ui.state;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -21,6 +21,7 @@ public class GameBoardUI extends AbstractJFrameUI<GamingStateUIListener> impleme
     private final int columnsCount;
 
     public GameBoardUI(int boardRows, int boardColumns) throws HeadlessException {
+        super("Playing Tic-Tac-Toe");
         setLayout(new GridLayout(rowsCount = boardRows, columnsCount = boardColumns));
         for (int i = 0; i < rowsCount; i++) {
             for(int j = 0; j < columnsCount; j++) {
@@ -28,11 +29,10 @@ public class GameBoardUI extends AbstractJFrameUI<GamingStateUIListener> impleme
             }
         }
         pack();
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
         addKeyListener(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent e) {
-                if(e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+                if(e.getKeyCode() == 0) {
                     getListener().pauseGame();
                 }
             }

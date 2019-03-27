@@ -15,7 +15,7 @@ public class PausedPopUp extends AbstractJDialogUI<PausedStateUIListener> implem
     JButton leaveGameButton;
 
     public PausedPopUp(Frame popUpOwner, GameStateDescriptor gameStateDescriptor) {
-        super(popUpOwner);
+        super(popUpOwner, "Paused Tic-Tac-Toe");
         gameStateInfoLabel = new JLabel(gameStateDescriptor.asString());
         resumeGameButton = new JButton("Resume Game");
         leaveGameButton = new JButton("Leave Game");

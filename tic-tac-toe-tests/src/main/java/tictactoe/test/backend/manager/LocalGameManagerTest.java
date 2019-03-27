@@ -4,7 +4,7 @@ import tictactoe.backend.logic.GameConfig;
 import tictactoe.backend.logic.GameEngine;
 import tictactoe.backend.manager.LocalGameManager;
 import tictactoe.backend.model.Board;
-import tictactoe.ui.game.GameBoardUI;
+import tictactoe.ui.state.GameBoardUI;
 
 public class LocalGameManagerTest {
     public static void main(String[] args) {

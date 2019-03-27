@@ -19,7 +19,7 @@ import tictactoe.backend.logic.GameEngine;
 import tictactoe.backend.manager.LocalGameManager;
 import tictactoe.backend.model.Board;
 import tictactoe.connector.ui.GameStateDescriptor;
-import tictactoe.ui.game.GameBoardUI;
+import tictactoe.ui.state.GameBoardUI;
 import tictactoe.ui.state.GameDrawnUI;
 import tictactoe.ui.state.GameLostUI;
 import tictactoe.ui.state.GameWonUI;
@@ -91,8 +91,12 @@ public class TicTacToeAppFlow extends AppFlow {
         @Override
         public void appStateStopped(AppState eventSource) {
             super.appStateStopped(eventSource);
+            saveGameSettings();
+        }
+
+        private void saveGameSettings() {
             assert gamingState == null : "GameScene should be null when retrieving game settings from SettingsMenuState";
-            gameSettings = settingsMenuState.getGameSettings();
+            setGameSettings(getSettingsMenuState().getGameSettings());
         }
     }
 

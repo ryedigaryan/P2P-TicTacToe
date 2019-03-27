@@ -9,11 +9,11 @@ import tictactoe.connector.ui.base.ISettingsMenuStateUI;
 import tictactoe.connector.ui.listener.SettingsMenuUIListener;
 
 @Getter
-@Setter(AccessLevel.PROTECTED)
-public class SettingsMenuState extends AbstractTicTacToeAppState<ISettingsMenuStateUI> implements SettingsMenuUIListener {
+public class SettingsMenuState extends AbstractTicTacToeAppStateWithoutNotification<ISettingsMenuStateUI> implements SettingsMenuUIListener {
 
-    public static final AppStateEvent BACK_TO_MAIN_MENU = () -> true;
+    public static final AppStateEvent BACK_TO_MAIN_MENU = () -> false;
 
+    @Setter(AccessLevel.PUBLIC)
     private Settings gameSettings;
     private final Settings initialSettings;
 
@@ -22,33 +22,44 @@ public class SettingsMenuState extends AbstractTicTacToeAppState<ISettingsMenuSt
         this.initialSettings = initialSettings;
         setGameSettings(initialSettings);
         getUi().setListener(this);
-        getUi().setSettings(initialSettings);
+        getUi().setSettings(getGameSettings());
     }
 
-    @Override
-    public void setRowCount(int rowCount) {
-        gameSettings.setRowCount(rowCount);
-    }
-
-    @Override
-    public void setColumnCount(int columnCount) {
-        gameSettings.setColumnCount(columnCount);
-    }
-
-    @Override
-    public void setWinLength(int winLength) {
-        gameSettings.setWinLength(winLength);
-    }
-
-    @Override
-    public void setPlayersCount(int playersCount) {
-        gameSettings.setPlayersCount(playersCount);
-    }
+    ///////////////////////////////////////////////////////////////////////////
+    // SettingsMenuUIListener interface methods
+    ///////////////////////////////////////////////////////////////////////////
 
     @Override
     public void close(boolean saveChanges) {
-        if(!saveChanges)
-            gameSettings = initialSettings;
         getAppStateEventHandler().handleAppStateEvent(this, BACK_TO_MAIN_MENU);
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
+    // AbstractTicTacToeAppStateWithoutNotification abstract superclass methods
+    ///////////////////////////////////////////////////////////////////////////
+
+    @Override
+    public void run() {
+        super.run();
+        getAppStateLifecycleListener().appStateStarted(this);
+    }
+
+    @Override
+    public void pause() {
+        super.pause();
+        getAppStateLifecycleListener().appStatePaused(this);
+    }
+
+    @Override
+    public void resume() {
+        super.resume();
+        getUi().setSettings(getGameSettings());
+        getAppStateLifecycleListener().appStateResumed(this);
+    }
+
+    @Override
+    public void stop() {
+        super.stop();
+        getAppStateLifecycleListener().appStateStopped(this);
     }
 }

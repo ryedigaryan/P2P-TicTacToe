@@ -24,7 +24,10 @@ public class SettingsMenuUI extends AbstractJFrameUI<SettingsMenuUIListener> imp
     JButton saveButton;
     JButton exitButton;
 
+    Settings settings;
+
     public SettingsMenuUI() {
+        super("Setup Tic-Tac-Toe");
         rowCountSlider = newSlider(2, 10);
         columnCountSlider = newSlider(2, 10);
         winLengthSlider = newSlider(2, 5);
@@ -39,11 +42,12 @@ public class SettingsMenuUI extends AbstractJFrameUI<SettingsMenuUIListener> imp
 
         saveButton.addActionListener(e -> {
             setEnabled(false);
-            getListener().setRowCount(rowCountSlider.getValue());
-            getListener().setColumnCount(columnCountSlider.getValue());
-            getListener().setWinLength(winLengthSlider.getValue());
-            getListener().setPlayersCount(playersCountSlider.getValue());
+            getSettings().setRowCount(rowCountSlider.getValue());
+            getSettings().setColumnCount(columnCountSlider.getValue());
+            getSettings().setWinLength(winLengthSlider.getValue());
+            getSettings().setPlayersCount(playersCountSlider.getValue());
             setEnabled(true);
+            getListener().setGameSettings(getSettings());
             getListener().close(true);
         });
 
@@ -63,6 +67,7 @@ public class SettingsMenuUI extends AbstractJFrameUI<SettingsMenuUIListener> imp
 
     @Override
     public void setSettings(Settings settings) {
+        this.settings = settings;
         rowCountSlider.setValue(settings.getRowCount());
         columnCountSlider.setValue(settings.getColumnCount());
         winLengthSlider.setValue(settings.getWinLength());

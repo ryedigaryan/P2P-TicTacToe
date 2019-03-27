@@ -11,8 +11,8 @@ import java.awt.*;
 public class AbstractJDialogUI<L> extends JDialog implements StateUI<L> {
     L listener;
 
-    public AbstractJDialogUI(Frame owner) {
-        super(owner);
+    public AbstractJDialogUI(Frame owner, String title) {
+        super(owner, title);
     }
 
     @Override

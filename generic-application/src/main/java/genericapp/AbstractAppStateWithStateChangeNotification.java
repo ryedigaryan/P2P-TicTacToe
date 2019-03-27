@@ -7,6 +7,12 @@ public abstract class AbstractAppStateWithStateChangeNotification extends Abstra
     }
 
     @Override
+    public void run() {
+        super.run();
+        getAppStateLifecycleListener().appStateStarted(this);
+    }
+
+    @Override
     public void pause() {
         super.pause();
         getAppStateLifecycleListener().appStatePaused(this);

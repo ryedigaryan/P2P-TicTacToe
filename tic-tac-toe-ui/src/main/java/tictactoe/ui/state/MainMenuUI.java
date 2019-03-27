@@ -12,6 +12,7 @@ public class MainMenuUI extends AbstractJFrameUI<MainMenuStateUIListener> implem
     private JButton openSettings;
 
     public MainMenuUI() {
+        super("Tic-Tac-Toe Main Menu");
         startGame = new JButton("Start Game");
         openSettings = new JButton("Open Settings");
 

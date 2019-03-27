@@ -17,8 +17,8 @@ public abstract class GameEndUI extends AbstractJDialogUI<GameEndStateUIListener
     private JLabel gameStateMessageLabel;
     private String playerName;
 
-    public GameEndUI(Frame owner, String playerName) {
-        super(owner);
+    public GameEndUI(Frame owner, String playerName, String dialogTitle) {
+        super(owner, dialogTitle);
 
         setLayout(new GridLayout(2, 1));
 
