@@ -1,79 +1,80 @@
 package generic.networking.server;
 
+import generic.networking.common.MulticastGroupNotifier;
 import generic.networking.grdon.TemporarySolution;
 import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Arrays;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 @Getter
 @Setter
-@RequiredArgsConstructor
 public class Server implements Runnable {
 
     @Setter(AccessLevel.PRIVATE)
     private ServerSocket serverSocket;
-
-    @Setter(AccessLevel.NONE)
-    private ConcurrentLinkedQueue<Socket> connectedClients;
-
-    private int maxClientsCount;
-
-    @Getter(AccessLevel.PRIVATE)
     @Setter(AccessLevel.PRIVATE)
-    private ExecutorService threadPool = Executors.newCachedThreadPool();
+    private MulticastSocket multicastSocket;
+    @Setter(AccessLevel.PRIVATE)
+    private ExecutorService cachedThreadPool = Executors.newCachedThreadPool();
+    @Setter(AccessLevel.PRIVATE)
+    private ScheduledExecutorService multicastThreadPool;
+    @Setter(AccessLevel.PRIVATE)
+    private ConcurrentLinkedQueue<Socket> connectedClients = new ConcurrentLinkedQueue<>();
+    @Setter(AccessLevel.PRIVATE)
+    private Boolean shouldNotifyGroup;
 
-    @NonNull
-    private byte[] clientMulticastMessage;
-    @NonNull
-    private Object clientConnectionAgreementObject;
-
-    @NonNull
-    private byte[] serverMulticastMessage;
-
-    @NonNull
-    private InetAddress multicastGroup;
     private int multicastPort;
+    private int maxClientsCount;
+    private InetAddress multicastGroup;
+    private byte[] multicastMessage;
+    private int multicastNotificationDelaySeconds;
+    private Object clientConnectionAgreementObject;
+    private final Object connectionAcceptanceLock = new Object();
 
     @Override
     public void run() {
+        multicastThreadPool = Executors.newScheduledThreadPool(maxClientsCount);
         assert maxClientsCount > 0 : "Maximum number of connected clients should be grater than 0";
         TemporarySolution.rethrowAsError(() -> {
+            setMulticastSocket(new MulticastSocket());
             runServer();
-            runClientAcceptor();
-            runGroupListener();
-            runGroupNotifier();
+            getCachedThreadPool().submit(this::runClientAcceptor);
+            runServerGroupNotifier();
         });
     }
 
+    private int serverPort;
+
     private void runServer() throws IOException {
-        setServerSocket(new ServerSocket());
+        setServerSocket(new ServerSocket(serverPort));
     }
 
-    private void runClientAcceptor() throws IOException {
-        while (canAcceptClientConnection()) {
-            Socket clientSocket = getServerSocket().accept();
-            if (canAcceptClientConnection()) {
-                getThreadPool().submit(new ClientAgreementChecker(clientSocket));
+    private void runClientAcceptor() {
+        TemporarySolution.rethrowAsError(() -> {
+            while (canAcceptClientConnection()) {
+                Socket clientSocket = getServerSocket().accept();
+                if (canAcceptClientConnection()) {
+                    getCachedThreadPool().submit(new ClientAgreementChecker(clientSocket));
+                }
             }
-        }
+        });
     }
 
-    private final Object connectionAcceptanceLock = new Object();
 
     // called by ClientAgreementChecker when it ensures that the client is correct clients
     // and it wants to connect to the server
@@ -90,45 +91,55 @@ public class Server implements Runnable {
     }
 
     private void acceptClientConnection(Socket clientSocket) {
-        getConnectedClients().add(clientSocket);
+        boolean succeeded = getConnectedClients().add(clientSocket);
+        System.out.println("Successfully connected client: " + clientSocket.getInetAddress());
+        assert succeeded : "Could not add client into clientsList";
+        new Thread(
+                () -> TemporarySolution.rethrowAsError(
+                        () -> readAndPrintObj(clientSocket)
+                )
+        )
+                .start();
     }
 
-    private void runGroupListener() {
-        getThreadPool().submit(new GroupListener());
+    private void readAndPrintObj(Socket socket) throws IOException, ClassNotFoundException {
+        Object o = getClientInputStream(socket.getInputStream()).readObject();
+        System.out.println(socket.getInetAddress() + " name is " + o);
     }
 
-    private void handleClientMulticastMessage(DatagramPacket multicastPacket) {
-        synchronized (getShouldNotifyGroup()) {
-            // if we should notify group then no need to compare packets
-            if (!getShouldNotifyGroup() && Arrays.equals(getClientMulticastMessage(), multicastPacket.getData())) {
-                setShouldNotifyGroup(Boolean.TRUE);
-            }
-        }
-    }
+    private void runServerGroupNotifier() {
+        MulticastGroupNotifier multicastNotifier = new MulticastGroupNotifier(
+                getMulticastSocket(),
+                this::getMulticastMessage,
+                getMulticastGroup(),
+                getMulticastPort()
+        );
 
-    private void runGroupNotifier() {
-        getThreadPool().submit(new GroupNotifier());
-    }
-
-    private void postNotification() {
-        synchronized (getShouldNotifyGroup()) {
-            setShouldNotifyGroup(Boolean.FALSE);
-        }
-    }
-
-    private Boolean shouldNotifyGroup;
-
-    private byte[] createClientMulticastBuffer() {
-        return new byte[getClientMulticastMessage().length];
-    }
-
-    private byte[] createServerMulticastBuffer() {
-        return new byte[getServerMulticastMessage().length];
+        getMulticastThreadPool().scheduleWithFixedDelay(
+                multicastNotifier,
+                0,
+                getMulticastNotificationDelaySeconds(),
+                TimeUnit.SECONDS
+        );
     }
 
     ///////////////////////////////////////////////////////////////////////////
     // Classes
     ///////////////////////////////////////////////////////////////////////////
+
+    @Getter(AccessLevel.NONE)
+    private ObjectInputStream clientInputStream;
+    private synchronized ObjectInputStream getClientInputStream(InputStream socketIS) {
+        if(clientInputStream == null) {
+            try {
+                clientInputStream = new ObjectInputStream(socketIS);
+            } catch (IOException e) {
+                e.printStackTrace();
+                throw new Error(e);
+            }
+        }
+        return clientInputStream;
+    }
 
     @Getter
     @Setter
@@ -141,26 +152,15 @@ public class Server implements Runnable {
         public void run() {
             if (Thread.currentThread().isInterrupted())
                 return;
-            // obtain client input stream
-            final ObjectInputStream clientInputStream;
-            try {
-                clientInputStream = new ObjectInputStream(getClientSocket().getInputStream());
-            } catch (IOException e) {
-                e.printStackTrace();
-                System.out.println("Server: unable to get client input stream from " + getClientSocket().getInetAddress());
-                // terminate execution if unable to obtain client input stream
-                return;
-            }
-
-            if (Thread.currentThread().isInterrupted())
-                return;
 
             // check the client's response to understand weather client wants to connect to our game server,
             // or it is some unknown client to which Server does not want to connect
             final Object actualConnectionAgreementObject;
             try {
-                actualConnectionAgreementObject = clientInputStream.readObject();
+                actualConnectionAgreementObject = getClientInputStream(getClientSocket().getInputStream()).readObject();
                 if (actualConnectionAgreementObject.equals(getClientConnectionAgreementObject())) {
+                    if (Thread.currentThread().isInterrupted())
+                        return;
                     handleClientConnection(getClientSocket());
                 }
             } catch (IOException | ClassNotFoundException e) {
@@ -170,66 +170,4 @@ public class Server implements Runnable {
         }
     }
 
-    @RequiredArgsConstructor
-    private class GroupListener implements Runnable {
-
-        @Override
-        public void run() {
-            MulticastSocket socket;
-            try {
-                socket = new MulticastSocket(getMulticastPort());
-                socket.joinGroup(getMulticastGroup());
-            } catch (Exception e) {
-                throw new Error(e);
-            }
-
-            while (!Thread.currentThread().isInterrupted()) {
-                TemporarySolution.rethrowAsError(() -> {
-                    byte[] clientMulticastMessage = createClientMulticastBuffer();
-                    DatagramPacket actualClientPacket = new DatagramPacket(clientMulticastMessage, clientMulticastMessage.length);
-                    socket.receive(actualClientPacket);
-                    handleClientMulticastMessage(actualClientPacket);
-                });
-            }
-
-            try {
-                socket.leaveGroup(getMulticastGroup());
-                socket.close();
-            } catch (IOException e) {
-                throw new Error(e);
-            }
-        }
-    }
-
-    private class GroupNotifier implements Runnable {
-
-        @Override
-        public void run() {
-            DatagramSocket socket;
-            try {
-                socket = new DatagramSocket();
-            } catch (Exception e) {
-                throw new Error(e);
-            }
-
-            byte[] buf = createServerMulticastBuffer();
-            DatagramPacket packet = new DatagramPacket(buf, buf.length, getMulticastGroup(), getMulticastPort());
-            while (!Thread.currentThread().isInterrupted()) {
-                try {
-                    if (getShouldNotifyGroup()) {
-                        socket.send(packet);
-                        postNotification();
-                    } else {
-                        Thread.sleep(TemporarySolution.AFTER_NOTIFICATION_SLEEP_MS);
-                    }
-                } catch (IOException e) {
-                    throw new Error(e);
-                } catch (InterruptedException e) {
-                    break;
-                }
-            }
-
-            socket.close();
-        }
-    }
 }
