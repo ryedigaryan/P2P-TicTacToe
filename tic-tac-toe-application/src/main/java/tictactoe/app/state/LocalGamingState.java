@@ -9,7 +9,7 @@ import tictactoe.connector.ui.base.IGamingStateUI;
 import tictactoe.connector.ui.listener.GamingStateUIListener;
 
 @Getter
-public class GamingState<UIType extends IGamingStateUI> extends AbstractTicTacToeAppState<UIType> implements GameStateChangeListener, GamingStateUIListener {
+public class LocalGamingState<UIType extends IGamingStateUI> extends AbstractTicTacToeAppState<UIType> implements GameStateChangeListener, GamingStateUIListener {
 
     public static final AppStateEvent PAUSE = () -> false;
     public static final AppStateEvent GAME_WON = () -> true;
@@ -18,7 +18,7 @@ public class GamingState<UIType extends IGamingStateUI> extends AbstractTicTacTo
 
     private GameManager<UIType> gameManager;
 
-    public GamingState(Integer id, LocalGameManager<UIType> gameManager) {
+    public LocalGamingState(Integer id, LocalGameManager<UIType> gameManager) {
         super(id, gameManager.getUI());
         this.gameManager = gameManager;
         getGameManager().getGameEngine().setGameStateChangeListener(this);
