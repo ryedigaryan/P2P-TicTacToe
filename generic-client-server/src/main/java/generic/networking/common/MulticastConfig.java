@@ -1,26 +1,23 @@
 package generic.networking.common;
 
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
-import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.function.Supplier;
 
 @Getter @Setter
 public class MulticastConfig {
-    private final InetAddress group;
-    private final int port;
+    private final InetSocketAddress group;
     private final byte[] message;
     private final int messageLength;
 
     @Builder
-    public MulticastConfig(InetAddress group, int port, byte[] message, Integer messageLength) {
+    public MulticastConfig(InetSocketAddress group, byte[] message, Integer messageLength) {
         if(message == null || message.length == 0) {
             if(messageLength == null)
                 throw new IllegalArgumentException("If message is null or empty then messageLength may not be null");
@@ -28,7 +25,6 @@ public class MulticastConfig {
         this.messageLength = messageLength == null ? message.length : messageLength;
 
         this.group = Objects.requireNonNull(group, "Multicast group may not be null");
-        this.port = port;
         this.message = message;
     }
 
@@ -56,13 +52,11 @@ public class MulticastConfig {
 
         if(!Objects.equals(this.getGroup(), other.getGroup()))
             return false;
-        if(this.getPort() != other.getPort())
-            return false;
         return Arrays.equals(this.getMessage(), other.getMessage());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(group, port, message);
+        return Objects.hash(group, message);
     }
 }

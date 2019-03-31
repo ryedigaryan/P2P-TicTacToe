@@ -2,6 +2,7 @@ package generic.networking.endpoint;
 
 import generic.common.Tuple;
 import generic.networking.common.MulticastConfig;
+import generic.networking.common.MulticastPacketHandler;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NonNull;
@@ -21,21 +22,21 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-@Getter
-@Setter
+@Getter @Setter
 @RequiredArgsConstructor
-public abstract class AbstractEndPoint implements EndPoint {
+public abstract class AbstractEndpoint implements Endpoint {
 
     @Setter(AccessLevel.NONE)
     private Map<MulticastConfig, Tuple<MulticastPublisher, ScheduledFuture<?>>> publishersMap = new HashMap<>();
     @Setter(AccessLevel.NONE)
     private Map<MulticastConfig, Tuple<MulticastListener, ScheduledFuture<?>>> listenersMap = new HashMap<>();
 
-    @NonNull private Supplier<ScheduledExecutorService> threadPoolSupplier;
+    @NonNull private Supplier<ScheduledExecutorService> scheduledThreadPoolSupplier;
+    @NonNull private MulticastPacketHandler multicastPacketHandler;
 
     // TODO: 3/30/2019 refactor this shit
     @NonNull private Consumer<SocketException> datagramInitExceptionHandler;
-    @NonNull private Consumer<IOException> multicastInitExceptionHandler;
+    @NonNull private Consumer<IOException> socketInitExceptionHandler;
     @NonNull private Consumer<IOException> multicastJoinExceptionHandler;
     @NonNull private Consumer<IOException> socketSendExceptionHandler;
     @NonNull private Consumer<IOException> socketReceiveExceptionHandler;
@@ -43,7 +44,7 @@ public abstract class AbstractEndPoint implements EndPoint {
     @Override
     public void startPublishing(MulticastConfig config, int initialDelay, int delay, TimeUnit delayUnit) {
         MulticastPublisher publisher = new MulticastPublisher(config);
-        ScheduledFuture<?> publisherFuture = getThreadPoolSupplier().get()
+        ScheduledFuture<?> publisherFuture = getScheduledThreadPoolSupplier().get()
                 .scheduleWithFixedDelay(publisher, initialDelay, delay, delayUnit);
         // save the publisher and the config for later use
         getPublishersMap().put(config, Tuple.of(publisher, publisherFuture));
@@ -65,8 +66,9 @@ public abstract class AbstractEndPoint implements EndPoint {
 
     @Override
     public void startListening(MulticastConfig config, int initialDelay, int delay, TimeUnit delayUnit) {
-        MulticastListener listener = new MulticastListener(this::acceptMulticastMessage, config);
-        ScheduledFuture<?> listenerFuture = getThreadPoolSupplier().get()
+        assert getMulticastPacketHandler() != null : "Multicast packet handler may not be null";
+        MulticastListener listener = new MulticastListener(getMulticastPacketHandler()::handlePacket, config);
+        ScheduledFuture<?> listenerFuture = getScheduledThreadPoolSupplier().get()
                 .scheduleWithFixedDelay(listener, initialDelay, delay, delayUnit);
         // save the listener and the config for later use
         getListenersMap().put(config, Tuple.of(listener, listenerFuture));
@@ -86,8 +88,6 @@ public abstract class AbstractEndPoint implements EndPoint {
         getListenersMap().remove(config);
     }
 
-    protected abstract void acceptMulticastMessage(DatagramPacket receivedPacket);
-
     // TODO: 3/30/2019   MulticastPublisher and MulticastListener should be refactored to
     // TODO: 3/30/2019   reuse already created Sockets instead of creating new socket every time
 
@@ -96,17 +96,17 @@ public abstract class AbstractEndPoint implements EndPoint {
         private final DatagramSocket publishSocket;
         private final DatagramPacket publishPacket;
 
-        public MulticastPublisher(MulticastConfig config) {
+        MulticastPublisher(MulticastConfig config) {
             DatagramSocket socket;
             try {
                 socket = new DatagramSocket();
             } catch (SocketException e) {
-                AbstractEndPoint.this.getDatagramInitExceptionHandler().accept(e);
+                getDatagramInitExceptionHandler().accept(e);
                 socket = null;
             }
 
             publishSocket = socket;
-            publishPacket = new DatagramPacket(config.getMessage(), config.getMessageLength(), config.getGroup(), config.getPort());
+            publishPacket = new DatagramPacket(config.getMessage(), config.getMessageLength(), config.getGroup());
         }
 
         private boolean canPublish() {
@@ -135,13 +135,13 @@ public abstract class AbstractEndPoint implements EndPoint {
         private final Supplier<byte[]> emptyBufferSupplier;
 
 
-        public MulticastListener(Consumer<DatagramPacket> receivedMessageConsumer, MulticastConfig config) {
+        MulticastListener(Consumer<DatagramPacket> receivedMessageConsumer, MulticastConfig config) {
             // init multicast socket
             MulticastSocket socket;
             try {
-                socket = new MulticastSocket(config.getPort());
+                socket = new MulticastSocket(config.getGroup().getPort());
             } catch (IOException e) {
-                getMulticastInitExceptionHandler().accept(e);
+                getSocketInitExceptionHandler().accept(e);
                 socket = null;
             }
             listenSocket = socket;
@@ -149,7 +149,7 @@ public abstract class AbstractEndPoint implements EndPoint {
             // join multicast group
             if(listenSocket != null) {
                 try {
-                    listenSocket.joinGroup(config.getGroup());
+                    listenSocket.joinGroup(config.getGroup().getAddress());
                 } catch (IOException e) {
                     getMulticastJoinExceptionHandler().accept(e);
                 }
