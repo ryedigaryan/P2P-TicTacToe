@@ -1,13 +1,21 @@
 package generic.networking.test;
 
-import generic.networking.client.Client;
-import generic.networking.server.Server;
+import generic.networking.common.MulticastConfig;
+import generic.networking.endpoint.Client;
+import generic.networking.endpoint.Server;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.InetAddress;
-import java.net.MulticastSocket;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Random;
-import java.util.Scanner;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class ClientServerTest {
 
@@ -28,32 +36,91 @@ public class ClientServerTest {
         SERVER_MULTICAST_GROUP = g;
     }
 
-    public static class ServerRunner {
-        public static void main(String[] args) throws Exception {
-            Server server = new Server();
-            server.setServerPort(SERVER_PORT);
-            server.setMaxClientsCount(3);
-            server.setClientConnectionAgreementObject(CLIENT_AGREEMENT_OBJECT);
-            server.setMulticastGroup(SERVER_MULTICAST_GROUP);
-            server.setMulticastPort(SERVER_MULTICAST_PORT);
-            server.setMulticastNotificationDelaySeconds(2);
-            server.setMulticastMessage(SERVER_MULTICAST_MESSAGE);
-            server.run();
-        }
+    public static ScheduledExecutorService tp = Executors.newScheduledThreadPool(3);
+
+//    public static void main(String[] args) throws IOException {
+//        ServerSocket ss = new ServerSocket(80);
+//        String str = "QAQs utes";
+//        while(true) {
+//            Socket s = ss.accept();
+//            BufferedReader in = new BufferedReader(new InputStreamReader(s.getInputStream()));
+//            PrintWriter out = new PrintWriter(s.getOutputStream());
+//            out.println("<html> <body> <p>" + str + "</p> </body> </html>");
+//            out.close();
+//            s.close();
+//        }
+//    }
+
+    public static void main(String[] args) throws Exception {
+            byte[] nameNoise = new byte[8];
+            String name = "CLIENT_" + new Random().nextInt();
+
+            MulticastConfig config = MulticastConfig.builder()
+                    .group(SERVER_MULTICAST_GROUP)
+                    .message(SERVER_MULTICAST_MESSAGE)
+                    .port(SERVER_MULTICAST_PORT)
+                    .build();
+
+            Client client = Client.builder()
+                    .datagramInitExceptionHandler(System.out::println)
+                    .multicastInitExceptionHandler(System.out::println)
+                    .multicastJoinExceptionHandler(System.out::println)
+                    .socketReceiveExceptionHandler(System.out::println)
+                    .socketSendExceptionHandler(System.out::println)
+                    .threadPoolSupplier(() -> tp)
+                    .build();
+
+            client.startListening(config, 0, 500, TimeUnit.MILLISECONDS);
+
+            client.run();
     }
 
-    public static class ClientRunner {
-        public static void main(String[] args) throws Exception {
-            byte[] nameNoise = new byte[8];
-            new Random().nextBytes(nameNoise);
-            String name = "CLIENT_" + new String(nameNoise);
-            Client client = new Client();
-            client.setClientConnectionAgreementObject(CLIENT_AGREEMENT_OBJECT);
-            client.setName(name);
-            client.setServerMulticastGroup(SERVER_MULTICAST_GROUP);
-            client.setServerMulticastMessage(SERVER_MULTICAST_MESSAGE);
-            client.setServerMulticastPort(SERVER_MULTICAST_PORT);
-            client.run();
-        }
-    }
+//    public static class ServerRunner {
+//        public static void main(String[] args) throws Exception {
+//            MulticastConfig serverMulConfig = MulticastConfig.builder()
+//                    .group(SERVER_MULTICAST_GROUP)
+//                    .message(SERVER_MULTICAST_MESSAGE)
+//                    .port(SERVER_MULTICAST_PORT)
+//                    .build();
+//            Server server = Server.builder()
+//                    .datagramInitExceptionHandler(System.out::println)
+//                    .multicastInitExceptionHandler(System.out::println)
+//                    .multicastJoinExceptionHandler(System.out::println)
+//                    .socketReceiveExceptionHandler(System.out::println)
+//                    .socketSendExceptionHandler(System.out::println)
+//                    .threadPoolSupplier(() -> tp)
+//                    .build();
+//
+//            server.startPublishing(serverMulConfig, 0, 1, TimeUnit.SECONDS);
+//            server.startListening(serverMulConfig, 0, 500, TimeUnit.MILLISECONDS);
+//
+//            server.run();
+//        }
+//    }
+//
+//    public static class ClientRunner {
+//        public static void main(String[] args) throws Exception {
+//            byte[] nameNoise = new byte[8];
+//            String name = "CLIENT_" + new Random().nextInt();
+//
+//            MulticastConfig config = MulticastConfig.builder()
+//                    .group(SERVER_MULTICAST_GROUP)
+//                    .message(SERVER_MULTICAST_MESSAGE)
+//                    .port(SERVER_MULTICAST_PORT)
+//                    .build();
+//
+//            Client client = Client.builder()
+//                    .datagramInitExceptionHandler(System.out::println)
+//                    .multicastInitExceptionHandler(System.out::println)
+//                    .multicastJoinExceptionHandler(System.out::println)
+//                    .socketReceiveExceptionHandler(System.out::println)
+//                    .socketSendExceptionHandler(System.out::println)
+//                    .threadPoolSupplier(() -> tp)
+//                    .build();
+//
+//            client.startListening(config, 0, 500, TimeUnit.MILLISECONDS);
+//
+//            client.run();
+//        }
+//    }
 }

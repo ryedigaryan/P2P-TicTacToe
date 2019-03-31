@@ -62,7 +62,7 @@ public class TicTacToeAppFlow extends AppFlow {
             mainMenuState = new MainMenuState(Constants.ID_MAIN_MENU, new MainMenuUI());
             mainMenuState.setAppStateLifecycleListener(new MainMenuStateLifecycleListener());
         }
-        cleanUpAppStates();
+        cleanupAppStates();
         return mainMenuState;
     }
 
@@ -226,7 +226,7 @@ public class TicTacToeAppFlow extends AppFlow {
     // helpers
     ///////////////////////////////////////////////////////////////////////////
 
-    private void cleanUpAppStates() {
+    private void cleanupAppStates() {
         settingsMenuState = null;
         gamingState = null;
         pausedState = null;
