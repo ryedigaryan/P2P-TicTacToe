@@ -3,13 +3,10 @@ package tictactoe.app.state;
 import generic.app.AppStateEvent;
 import lombok.Getter;
 import tictactoe.backend.logic.GameEngine;
-import tictactoe.connector.backend.listener.GameStateChangeListener;
-import tictactoe.connector.backend.listener.TileEventListener;
 import tictactoe.connector.ui.base.IGamingStateUI;
-import tictactoe.connector.ui.listener.GamingStateUIListener;
 
 @Getter
-public class LocalGamingState<UIType extends IGamingStateUI> extends AbstractTicTacToeAppState<UIType> implements GameStateChangeListener, GamingStateUIListener, TileEventListener {
+public class LocalGamingState<UIType extends IGamingStateUI> extends GamingState<UIType> {
 
     public static final AppStateEvent PAUSE = () -> false;
     public static final AppStateEvent GAME_WON = () -> true;
