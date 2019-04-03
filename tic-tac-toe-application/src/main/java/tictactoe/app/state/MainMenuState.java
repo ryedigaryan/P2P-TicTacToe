@@ -1,15 +1,15 @@
 package tictactoe.app.state;
 
 import generic.app.AppStateEvent;
-import tictactoe.connector.ui.base.IMainMenuStateUI;
+import tictactoe.connector.ui.base.MainMenuStateUI;
 import tictactoe.connector.ui.listener.MainMenuStateUIListener;
 
-public class MainMenuState extends AbstractTicTacToeAppState<IMainMenuStateUI> implements MainMenuStateUIListener {
+public class MainMenuState extends AbstractTicTacToeAppState<MainMenuStateUI> implements MainMenuStateUIListener {
 
     public static final AppStateEvent GAME_SETTINGS = () -> false;
     public static final AppStateEvent START_GAME = () -> true;
 
-    public MainMenuState(Integer id, IMainMenuStateUI mainMenuUI) {
+    public MainMenuState(Integer id, MainMenuStateUI mainMenuUI) {
         super(id, mainMenuUI);
         getUi().setListener(this);
     }

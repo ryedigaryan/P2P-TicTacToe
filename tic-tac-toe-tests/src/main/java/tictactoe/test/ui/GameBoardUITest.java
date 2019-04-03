@@ -1,7 +1,7 @@
 package tictactoe.test.ui;
 
 import tictactoe.connector.ui.listener.GamingStateUIListener;
-import tictactoe.ui.state.GameBoardUI;
+import tictactoe.ui.state.SwingGameBoardUI;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -10,7 +10,7 @@ import java.awt.event.MouseListener;
 public class GameBoardUITest {
     public static void main(String[] args) {
         EventQueue.invokeLater(() -> {
-            GameBoardUI b = new GameBoardUI(3, 3);
+            SwingGameBoardUI b = new SwingGameBoardUI(3, 3);
             System.out.println("Border created");
 
             b.setListener(new GamingStateUIListener() {

@@ -1,20 +1,20 @@
 package tictactoe.ui.state;
 
 import tictactoe.connector.ui.GameStateDescriptor;
-import tictactoe.connector.ui.base.IPausedStateStateUI;
+import tictactoe.connector.ui.base.PausedStateStateUI;
 import tictactoe.connector.ui.listener.PausedStateUIListener;
 import tictactoe.ui.state.common.AbstractJDialogUI;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class PausedPopUp extends AbstractJDialogUI<PausedStateUIListener> implements IPausedStateStateUI {
+public class SwingPausedPopUp extends AbstractJDialogUI<PausedStateUIListener> implements PausedStateStateUI {
 
     JLabel gameStateInfoLabel;
     JButton resumeGameButton;
     JButton leaveGameButton;
 
-    public PausedPopUp(Frame popUpOwner, GameStateDescriptor gameStateDescriptor) {
+    public SwingPausedPopUp(Frame popUpOwner, GameStateDescriptor gameStateDescriptor) {
         super(popUpOwner, "Paused Tic-Tac-Toe");
         gameStateInfoLabel = new JLabel(gameStateDescriptor.asString());
         resumeGameButton = new JButton("Resume Game");

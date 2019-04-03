@@ -1,9 +1,9 @@
 package tictactoe.app.state;
 
-import tictactoe.connector.ui.base.IServerHostingStateUI;
+import tictactoe.connector.ui.base.ServerHostingStateUI;
 
-public class ServerHostingState extends AbstractTicTacToeAppState<IServerHostingStateUI> {
-    public ServerHostingState(Integer id, IServerHostingStateUI ui) {
+public class ServerHostingState extends AbstractTicTacToeAppState<ServerHostingStateUI> {
+    public ServerHostingState(Integer id, ServerHostingStateUI ui) {
         super(id, ui);
     }
 }

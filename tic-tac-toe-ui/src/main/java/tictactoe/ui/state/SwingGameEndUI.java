@@ -3,7 +3,7 @@ package tictactoe.ui.state;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
-import tictactoe.connector.ui.base.IGameEndStateUI;
+import tictactoe.connector.ui.base.GameEndStateUI;
 import tictactoe.connector.ui.listener.GameEndStateUIListener;
 import tictactoe.ui.state.common.AbstractJDialogUI;
 
@@ -12,12 +12,12 @@ import java.awt.*;
 
 @Getter(AccessLevel.PROTECTED)
 @Setter(AccessLevel.PROTECTED)
-public abstract class GameEndUI extends AbstractJDialogUI<GameEndStateUIListener> implements IGameEndStateUI {
+public abstract class SwingGameEndUI extends AbstractJDialogUI<GameEndStateUIListener> implements GameEndStateUI {
     private JButton closeButton;
     private JLabel gameStateMessageLabel;
     private String playerName;
 
-    public GameEndUI(Frame owner, String playerName, String dialogTitle) {
+    public SwingGameEndUI(Frame owner, String playerName, String dialogTitle) {
         super(owner, dialogTitle);
 
         setLayout(new GridLayout(2, 1));

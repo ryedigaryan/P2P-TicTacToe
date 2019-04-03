@@ -4,7 +4,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import tictactoe.ui.state.common.AbstractJFrameUI;
-import tictactoe.connector.ui.base.IGamingStateUI;
+import tictactoe.connector.ui.base.GamingStateUI;
 import tictactoe.connector.ui.listener.GamingStateUIListener;
 
 import javax.swing.*;
@@ -16,12 +16,12 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 @Getter @Setter
-public class GameBoardUI extends AbstractJFrameUI<GamingStateUIListener> implements IGamingStateUI {
+public class SwingGameBoardUI extends AbstractJFrameUI<GamingStateUIListener> implements GamingStateUI {
 
     private final int rowsCount;
     private final int columnsCount;
 
-    public GameBoardUI(int boardRows, int boardColumns) throws HeadlessException {
+    public SwingGameBoardUI(int boardRows, int boardColumns) throws HeadlessException {
         super("Playing Tic-Tac-Toe");
         setLayout(new GridLayout(rowsCount = boardRows, columnsCount = boardColumns));
         for (int i = 0; i < rowsCount; i++) {

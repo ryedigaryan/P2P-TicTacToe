@@ -6,7 +6,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import tictactoe.backend.logic.GameEngine;
 import tictactoe.backend.model.GameState;
-import tictactoe.connector.ui.base.IGamingStateUI;
+import tictactoe.connector.ui.base.GamingStateUI;
 import tictactoe.networking.dto.BoardInfo;
 import tictactoe.networking.dto.GameInfo;
 
@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.io.Serializable;
 
 @Getter(AccessLevel.PRIVATE)
-public class ServerGamingState<UIType extends IGamingStateUI> extends GamingState<UIType> {
+public class ServerGamingState<UIType extends GamingStateUI> extends GamingState<UIType> {
     private final Server gameServer;
     private final MulticastConfig serverMulticastConfig;
     private final GameEngine gameEngine;

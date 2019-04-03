@@ -5,11 +5,11 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import tictactoe.connector.common.data.Settings;
-import tictactoe.connector.ui.base.ISettingsMenuStateUI;
+import tictactoe.connector.ui.base.SettingsMenuStateUI;
 import tictactoe.connector.ui.listener.SettingsMenuUIListener;
 
 @Getter
-public class SettingsMenuState extends AbstractTicTacToeAppStateWithoutNotification<ISettingsMenuStateUI> implements SettingsMenuUIListener {
+public class SettingsMenuState extends AbstractTicTacToeAppStateWithoutNotification<SettingsMenuStateUI> implements SettingsMenuUIListener {
 
     public static final AppStateEvent BACK_TO_MAIN_MENU = () -> false;
 
@@ -17,7 +17,7 @@ public class SettingsMenuState extends AbstractTicTacToeAppStateWithoutNotificat
     private Settings gameSettings;
     private final Settings initialSettings;
 
-    public SettingsMenuState(Integer id, ISettingsMenuStateUI settingsMenuUI, Settings initialSettings) {
+    public SettingsMenuState(Integer id, SettingsMenuStateUI settingsMenuUI, Settings initialSettings) {
         super(id, settingsMenuUI);
         this.initialSettings = initialSettings;
         setGameSettings(initialSettings);

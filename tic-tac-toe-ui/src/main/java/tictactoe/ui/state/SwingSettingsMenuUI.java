@@ -6,7 +6,7 @@ import lombok.Setter;
 import tictactoe.connector.common.data.Settings;
 import tictactoe.connector.ui.listener.SettingsMenuUIListener;
 import tictactoe.ui.state.common.AbstractJFrameUI;
-import tictactoe.connector.ui.base.ISettingsMenuStateUI;
+import tictactoe.connector.ui.base.SettingsMenuStateUI;
 
 import javax.swing.*;
 import javax.swing.event.ChangeListener;
@@ -14,7 +14,7 @@ import java.awt.*;
 
 @Getter(AccessLevel.PROTECTED)
 @Setter(AccessLevel.PROTECTED)
-public class SettingsMenuUI extends AbstractJFrameUI<SettingsMenuUIListener> implements ISettingsMenuStateUI {
+public class SwingSettingsMenuUI extends AbstractJFrameUI<SettingsMenuUIListener> implements SettingsMenuStateUI {
 
     JSlider rowCountSlider;
     JSlider columnCountSlider;
@@ -26,7 +26,7 @@ public class SettingsMenuUI extends AbstractJFrameUI<SettingsMenuUIListener> imp
 
     Settings settings;
 
-    public SettingsMenuUI() {
+    public SwingSettingsMenuUI() {
         super("Setup Tic-Tac-Toe");
         rowCountSlider = newSlider(2, 10);
         columnCountSlider = newSlider(2, 10);
