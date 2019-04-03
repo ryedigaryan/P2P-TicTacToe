@@ -1,5 +1,8 @@
+# IntelliJ generated directories
 .idea/
+out/
+target/
 
+# IntelliJ generated files
 *.iml
 
-target/
