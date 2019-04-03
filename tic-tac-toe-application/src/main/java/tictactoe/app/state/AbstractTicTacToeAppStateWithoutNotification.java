@@ -16,8 +16,8 @@ public class AbstractTicTacToeAppStateWithoutNotification<U extends StateUI> ext
     }
 
     @Override
-    public void run() {
-        super.run();
+    public void start() {
+        super.start();
         getUi().start();
     }
 

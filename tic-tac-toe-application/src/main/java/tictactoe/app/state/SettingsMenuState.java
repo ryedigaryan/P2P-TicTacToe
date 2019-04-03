@@ -39,8 +39,8 @@ public class SettingsMenuState extends AbstractTicTacToeAppStateWithoutNotificat
     ///////////////////////////////////////////////////////////////////////////
 
     @Override
-    public void run() {
-        super.run();
+    public void start() {
+        super.start();
         getAppStateLifecycleListener().appStateStarted(this);
     }
 

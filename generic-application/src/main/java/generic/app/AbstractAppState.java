@@ -43,7 +43,7 @@ public abstract class AbstractAppState implements AppState {
     }
 
     @Override
-    public void run() {
+    public void start() {
         if(isStarted())
             throw new IllegalAppStateLifecycleException(this, "started", "start");
         if(isStopped())

@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -25,6 +26,7 @@ import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
@@ -44,6 +46,10 @@ public class Server extends AbstractEndpoint implements Runnable {
     @NonNull
     @Getter
     private Predicate<Socket> clientSocketAcceptor;
+
+    @Getter @Setter
+    @Accessors(fluent = true)
+    private BiConsumer<? super InetSocketAddress, ? super Socket> onAccept;
 
     @Builder
     public Server(Supplier<ScheduledExecutorService> scheduledThreadPoolSupplier, MulticastPacketHandler multicastPacketHandler, Consumer<? super SocketException> datagramInitExceptionHandler, Consumer<? super IOException> socketInitExceptionHandler, Consumer<? super IOException> multicastJoinExceptionHandler, Consumer<? super IOException> socketSendExceptionHandler, Consumer<? super IOException> socketReceiveExceptionHandler, Supplier<ExecutorService> threadPoolSupplier, Integer serverPort, Predicate<Socket> clientSocketAcceptor) {
@@ -121,7 +127,10 @@ public class Server extends AbstractEndpoint implements Runnable {
                     clientSocket = getServerSocket().accept();
                     // TODO: 3/31/2019 Run client acceptance in other thread
                     if (getClientSocketAcceptor().test(clientSocket)) {
-                        getClientAddress2Socket().put((InetSocketAddress) clientSocket.getLocalSocketAddress(), clientSocket);
+                        InetSocketAddress clientAddress = (InetSocketAddress)clientSocket.getLocalSocketAddress();
+                        getClientAddress2Socket().put(clientAddress, clientSocket);
+                        if(onAccept() != null)
+                            getThreadPoolSupplier().get().submit(() -> onAccept().accept(clientAddress, clientSocket));
                     }
                 } catch (SocketTimeoutException e) {
                     // ok, continue the endless loop,

@@ -14,16 +14,16 @@ public interface AppState extends Runnable {
     boolean isPaused();
     boolean isStopped();
 
-    default void start() {
-        run();
-    }
+    void start();
     void pause();
     void resume();
     void stop();
 
     /**
-     * Overriding method of {@link Runnable} for convenient navigation in source code.
+     * In the case if AppState should be run parallel.
      */
     @Override
-    void run();
+    default void run() {
+        start();
+    }
 }

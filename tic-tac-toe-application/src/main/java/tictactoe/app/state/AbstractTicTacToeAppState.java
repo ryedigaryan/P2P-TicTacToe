@@ -9,8 +9,8 @@ public abstract class AbstractTicTacToeAppState<U extends StateUI> extends Abstr
     }
 
     @Override
-    public void run() {
-        super.run();
+    public void start() {
+        super.start();
         getAppStateLifecycleListener().appStateStarted(this);
     }
 
