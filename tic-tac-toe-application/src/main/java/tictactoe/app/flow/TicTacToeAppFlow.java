@@ -3,15 +3,21 @@ package tictactoe.app.flow;
 import generic.app.AbstractAppStateLifecycleListener;
 import generic.app.AppFlow;
 import generic.app.AppState;
+import generic.networking.common.MulticastConfig;
+import generic.networking.endpoint.Client;
+import generic.networking.endpoint.Server;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+import tictactoe.app.grdon.TemporarySolution;
+import tictactoe.app.state.ClientGamingState;
 import tictactoe.app.state.GameDrawnState;
 import tictactoe.app.state.GameLostState;
 import tictactoe.app.state.GameWonState;
 import tictactoe.app.state.LocalGamingState;
 import tictactoe.app.state.MainMenuState;
 import tictactoe.app.state.PausedState;
+import tictactoe.app.state.ServerGamingState;
 import tictactoe.app.state.SettingsMenuState;
 import tictactoe.connector.common.data.Settings;
 import tictactoe.backend.logic.GameConfig;
@@ -25,6 +31,9 @@ import tictactoe.ui.state.GameWonUI;
 import tictactoe.ui.state.MainMenuUI;
 import tictactoe.ui.state.PausedPopUp;
 import tictactoe.ui.state.SettingsMenuUI;
+
+import java.io.IOException;
+import java.io.ObjectInputStream;
 
 @Getter(AccessLevel.PRIVATE)
 @Setter(AccessLevel.PRIVATE)
@@ -124,6 +133,54 @@ public class TicTacToeAppFlow extends AppFlow {
             mainMenuState = null;
             settingsMenuState = null;
         }
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
+    // ServerGamingState
+    ///////////////////////////////////////////////////////////////////////////
+
+    private ServerGamingState<GameBoardUI> serverGamingState;
+    private ServerGamingState<GameBoardUI> getServerGamingState() {
+        if(serverGamingState == null) {
+            GameConfig config = new GameConfig(gameSettings.getWinLength(), gameSettings.getPlayersCount());
+            Board board = new Board(gameSettings.getRowCount(), gameSettings.getColumnCount());
+            GameEngine engine = new GameEngine(config, board);
+
+            Server gameServer = createGameServer();
+            serverGamingState = new ServerGamingState<>(
+                    Constants.ID_GAMING_SCENE,
+                    engine,
+                    new GameBoardUI(gameSettings.getRowCount(), gameSettings.getColumnCount()),
+                    gameServer,
+                    new MulticastConfig(Constants.SERVER_MULTICAST_GROUP, Constants.SERVER_MULTICAST_MESSAGE, null)
+            );
+            serverGamingState.setAppStateLifecycleListener(new GamingSceneStateLifecycleListener());
+        }
+        return serverGamingState;
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
+    // ClientGamingState
+    ///////////////////////////////////////////////////////////////////////////
+
+    private ClientGamingState/*<GameBoardUI>*/ clientGamingState;
+    private ClientGamingState/*<GameBoardUI>*/ getClientGamingState() {
+        if(clientGamingState == null) {
+            GameConfig config = new GameConfig(gameSettings.getWinLength(), gameSettings.getPlayersCount());
+            Board board = new Board(gameSettings.getRowCount(), gameSettings.getColumnCount());
+            GameEngine engine = new GameEngine(config, board);
+
+            Client gameClient = createGameClient();
+            // clientGamingState = new ClientGamingState<>(
+            //         Constants.ID_GAMING_SCENE,
+            //         engine,
+            //         new GameBoardUI(gameSettings.getRowCount(), gameSettings.getColumnCount()),
+            //         gameClient,
+            //         new MulticastConfig(Constants.SERVER_MULTICAST_GROUP, Constants.SERVER_MULTICAST_MESSAGE, null)
+            // );
+            // clientGamingState.setAppStateLifecycleListener(new GamingSceneStateLifecycleListener());
+        }
+        return clientGamingState;
     }
 
     ///////////////////////////////////////////////////////////////////////////
@@ -231,5 +288,31 @@ public class TicTacToeAppFlow extends AppFlow {
         gameWonScreen = null;
         gameLostScreen = null;
         gameDrawnScreen = null;
+    }
+
+    private Server createGameServer() {
+        return Server.builder()
+                .socketSendExceptionHandler(TemporarySolution::printOnErr)
+                .socketReceiveExceptionHandler(TemporarySolution::printOnErr)
+                .multicastJoinExceptionHandler(TemporarySolution::printOnErr)
+                .datagramInitExceptionHandler(TemporarySolution::printOnErr)
+                .socketInitExceptionHandler(TemporarySolution::printOnErr)
+                .clientSocketAcceptor(s -> {
+                    try {
+                        Object clientObject = new ObjectInputStream(s.getInputStream()).readObject();
+                        return Constants.CLIENT_ACCEPTANCE_OBJECT.equals(clientObject);
+                    } catch (IOException | ClassNotFoundException e) {
+                        TemporarySolution.printOnErr(e);
+                        return false;
+                    }
+                })
+                .scheduledThreadPoolSupplier(Constants::sharedScheduledThreadPool)
+                .threadPoolSupplier(Constants::sharedCachedThreadPool)
+                .serverPort(0)
+                .build();
+    }
+
+    private Client createGameClient() {
+        return null;
     }
 }

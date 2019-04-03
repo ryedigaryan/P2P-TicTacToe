@@ -35,11 +35,11 @@ public abstract class AbstractEndpoint implements Endpoint {
     @NonNull private MulticastPacketHandler multicastPacketHandler;
 
     // TODO: 3/30/2019 refactor this shit
-    @NonNull private Consumer<SocketException> datagramInitExceptionHandler;
-    @NonNull private Consumer<IOException> socketInitExceptionHandler;
-    @NonNull private Consumer<IOException> multicastJoinExceptionHandler;
-    @NonNull private Consumer<IOException> socketSendExceptionHandler;
-    @NonNull private Consumer<IOException> socketReceiveExceptionHandler;
+    @NonNull private Consumer<? super SocketException> datagramInitExceptionHandler;
+    @NonNull private Consumer<? super IOException> socketInitExceptionHandler;
+    @NonNull private Consumer<? super IOException> multicastJoinExceptionHandler;
+    @NonNull private Consumer<? super IOException> socketSendExceptionHandler;
+    @NonNull private Consumer<? super IOException> socketReceiveExceptionHandler;
 
     @Override
     public void startPublishing(MulticastConfig config, int initialDelay, int delay, TimeUnit delayUnit) {
@@ -67,7 +67,7 @@ public abstract class AbstractEndpoint implements Endpoint {
     @Override
     public void startListening(MulticastConfig config, int initialDelay, int delay, TimeUnit delayUnit) {
         assert getMulticastPacketHandler() != null : "Multicast packet handler may not be null";
-        MulticastListener listener = new MulticastListener(getMulticastPacketHandler()::handlePacket, config);
+        MulticastListener listener = new MulticastListener(p -> getMulticastPacketHandler().handlePacket(p, this), config);
         ScheduledFuture<?> listenerFuture = getScheduledThreadPoolSupplier().get()
                 .scheduleWithFixedDelay(listener, initialDelay, delay, delayUnit);
         // save the listener and the config for later use

@@ -42,12 +42,12 @@ public class Server extends AbstractEndpoint implements Runnable {
     private Supplier<ExecutorService> threadPoolSupplier;
 
     @NonNull
-    @Getter @Setter
+    @Getter
     private Predicate<Socket> clientSocketAcceptor;
 
     @Builder
-    public Server(Supplier<ScheduledExecutorService> scheduledThreadPoolSupplier, Consumer<SocketException> datagramInitExceptionHandler, Consumer<IOException> socketInitExceptionHandler, Consumer<IOException> multicastJoinExceptionHandler, Consumer<IOException> socketSendExceptionHandler, Consumer<IOException> socketReceiveExceptionHandler, MulticastPacketHandler multicastPacketHandler, Supplier<ExecutorService> threadPoolSupplier, Integer serverPort, Predicate<Socket> clientSocketAcceptor) {
-        super(scheduledThreadPoolSupplier, multicastPacketHandler, datagramInitExceptionHandler, socketInitExceptionHandler, multicastJoinExceptionHandler, socketSendExceptionHandler, socketReceiveExceptionHandler);
+    public Server(Supplier<ScheduledExecutorService> scheduledThreadPoolSupplier, MulticastPacketHandler multicastPacketHandler, Consumer<? super SocketException> datagramInitExceptionHandler, Consumer<? super IOException> socketInitExceptionHandler, Consumer<? super IOException> multicastJoinExceptionHandler, Consumer<? super IOException> socketSendExceptionHandler, Consumer<? super IOException> socketReceiveExceptionHandler, Supplier<ExecutorService> threadPoolSupplier, Integer serverPort, Predicate<Socket> clientSocketAcceptor) {
+        super(scheduledThreadPoolSupplier, multicastPacketHandler == null ? (p,r) -> {} : multicastPacketHandler, datagramInitExceptionHandler, socketInitExceptionHandler, multicastJoinExceptionHandler, socketSendExceptionHandler, socketReceiveExceptionHandler);
         this.threadPoolSupplier = Objects.requireNonNull(threadPoolSupplier, "scheduledThreadPoolSupplier may not be null");
         this.serverPort = Objects.requireNonNull(serverPort, "Server port may not be null");
         this.clientSocketAcceptor = Objects.requireNonNull(clientSocketAcceptor);
@@ -83,7 +83,8 @@ public class Server extends AbstractEndpoint implements Runnable {
 
     @Getter(AccessLevel.PRIVATE) @Setter(AccessLevel.PRIVATE)
     private ServerSocket serverSocket;
-    @Getter(AccessLevel.PRIVATE) @Setter(AccessLevel.PRIVATE)
+    @Getter
+    @Setter(AccessLevel.PRIVATE)
     private Integer serverPort;
 
     private static final int CONNECTION_WAIT_TIMEOUT = 3000;
@@ -93,6 +94,7 @@ public class Server extends AbstractEndpoint implements Runnable {
         try {
             assert getServerPort() != null : "Server port may not be null";
             setServerSocket(new ServerSocket(getServerPort()));
+            setServerPort(getServerSocket().getLocalPort());
             getServerSocket().setSoTimeout(CONNECTION_WAIT_TIMEOUT);
         } catch (IOException e) {
             getSocketInitExceptionHandler().accept(e);
@@ -117,6 +119,7 @@ public class Server extends AbstractEndpoint implements Runnable {
                 Socket clientSocket;
                 try {
                     clientSocket = getServerSocket().accept();
+                    // TODO: 3/31/2019 Run client acceptance in other thread
                     if (getClientSocketAcceptor().test(clientSocket)) {
                         getClientAddress2Socket().put((InetSocketAddress) clientSocket.getLocalSocketAddress(), clientSocket);
                     }
@@ -181,6 +184,5 @@ public class Server extends AbstractEndpoint implements Runnable {
                     }
             );
         }
-
     }
 }

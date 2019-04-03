@@ -33,8 +33,8 @@ public class Client extends AbstractEndpoint implements Closeable {
 
 
     @Builder
-    private Client(Supplier<ScheduledExecutorService> threadPoolSupplier, Consumer<SocketException> datagramInitExceptionHandler, Consumer<IOException> multicastInitExceptionHandler, Consumer<IOException> multicastJoinExceptionHandler, Consumer<IOException> socketSendExceptionHandler, Consumer<IOException> socketReceiveExceptionHandler, MulticastPacketHandler multicastPacketHandler) {
-        super(threadPoolSupplier, multicastPacketHandler, datagramInitExceptionHandler, multicastInitExceptionHandler, multicastJoinExceptionHandler, socketSendExceptionHandler, socketReceiveExceptionHandler);
+    private Client(Supplier<ScheduledExecutorService> scheduledThreadPoolSupplier, Consumer<SocketException> datagramInitExceptionHandler, Consumer<IOException> socketInitExceptionHandler, Consumer<IOException> multicastJoinExceptionHandler, Consumer<IOException> socketSendExceptionHandler, Consumer<IOException> socketReceiveExceptionHandler, MulticastPacketHandler multicastPacketHandler) {
+        super(scheduledThreadPoolSupplier, multicastPacketHandler, datagramInitExceptionHandler, socketInitExceptionHandler, multicastJoinExceptionHandler, socketSendExceptionHandler, socketReceiveExceptionHandler);
     }
 
     ///////////////////////////////////////////////////////////////////////////
@@ -51,8 +51,8 @@ public class Client extends AbstractEndpoint implements Closeable {
         if(getSocket() != null)
             throw new IllegalStateException("Client already connected to server");
         setSocket(new Socket(serverAddress.getAddress(), serverAddress.getPort()));
-        setServerInStream(new ObjectInputStream(getSocket().getInputStream()));
         setServerOutStream(new ObjectOutputStream(getSocket().getOutputStream()));
+        setServerInStream(new ObjectInputStream(getSocket().getInputStream()));
         setServerAddress(serverAddress);
     }
 

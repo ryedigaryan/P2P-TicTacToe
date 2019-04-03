@@ -25,12 +25,14 @@
     <modules>
         <module>generic-common</module>
         <module>generic-application</module>
-        <module>generic-client-server</module>
+        <module>generic-networking</module>
         <module>tic-tac-toe-application</module>
         <module>tic-tac-toe-connector</module>
         <module>tic-tac-toe-backend</module>
+        <module>tic-tac-toe-networking</module>
         <module>tic-tac-toe-ui</module>
         <module>tic-tac-toe-tests</module>
+        <module>tic-tac-toe-networking</module>
     </modules>
 
     <dependencies>

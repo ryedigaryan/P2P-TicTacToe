@@ -20,6 +20,12 @@
         </dependency>
         <dependency>
             <groupId>rub.playground</groupId>
+            <artifactId>tic-tac-toe-networking</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>rub.playground</groupId>
             <artifactId>tic-tac-toe-connector</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>

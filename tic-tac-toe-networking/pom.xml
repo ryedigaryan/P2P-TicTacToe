@@ -9,13 +9,19 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>generic-client-server</artifactId>
+    <artifactId>tic-tac-toe-networking</artifactId>
 
     <dependencies>
         <dependency>
             <groupId>rub.playground</groupId>
-            <artifactId>generic-common</artifactId>
+            <artifactId>generic-networking</artifactId>
             <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>rub.playground</groupId>
+            <artifactId>tic-tac-toe-backend</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 

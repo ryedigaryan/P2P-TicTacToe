@@ -6,7 +6,6 @@ import generic.networking.common.exception.NoSuchEndpointException;
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.InetSocketAddress;
-import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
@@ -28,9 +27,14 @@ public interface Endpoint {
      * @throws NoSuchEndpointException if there is no connected endpoint
      */
     default void sendToAll(Serializable object) throws IOException, NoSuchEndpointException {
-        for (InetSocketAddress connectedEndpoint : getConnectedEndpoints()) {
-            send(object, connectedEndpoint);
-        }
+        getConnectedEndpoints().parallelStream().forEach(endpoint -> {
+            try {
+                send(object, endpoint);
+            } catch(IOException e) {
+                e.printStackTrace();
+                System.err.println("Unable to send " + object + " to endpoint: " + endpoint);
+            }
+        });
     }
 
     /**
